@@ -1,0 +1,126 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$lang = $this -> lang;
+
+$carDatex = $this -> carDatex;
+$bikeDatex = $this -> bikeDatex;
+$truckDatex = $this -> truckDatex;
+
+$tmpl -> readTmplFile('CONTENT', 'default/member/datexexp.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/member_datex.css" />');
+
+//V_TYPE
+$vType = '<select name="vType">
+			<option value="c">'.$lang['TXT_2'].'</option>
+			<option value="b">'.$lang['TXT_3'].'</option>
+			<option value="t">'.$lang['TXT_4'].'</option>
+		</select>';
+$tmpl -> setValue('V_TYPE', $vType);
+								
+								
+//FORMAT_VAL
+$dataIntfFile = System_Properties::$DATA_INTF_FILE;
+$format  = $lang['TXT_40'];
+if (isset($dataIntfFile[$user['datexFormat']]) && isset($lang['TXT_181'][$user['datexFormat']])){
+	$format = $lang['TXT_181'][$user['datexFormat']];
+}
+$tmpl -> setValue('FORMAT', $format);
+/*
+$formatVal = '<select name="fileFormat">';
+if (isset($lang['TXT_181']) && is_array($lang['TXT_181'])){
+	foreach ($lang['TXT_181'] as $key => $kVal){
+		$formatVal .= '<option value="'.$key.'">'.$kVal.'</option>';
+	}
+}
+$formatVal .= '</select>';
+$tmpl -> setValue('FORMAT', $formatVal);
+*/
+
+//DATEX_PROT
+$datexProt = '';
+if (is_array($carDatex) || is_array($bikeDatex) || is_array($truckDatex)){
+	if (count($carDatex) > 0){		
+		$formatExp = '---';
+		if (isset($lang['TXT_181'][strtoupper($carDatex['datexFormat'])])){
+			$formatExp = $lang['TXT_181'][strtoupper($carDatex['datexFormat'])];
+		}
+		$lang_txt = $tmpl -> replace('LINK_CSV_FILE', '/member/datexexp/ce/'.System_Properties::CAR_ABRV.'_'.$user['userID'].'.csv', '<b>'.$lang['TXT_214'].' {-TXT_219-}: {-EXP_FORMAT-}</b><br/>'.$lang['TXT_217']);
+		$lang_txt = $tmpl -> replace('LINK_ZIP_FILE', '/member/datexexp/ce/'.System_Properties::CAR_ABRV.'_'.$user['userID'].'.zip', $lang_txt);
+		$lang_txt = $tmpl -> replace('VT_TYPE', $lang['TXT_2'], $lang_txt );	
+		$lang_txt = $tmpl -> replace('EXP_FORMAT', $formatExp, $lang_txt );			 
+		$datexProt .= $lang_txt.'<br/><br/>';
+	}
+	if (count($bikeDatex) > 0){
+		$formatExp = '---';
+		if (isset($lang['TXT_181'][strtoupper($bikeDatex['datexFormat'])])){
+			$formatExp = $lang['TXT_181'][strtoupper($bikeDatex['datexFormat'])];
+		}
+		$lang_txt = $tmpl -> replace('LINK_CSV_FILE', '/member/datexexp/be/'.System_Properties::BIKE_ABRV.'_'.$user['userID'].'.csv', '<b>'.$lang['TXT_214'].' {-TXT_219-}: {-EXP_FORMAT-}</b><br/>'.$lang['TXT_217']);
+		$lang_txt = $tmpl -> replace('LINK_ZIP_FILE', '/member/datexexp/be/'.System_Properties::BIKE_ABRV.'_'.$user['userID'].'.zip', $lang_txt);
+		$lang_txt = $tmpl -> replace('VT_TYPE', $lang['TXT_218'], $lang_txt );
+		$lang_txt = $tmpl -> replace('EXP_FORMAT', $formatExp, $lang_txt );			 
+		$datexProt .= $lang_txt.'<br/><br/>';
+	}
+	if (count($truckDatex) > 0){
+		$formatExp = '---';
+		if (isset($lang['TXT_181'][strtoupper($truckDatex['datexFormat'])])){
+			$formatExp = $lang['TXT_181'][strtoupper($truckDatex['datexFormat'])];
+		}
+		$lang_txt = $tmpl -> replace('LINK_CSV_FILE', '/member/datexexp/te/'.System_Properties::TRUCK_ABRV.'_'.$user['userID'].'.csv', '<b>'.$lang['TXT_214'].' {-TXT_219-}: {-EXP_FORMAT-}</b><br/>'.$lang['TXT_217']);
+		$lang_txt = $tmpl -> replace('LINK_ZIP_FILE', '/member/datexexp/te/'.System_Properties::TRUCK_ABRV.'_'.$user['userID'].'.zip', $lang_txt);
+		$lang_txt = $tmpl -> replace('VT_TYPE', $lang['TXT_4'], $lang_txt );	
+		$lang_txt = $tmpl -> replace('EXP_FORMAT', $formatExp, $lang_txt );			 
+		$datexProt .= $lang_txt.'<br/><br/>';
+	}
+	
+}else{
+	$datexProt = $lang['INFO_13'];
+}
+$tmpl -> setValue('DATEX_PROT', $datexProt);
+
+
+
+//INFO
+$infoVal = '';
+if (isset($this -> info)){
+	if (is_array($this -> info)){
+		$this -> info = implode('<br/>', $this -> info);
+	}
+	if($this -> info != ''){
+		$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+		isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+	}
+}
+if (isset($this -> error)){
+	if (is_array($this -> error)){
+		$this -> error = implode('<br/>', $this -> error);
+	}
+	if ($this -> error != ''){
+		$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+		isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+	}
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+
+echo $this -> tmpl -> render();
+
+
+/*
+	<label for="fileExpFoto" class="nl">{-TXT_211-}</label>
+	<div id="fileExpFoto" class="nl">
+		<select name="fileExpFoto">
+			<option value="0" selected>{-TXT_213-}</option>
+			<option value="1">{-TXT_212-}</option>
+		</select>
+	</div>
+	*/
+?>

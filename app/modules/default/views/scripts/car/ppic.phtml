@@ -1,0 +1,21 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of PKW Index. It implements the search mask
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+
+$tmpl -> readTmplFile('CONTENT', 'default/pic.html');
+
+
+$imgSrc = '';
+if(isset($this -> carPic)){
+	$imgSrc = System_Properties::PIC_PATH.'/'.$this -> carPic['vID'].'_'.$this -> carPic['vPicID'].'.jpeg';
+}
+else{
+	$imgSrc = System_Properties::NO_PIC_PATH;
+}
+$tmpl -> setValue('IMG_SRC', $imgSrc);
+echo $this -> tmpl -> render();
+?>

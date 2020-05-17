@@ -1,0 +1,120 @@
+@CHARSET "UTF-8";
+
+/*PART1*/
+h3{
+	margin-bottom: 0.5em;
+}
+
+.box{
+	padding: 0;
+	float: left;
+	width: 32.3333%;
+	margin: 0 1% 0.5em 0;
+}
+
+.box label{
+	display: block;
+	margin: 0 0 0.2em 0;
+}
+
+.box div select
+, .box div input[type="text"] {
+	width: 98%;
+	margin: 0 2% 0 0;
+}
+
+.box div input[type="checkbox"]{
+	margin: 0;
+}
+
+.box div.split select{
+	width: 49%;
+	float: left;
+	margin: 0 0.5% 0 0;
+}
+
+.twoBox{
+	width: 65.6666%;
+}
+.twoBox div textarea
+, .box div textarea{
+	min-width: 99%;
+	max-width: 99%;
+	min-height: 10em;
+	max-height: 10em;
+}
+.box div textarea{
+	min-height: 9em;
+	max-height: 9em;
+}
+
+.boxExtra{
+	width: 100%;
+}
+
+/*EXTRAS*/
+.boxExtra ul{
+	padding: 0;
+	margin: 0 0 1em 0;
+}
+
+.boxExtra ul li{
+	float: left;
+	width: 25%;
+	padding: 0;
+	margin: 0;
+}
+
+.boxExtra ul li.extHeading{
+	border-bottom: 1px solid #353535;
+	float: none;
+	width: auto;
+	padding: 0;
+	margin: 0 0 0.1em 0;
+	clear: both;
+	height: 2em;
+	line-height: 2em;
+	color: #353535;
+}
+
+.boxExtra ul li.end{
+	float: none;
+	clear: both;
+}
+
+/*PART3*/
+#photoGallery .delImg{
+	background: black;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 0.1em;
+	left: 0em;
+	top: 0;
+	position: absolute;
+	cursor: pointer;
+}
+
+.item{
+	font-weight: bold;
+}
+/*
+#photoGallery div{
+	width: 160px;
+	height: 120px;
+	border: 1px solid blue;
+	float: left;
+}
+#photoGallery div a{
+	position: absolute;
+	border: 1px solid green;
+	float: left;
+	background: black;
+	color: #FFFFFF;
+	cursor: pointer;
+}
+#photoGallery div img{
+	max-height: 100%;
+	max-widht: 100%;
+}
+*/
+

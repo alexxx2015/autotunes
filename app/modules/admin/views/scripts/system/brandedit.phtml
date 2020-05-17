@@ -1,0 +1,112 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/system/brandeditform.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$brand = $this -> brand;
+
+$carCat = $this -> carCat;
+$bikeCat = $this -> bikeCat;
+$truckCat = $this -> truckCat;
+
+$carCatActive = $this -> carCatActive;
+$bikeCatActive = $this -> bikeCatActive;
+$truckCatActive = $this -> truckCatActive;
+
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/brandedit.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');								
+								
+//BRAND_ID
+if (is_array($brand) && isset($brand['brandID'])){
+	$tmpl -> setValue('BRAND_ID', $brand['brandID']);
+}
+
+//CAR_CAT
+$catID = array();
+if (is_array($carCatActive) && (count($carCatActive) > 0)){
+	foreach ($carCatActive as $key => $kVal){
+		array_push($catID, $kVal['carCatID']);
+	}
+}else{
+	array_push($catID, '-1');
+}
+$carCatVal = '';
+if (is_array($carCat)){
+	$carCatVal .= '<select name="carCat[]" multiple>
+					<option value="-1" '.((in_array('-1', $catID) || in_array('1', $catID)) ? 'selected' : '' ).'>'.$lang['ATXT_116'].'</option>';
+	foreach($carCat as $key => $kVal){
+		if (isset($lang['V_CAT'][$kVal['vcatID']])){
+			$carCatVal .= '<option value="'.$kVal['carCatID'].'" '.(in_array($kVal['carCatID'], $catID) ? 'selected' : '' ).'>'.$lang['V_CAT'][$kVal['vcatID']].'</option>';
+		}
+	}
+	$carCatVal .= '</select>';
+}
+$tmpl -> setValue('CAR_CAT', $carCatVal);
+
+//BIKE_CAT
+$catID = array();
+if (is_array($bikeCatActive) && (count($bikeCatActive) > 0)){
+	foreach ($bikeCatActive as $key => $kVal){
+		array_push($catID, $kVal['bikeCatID']);
+	}
+}else{
+	array_push($catID, '-1');
+}
+$bikeCatVal = '';
+if (is_array($bikeCat)){
+	$bikeCatVal .= '<select name="bikeCat[]" multiple>
+					<option value="-1" '.((in_array('-1', $catID) || in_array('1', $catID)) ? 'selected' : '' ).'>'.$lang['ATXT_116'].'</option>';
+	foreach($bikeCat as $key => $kVal){
+		if (isset($lang['V_CAT'][$kVal['vcatID']])){
+			$bikeCatVal .= '<option value="'.$kVal['bikeCatID'].'" '.(in_array($kVal['bikeCatID'], $catID) ? 'selected' : '' ).'>'.$lang['V_CAT'][$kVal['vcatID']].'</option>';
+		}
+	}
+	$bikeCatVal .= '</select>';
+}
+$tmpl -> setValue('BIKE_CAT', $bikeCatVal);
+
+//TRUCK_CAT
+$catID = array();
+if (is_array($truckCatActive) && (count($truckCatActive) > 0)){
+	foreach ($truckCatActive as $key => $kVal){
+		array_push($catID, $kVal['truckCatID']);
+	}
+}else{
+	array_push($catID, '-1');
+}
+$truckCatVal = '';
+if (is_array($truckCat)){
+	$truckCatVal .= '<select name="truckCat[]" multiple>
+					<option value="-1" '.((in_array('-1', $catID) || in_array('1', $catID)) ? 'selected' : '' ).'>'.$lang['ATXT_116'].'</option>';
+	foreach($truckCat as $key => $kVal){
+		if (isset($lang['V_CAT'][$kVal['vcatID']])){
+			$truckCatVal .= '<option value="'.$kVal['truckCatID'].'" '.(in_array($kVal['truckCatID'], $catID) ? 'selected' : '' ).'>'.$lang['V_CAT'][$kVal['vcatID']].'</option>';
+		}
+	}
+	$truckCatVal .= '</select>';
+}
+$tmpl -> setValue('TRUCK_CAT', $truckCatVal);
+								
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+?>

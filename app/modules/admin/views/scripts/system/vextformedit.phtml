@@ -1,0 +1,38 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$posLang = $this -> posLang;
+
+$carExt = $this -> carExt;
+$bikeExt = $this -> bikeExt;
+$truckExt = $this -> truckExt;
+
+$vextParam = $this -> vextParam;
+
+$tmpl -> readTmplFile('VEXT_FORM', System_Properties::ADMIN_MOD_PATH.'/system/vextform.html');
+$tmpl -> setValue('FORM_URL', '/'.System_Properties::ADMIN_MOD_PATH.'/system/vextedit/vid/{-VEXT_ID-}');
+$tmpl -> setValue('SUBMIT_BTN', '<input type="submit" name="vextEdit" value="'.$lang['TXT_156'].'"/>');
+
+ 
+
+//		<td colspan="2"><input type="text" name="vextName" value="{-VEXT_NAME_VAL-}"/></td>
+
+//Lang Header
+$langHeader = '';
+$langTxtField = '';
+if (is_array($posLang)){
+	foreach ($posLang as $key => $value){
+		$langHeader .= '<td>'.$value['langAbrv'].'</td>';
+		$langTxtField .= '<td><input type="text" name="lang_'.strtolower($value['langAbrv']).'" value="{-V_EXTRA_'.strtoupper($value['langAbrv']).'-}"/></td>';
+	}
+}
+$tmpl -> setValue('LANG_HEADER', $langHeader);
+$tmpl -> setValue('LANG_TXT_FIELD', $langTxtField);
+
+?>

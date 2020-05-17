@@ -1,0 +1,399 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100819
+ * Desc:		This is the view of Truck insert confirmation section
+ *********************************************************************************/
+include_once('default/views/filters/FilterIsEmptyString.php');
+
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$truck = $this -> truck;
+$truckCat = $this -> truckCat;
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/truck_insert.css" />'
+				);
+				
+$tmpl -> readTmplFile('CONTENT', 'default/truck/insert3.html');
+
+//Set TRUCK_BRAND
+$tmpl -> setValue('TRUCK_BRAND_VAL', $truck['truckBrandTxt']);
+
+//Set TRUCK_MODEL
+$truckModel = '';
+if(isset($truck['truckModelTxt']) && ($truck['truckModelTxt'] != null)){
+	$truckModel = $truck['truckModelTxt'];
+}
+$tmpl -> setValue('TRUCK_MODEL_VAL', $truckModel);
+
+//Set TRUCK_PRICE
+$truckPriceVal = $truck['truckPrice'];
+if (isset($lang['TXT_74'][$truck['truckPriceCurr']])){
+	$truckPriceVal .= ' '.$lang['TXT_74'][$truck['truckPriceCurr']];
+}					
+
+$tmpl -> setValue('TRUCK_PRICE_VAL', $truckPriceVal);
+
+$truckPriceType = '';
+if (isset($truck['truckPriceType']) && isset($lang['TXT_70'][$truck['truckPriceType']])){
+	$truckPriceType = $lang['TXT_70'][$truck['truckPriceType']];
+}
+$tmpl -> setValue('TRUCK_PRICE_TYPE_VAL', $truckPriceType);
+
+//Set TRUCK_KM
+$truckKMVal = $truck['truckKM'];
+if (isset($lang['TXT_75'][$truck['truckKMType']])){
+	$truckKMVal .= ' '.$lang['TXT_75'][$truck['truckKMType']];
+}
+$tmpl -> setValue('TRUCK_KM_VAL', $truckKMVal);
+
+//Set TRUCK_POWER
+$truckPower = '';
+if (isset($truck['truckPowerType']) && isset($lang['TXT_72'][$truck['truckPowerType']])){
+	if ($truck['truckPowerType'] == 0){
+		$truckPower = $truck['truckPower'].' '.$lang['TXT_72'][0]
+					.' ('.($truck['truckPower']*90/66).' '.$lang['TXT_72'][1].')';
+	}
+	elseif ($truck['truckPowerType'] == 1){
+		$truckPower = ($truck['truckPower']*66/90).' '.$lang['TXT_72'][0]
+					.' ('.$truck['truckPower'].' '.$lang['TXT_72'][1].')';
+	}
+}
+$tmpl -> setValue('TRUCK_POWER_VAL', $truckPower);
+
+//Set TRUCK_EZ
+$tmpl -> setValue('TRUCK_EZ_VAL', $truck['truckEZM'].'/'.$truck['truckEZY']);
+
+//Set TRUCK_TUV
+$truckTUV = '';
+if (isset($truck['truckTUVY']) && ($truck['truckTUVY'] != false)){
+	$truckTUV .= $truck['truckTUVY'];
+	if (isset($truck['truckTUVM']) && ($truck['truckTUVM'] != false)){
+		$truckTUV = $truck['truckTUVM'].'/'.$truckTUV;
+	}
+}
+$tmpl -> setValue('TRUCK_TUV_VAL', $truckTUV);
+
+//Set TRUCK_AU
+$truckAU = '';
+if (isset($truck['truckAUY']) && ($truck['truckAUY'] != false)){
+	$truckAU .= $truck['truckAUY'];
+	if (isset($truck['truckAUM']) && ($truck['truckAUM'] != false)){
+		$truckAU = $truck['truckAUM'].'/'.$truckAU;
+	}
+}
+$tmpl -> setValue('TRUCK_AU_VAL', $truckAU);
+
+//Set TRUCK_SHIFT
+$truckShift = '';
+if (isset($truck['truckShift']) && isset($lang['V_SHIFT'][$truck['truckShift']]) ){
+	$truckShift .= $lang['V_SHIFT'][$truck['truckShift']];
+}
+$tmpl -> setValue('TRUCK_SHIFT_VAL', $truckShift);
+
+//Set TRUCK_WEIGHT
+$truckWeight = '';
+if (isset($truck['truckWeight']) && ($truck['truckWeight'] != false)){
+	$truckWeight .= $truck['truckWeight'];
+}
+$tmpl -> setValue('TRUCK_WEIGHT_VAL', $truckWeight);
+
+//Set TRUCK_CYL
+$truckCyl = '';
+if (isset($truck['truckCyl']) && ($truck['truckCyl'] != false)){
+	$truckCyl .= $truck['truckCyl'];
+}
+$tmpl -> setValue('TRUCK_CYL_VAL', $truckCyl);
+
+//Set TRUCK_CUB
+$truckCub = '';
+if (isset($truck['truckCub']) && ($truck['truckCub'] != false)){
+	$truckCub .= $truck['truckCub'];
+}
+$tmpl -> setValue('TRUCK_CUB_VAL', $truckCub);
+
+//Set TRUCK_USE_IN
+$truckUseIn = '';
+if (isset($truck['truckUseIn'])){
+	$truckUseIn .= $truck['truckUseIn'].' '.$lang['TXT_64'];
+}
+$tmpl -> setValue('TRUCK_USE_IN_VAL', $truckUseIn);
+
+//Set TRUCK_USE_OUT
+$truckUseOut = '';
+if (isset($truck['truckUseOut'])){
+	$truckUseOut .= $truck['truckUseOut'].' '.$lang['TXT_64'];
+}
+$tmpl -> setValue('TRUCK_USE_OUT_VAL', $truckUseOut);
+
+//Set TRUCK_CO2
+$truckCO2 = '';
+if (isset($truck['truckCO2'])){
+	$truckCO2 .= $truck['truckCO2'].' '.$lang['TXT_66'];
+}
+$tmpl -> setValue('TRUCK_CO2_VAL', $truckCO2);
+
+//Set TRUCK_STATE
+$truckState = '';
+if (isset($truck['truckState']) && isset($lang['V_STATE'][$truck['truckState']]) ){
+	$truckState .= $lang['V_STATE'][$truck['truckState']];
+}
+$tmpl -> setValue('TRUCK_STATE_VAL', $truckState);
+
+//Set TRUCK_CAT
+$truckCatVal = '';	
+if (isset($this -> truck['truckCat']) && is_array($truckCat)){
+	foreach($truckCat as $key => $kVal){
+		if (($kVal['truckCatID'] == $this -> truck['truckCat']) && isset($lang['V_CAT'][$kVal['vcatID']])){
+			$truckCatVal .= $lang['V_CAT'][$kVal['vcatID']];
+			break;
+		}
+	}
+}
+$tmpl -> setValue('TRUCK_CAT_VAL', $truckCatVal);
+
+//Set TRUCK_FUEL
+$truckFuel = '';
+if (isset($truck['truckFuel']) && isset($lang['V_FUEL'][$truck['truckFuel']]) ){
+	$truckFuel .= $lang['V_FUEL'][$truck['truckFuel']];
+}
+$tmpl -> setValue('TRUCK_FUEL_VAL', $truckFuel);
+
+//Set TRUCK_CLR
+$truckClr = '';
+if (isset($truck['truckClr']) && isset($lang['V_CLR'][$truck['truckClr']]) ){
+	$truckClr .= $lang['V_CLR'][$truck['truckClr']];
+	if (isset($truck['truckClrMet'])){
+		$truckClr .= ' '.$lang['TXT_20'];
+	}
+}
+$tmpl -> setValue('TRUCK_CLR_VAL', $truckClr);
+
+//Set TRUCK_EMISSION_NORM
+$truckEmissionNorm = '';
+if (isset($truck['truckEmissionNorm']) && isset($lang['V_EMISSION_NORM'][$truck['truckEmissionNorm']]) ){
+	$truckEmissionNorm .= $lang['V_EMISSION_NORM'][$truck['truckEmissionNorm']];
+}
+$tmpl -> setValue('TRUCK_EMISSION_NORM_VAL', $truckEmissionNorm);
+
+//Set TRUCK_ECOLOGIC_TAG
+$truckEcologicTag = '';
+if (isset($truck['truckEcologicTag']) && isset($lang['V_ECOLOGIC_TAG'][$truck['truckEcologicTag']]) ){
+	$truckEcologicTag .= $lang['V_ECOLOGIC_TAG'][$truck['truckEcologicTag']];
+}
+$tmpl -> setValue('TRUCK_ECOLOGIC_TAG_VAL', $truckEcologicTag);
+
+//Set TRUCK_EXT
+$truckExt = '';
+if (isset($truck['truckExtDB']) && is_array($truck['truckExtDB'])){
+	foreach ($truck['truckExtDB'] as $truckExtDB){
+		$truckExt .= $lang['V_EXTRA'][$truckExtDB['vextID']].', ';
+	}
+}
+$tmpl -> setValue('TRUCK_EXT_VAL', $truckExt);
+
+//Set TRUCK_KLIMA
+$truckKlima = '';
+if (isset($truck['truckKlima']) && isset($lang['V_KLIMA'][$truck['truckKlima']]) ){
+	$truckKlima .= $lang['V_KLIMA'][$truck['truckKlima']];
+}
+$tmpl -> setValue('TRUCK_KLIMA_VAL', $truckKlima);
+
+//Set TRUCK_DSC
+$truckDesc = '';
+if (isset($truck['truckDesc'])){
+	$truckDesc .= $truck['truckDesc'];
+}
+$tmpl -> setValue('TRUCK_DESC_VAL', $truckDesc);
+
+//Set USER_ADS
+$userAds = '';
+if (isset($truck['userAds']) ){
+	if($truck['userAds'] == 1){
+		$userAds = $lang['TXT_33'][1];
+	}
+	else if($truck['userAds'] == 2){
+		$userAds = $lang['TXT_33'][2];
+	}
+}
+$tmpl -> setValue('USER_ADS_VAL', $userAds);
+
+//Set USER_FIRM
+$userFirm = '';
+if (isset($truck['userFirm']) ){
+	$userFirm .= $truck['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirm);
+
+//Set USER_VNAME_VAL, USER_NNAME_VAL
+$tmpl -> setValue('USER_NNAME_VAL', $truck['userNName']);
+$tmpl -> setValue('USER_VNAME_VAL', $truck['userVName']);
+
+//Set USER_EMAIL_VAL
+$tmpl -> setValue('USER_EMAIL_VAL', $truck['userEMail']);
+
+//Set USER_ADRESS
+$userAdress = '';
+if (isset($truck['userAdress'])){
+	$userAdress .= $truck['userAdress'];
+}
+$tmpl -> setValue('USER_ADRESS_VAL', $userAdress);
+
+//Set USER_TEL1
+$userTel1 = '';
+if (isset($truck['userTel1'])){
+	$userTel1 .= $truck['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1_VAL', $userTel1);
+
+//Set USER_TEL2
+$userTel2 = '';
+if (isset($truck['userTel2'])){
+	$userTel2 .= $truck['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2_VAL', $userTel2);
+
+//Set truckLoc
+$truckLoc = '';
+if(isset($truck['truckLocPLZ'])){
+	$truckLoc .= $truck['truckLocPLZ'];
+	if (isset($this ->truck['truckLocOrt'])){
+		$truckLoc .= ' '.$truck['truckLocOrt'];
+	}
+}
+$tmpl -> setValue('TRUCK_LOC_VAL', $truckLoc);
+
+
+
+//Read gallery image pattern
+$photoUploadEntryTMPL = $tmpl -> readFile('default/photoUploadEntry.html');
+/*
+ * Set TRUCK_PHOTO upload function
+ * This depends on the activation of javascript
+ */
+//JS activated
+if (isset($truck['jsActive']) 
+	&& ($truck['jsActive'] != null)
+	&& ($truck['jsActive'] != false)){
+//	Set javascript file for photo upload
+	$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+									<script type="text/javascript" src="'.System_Properties::JS_PATH.'/ajaxupload.js"></script>
+									<script type="text/javascript" src="'.System_Properties::JS_PATH.'/ti.js"></script>');
+			
+	
+	//$photoUploadEntryTMPL = $tmpl -> readFile('default/photoUploadEntry_JSON.html');
+	
+	$gl_galIMGPattern = $tmpl -> replace(	'IMG_SRC_VAL',
+											'p1',
+											$photoUploadEntryTMPL
+										);
+	$gl_galIMGPattern = $tmpl -> replace(	'IMG_ID_VAL',
+											'p2',
+											$gl_galIMGPattern
+										);		
+	$gl_galIMGPattern = $tmpl -> replace(	'IMG_HREF',
+											'',
+											$gl_galIMGPattern
+										);		
+									
+	//Read gallery template for activated javascript
+	$tmpl -> readTMPLFile('TRUCK_PHOTO_GALLERY','default/photoGalleryJSON.html');
+		
+	//Set javascript gallery image pattern																
+	$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+								.'	var g_arr = new Array();
+									g_arr["GAL_IMG_PAT"] = \''.$gl_galIMGPattern.'\';
+									g_arr["TRUCK_ID"] = "'.$truck['truckID'].'";');
+					
+	$truckPhotos = '';
+	if (isset($truck['truckPhoto']) && is_array($truck['truckPhoto'])){
+		foreach ($truck['truckPhoto'] as $key => $truckPhoto){
+			$imgSrc = System_Properties::PIC_PATH.'/'.System_Properties::TRUCK_ABRV.'_'.$truckPhoto['vID'].'_'.$truckPhoto['vPicID'].'.jpeg';
+			
+			if (file_exists('.'.$imgSrc)){
+				$photoUploadEntry = $tmpl -> replace(	'IMG_SRC_VAL',
+														$imgSrc,
+														$photoUploadEntryTMPL
+													);
+				$photoUploadEntry = $tmpl -> replace(	'IMG_ID_VAL',
+														$truckPhoto['vPicID'],
+														$photoUploadEntry
+													);
+				$photoUploadEntry = $tmpl -> replace(	'IMG_HREF',
+														'',
+														$photoUploadEntry
+													);
+				$truckPhotos .= $photoUploadEntry;//'<div><a>X</a><img src="'.$truckPhoto.'" id="'.$key.'"/></div>';						
+			}
+		}
+	}
+	$tmpl -> setValue('PHOTO_GALLERY_ENTRIES', $truckPhotos);
+}
+//JS Deactivated
+else{
+	//Read gallery template for deactivated javascript
+	$tmpl -> readTMPLFile('TRUCK_PHOTO_GALLERY','default/photoGalleryJSOFF.html');
+	$tmpl -> setValue('TRUCK_ID', $truck['truckID']);
+	
+	$truckPhotos = '';
+	if (isset($truck['truckPhoto']) && is_array($truck['truckPhoto'])){
+		foreach ($truck['truckPhoto'] as $key => $truckPhoto){
+			$imgSrc = System_Properties::PIC_PATH.'/'.$truckPhoto['vID'].'_'.$truckPhoto['vPicID'].'.jpeg';
+			
+			if (file_exists('.'.$imgSrc)){
+				$photoUploadEntry = $tmpl -> replace(	'IMG_SRC_VAL',
+														$imgSrc,
+														$photoUploadEntryTMPL
+													);
+				$photoUploadEntry = $tmpl -> replace(	'IMG_ID_VAL',
+														$truckPhoto['vPicID'],
+														$photoUploadEntry
+													);
+				$photoUploadEntry = $tmpl -> replace(	'IMG_HREF',
+														'href="/truck/insert/dp/1/i/'.$truckPhoto['vPicID'].'"',
+														$photoUploadEntry
+													);
+													
+				$truckPhotos .= $photoUploadEntry;//'<div><a>X</a><img src="'.$truckPhoto.'" id="'.$key.'"/></div>';						
+			}
+		}
+	}
+	$tmpl -> setValue('PHOTO_GALLERY_ENTRIES', $truckPhotos);
+}
+
+$tmpl -> setValue('INFO', $lang['INFO_1'].'<a href="/truck/insert/n/1">'.$lang['TXT_108'].'</a>');
+
+echo $tmpl -> render();
+
+
+
+/*
+//Set TRUCK_PHOTO
+$photoUploadedEntryTMPL = $tmpl -> readFile('default/photoUploadedEntry.html');
+$truckPhotos = '';
+if (isset($this -> truckPhoto) && is_array($this -> truckPhoto)){
+	foreach ($this -> truckPhoto as $key => $truckPhoto){
+		$photoUploadEntry = $tmpl -> replace(	'IMG_SRC_VAL',
+												$truckPhoto,
+												$photoUploadedEntryTMPL
+											);
+		$photoUploadEntry = $tmpl -> replace(	'IMG_ID_VAL',
+												$key,
+												$photoUploadEntry
+											);
+		$truckPhotos .= $photoUploadEntry;//'<div><img src="'.$truckPhoto.'" id="'.$key.'"/></div>';
+	}
+}
+$tmpl -> setValue('TRUCK_PHOTO', $truckPhotos);
+
+
+
+
+
+	<label for="photoGallery" class="photoUpload">{-TXT_111-}</label>
+	<div id="photoGallery">
+	{-TRUCK_PHOTO-}
+	</div>
+*/
+?>
+

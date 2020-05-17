@@ -1,0 +1,58 @@
+@CHARSET "ISO-8859-1";
+
+.groupBox{
+	width: 75%;
+	padding: 0.5em 0 0 0;
+	border: 0;
+	border-top: 1px solid black;
+	margin-left :50%;
+	left: -37.5%;
+	position: relative;
+}
+
+.groupBox fieldset{
+	border: 0;
+	border-top: 1px solid black;
+}
+
+
+
+
+
+
+
+
+
+
+
+.userSearchBox label,
+.userNewBox label,
+.userEditBox label{
+	width: 40%;
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+.userSearchBox div input,
+.userSearchBox div select,	
+.userEditBox div input,
+.userEditBox div select{
+	width: 59%;
+	margin: 0;
+	padding: 0;
+}
+.userSearchBox div.twoCol select{
+	width: 29%;
+}
+
+.userSearchBox div,
+.userEditBox div{
+	margin: 0.5em 0 0.5em 0;
+}
+
+input[type = "submit"]{
+	text-align: center;
+}
+

@@ -1,0 +1,38 @@
+@CHARSET "ISO-8859-1";
+@import 'search.css';
+@import 'register.css';
+
+.IDX_INFO_BOX{
+	padding: 1em 0 1em 1em;
+	background: url(/sysPic/bg_subm.png);
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+	color: #FFFFFF;
+	position: relative;
+}
+
+.IDX_INFO_BOX .close{
+	position: absolute;
+	top: 0;
+	right: 0;
+	font-weight: bold;
+	padding: 0.2em 0.3em 0.2em 0.2em;
+	text-decoration: none;
+}
+
+.IDX_INFO_BOX a{
+	cursor: pointer;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.IDX_INFO_BOX a:hover{
+	color: #10cc02;
+}
+
+
+.fbLikeBtn{	
+	top: 55em;	
+	margin-left: -42.3em;
+	border-top: 1px solid black;
+}

@@ -1,0 +1,188 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+include_once('default/views/helpers/func_pageCounter.phtml');
+include_once('default/views/filters/FormatStr2Num.php');
+include_once('default/views/filters/FilterIsEmptyString.php');
+
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$truck = $this -> truck;
+$formatStr2Num = new FormatSt2Num();
+$isEmptyString = new FilterIsEmptyString();
+
+include_once('default/views/scripts/truck/truckQS.phtml');
+include_once('default/views/scripts/dealer/dealer_menu.phtml');
+
+$tmpl -> readTmplFile('CONTENT', 'default/dealer/truck.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'	<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/dealer.css" />
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/search.css" />');
+
+$quickSearch = $tmpl -> readTmplFile('QUICK_SEARCH', 'default/dealer/truckQS.html');
+$tmpl -> setValue('QS_FORM_ACTION', '/dealer/'.$user['userID'].'/truck');
+$tmpl -> setValue('QS_HEADING', $lang['TXT_197']);
+
+//USER_FIRM
+$userFirmVal = '';
+if (isset($user['userFirm'])){
+	$userFirmVal = $user['userFirm'];
+}
+if (($userFirmVal == '') && isset($user['userNName']) && isset($user['userVName'])){
+	$userFirmVal .= $user['userNName'].' '.$user['userVName'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirmVal);
+
+$searchResEntryTMPL = $tmpl -> readFile('default/dealer/searchResEntry.html');
+//Preparing search results and add this to the content
+$truckAds = '';
+if (isset($truck['truckAds']) && is_array($truck['truckAds'])){
+	$truckAds = '<div class="search_res">';
+	foreach ($truck['truckAds'] AS $truckAd){
+		if (isset($truckAd['truckID'])){
+			//Determine truck pic
+			$picURI = System_Properties::SYS_PIC_PATH.'/noImg.png';
+			if (isset($truckAd['truckPics']) && is_array($truckAd['truckPics'])){
+				foreach ($truckAd['truckPics'] AS $truckPic){
+					$pic = System_Properties::PIC_PATH.'/'.System_Properties::TRUCK_ABRV.'_'.$truckAd['truckID'].'_'.$truckPic['vPicID'].'.jpeg';
+					if(file_exists('.'.$pic)){
+						$picURI = $pic;
+						break;
+					}
+				}
+			}
+			
+			//Determine truck brand
+			$truckBrand = $truckAd['truckBrandName'];
+			if (isset($truckAd['truckModelName'])){
+				$truckBrand .= ' '.$truckAd['truckModelName'];
+			}
+			
+			$adDetail = '';
+			
+			//truckPrice
+			if (isset($truckAd['truckPrice'])){
+				$adDetail .= $formatStr2Num -> filter($truckAd['truckPrice']);
+				//truckPriceCurr
+				if (isset($truckAd['truckPriceCurr']) && isset($lang['TXT_74'][$truckAd['truckPriceCurr']])){
+					$adDetail .= ' '.$lang['TXT_74'][$truckAd['truckPriceCurr']];
+				}
+				
+				//truckPriceType
+				if (isset($truckAd['truckPriceType']) && isset($lang['TXT_70'][$truckAd['truckPriceType']])){
+					$adDetail .= ' '.$lang['TXT_70'][$truckAd['truckPriceType']];
+				}
+				
+				$adDetail .= ', ';
+			}
+			
+			//truckKM
+			if (isset($truckAd['truckKM'])){
+				$adDetail .= $formatStr2Num -> filter($truckAd['truckKM']).' ';
+				if (isset($lang['TXT_75'][$truckAd['truckKMType']])){
+					$adDetail .= $lang['TXT_75'][$truckAd['truckKMType']];
+				}
+				$adDetail .= ', ';
+			}
+			
+			//truckPower
+			if (isset($truckAd['truckPower'])){
+				//0 = kW
+				if(isset($truckAd['truckPowerType']) && ($truckAd['truckPowerType'] == 0)){
+					$adDetail .= $formatStr2Num -> filter($truckAd['truckPower']).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($truckAd['truckPower']*90/66).' '.$lang['TXT_72'][0].')';
+				}
+				//1 = PS
+				elseif(isset($truckAd['truckPowerType']) && ($truckAd['truckPowerType'] == 1)){
+					$adDetail .= $formatStr2Num -> filter($truckAd['truckPower']*66/90).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($truckAd['truckPower']).' '.$lang['TXT_72'][1].')';
+				}
+				$adDetail .= ', ';				
+			}
+			
+			//Set TRUCK_EZ
+			if($truckAd['truckEZY'] == 9999){
+				$adDetail .= $lang['V_STATE'][0];
+			}
+			elseif (($truckAd['truckEZM'] > 0) && ($truckAd['truckEZY'] > 0)){
+				$adDetail .= $truckAd['truckEZM'].'/'.$truckAd['truckEZY'];
+			}
+			
+			if ($adDetail != ''){
+				//truck
+				$adDetail .= '<br/>';
+				if (isset($truckAd['userFirm'])){
+					$adDetail .= $truckAd['userFirm'];
+				}
+				elseif (isset($truckAd['userNName']) && isset($truckAd['userVName'])){
+					$adDetail .= $truckAd['userNName'].' '.$truckAd['userVName'];
+				}
+				
+				//truckLocPLZ, truckLocOrt
+				if (isset($truckAd['truckUserPLZ']) || isset($truckAd['truckLocOrt'])){
+					$adDetail .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($truckAd['truckLocPLZ']) == false){
+						$adDetail .= ' '.$truckAd['truckLocPLZ'];
+					}
+					if ($isEmptyString -> filter($truckAd['truckLocOrt']) == false){
+						$adDetail .= ' '.$truckAd['truckLocOrt'];
+					}
+				}elseif (isset($truckAd['userPLZ']) || isset($truckAd['userOrt'])){
+					$adDetail .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($truckAd['userPLZ']) == false){
+						$adDetail .= ' '.$truckAd['userPLZ'];
+					}
+					if ($isEmptyString -> filter($truckAd['userOrt']) == false){
+						$adDetail .= ' '.$truckAd['userOrt'];
+					}
+				}
+			}
+			
+			
+			$searchResEntry = $tmpl -> replace(	'PIC_URI',
+												$picURI,
+												$searchResEntryTMPL
+												);
+			$searchResEntry = $tmpl -> replace(	'BRAND_URL',
+												'/truck/'.$truckAd['truckID'].'/'.$this -> truckAds['actPage'],
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'BRAND_NAME',
+												$truckBrand,
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'AD_DETAIL',
+												$adDetail,
+												$searchResEntry
+												);
+			$truckAds .= $searchResEntry;	
+		}
+	}
+	$truckAds .= '</div>';
+	$truckAds .= pageCounter($truck['totalAds'], '/dealer/'.$user['userID'].'/truck/', $truck['actPage'], $truck['numAds']);
+}
+
+$tmpl -> setValue('TRUCK_ADS', $truckAds);
+
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+echo $this -> tmpl -> render();
+
+
+?>

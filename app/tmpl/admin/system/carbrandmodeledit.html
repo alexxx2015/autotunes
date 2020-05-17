@@ -1,0 +1,26 @@
+{-INFO-}
+<h2>{-ATXT_49-}: {-BRAND_NAME_VAL-}</h2>
+<form action="{-ADMIN_MOD_PATH-}/system/carbrandmodeledit" method="POST">
+	<input type="submit" name="carBrandChange" value="{-ATXT_65-}"/>
+	{-CAR_MODEL_NAME_VAL-}
+</form>
+<br/>
+<fieldset class="brandBox">
+	<legend><strong>{-ATXT_66-}</strong></legend>
+	<form action="{-ADMIN_MOD_PATH-}/system/carbrandmodeledit/mid/{-MODEL_ID_VAL-}" method="POST" id="brandForm">	
+		<table>
+		<tr>
+			<th>{-ATXT_61-}</th>
+			<th>{-ATXT_62-}</th>
+		</tr>
+		<tr>
+			<td><input type="text" name="brandModelName" value="{-CAR_BRAND_MODEL_VAL-}"/></td>
+			<td>
+				{-CAR_BRAND_MODEL-}
+			</td>
+		</tr>
+		</table>		
+		<input type="submit" name="modelEdit" value="{-TXT_156-}"/>
+		{-DEL_CAR_ADS_VAL-}
+	</form>
+</fieldset>

@@ -1,0 +1,26 @@
+@CHARSET "ISO-8859-1";
+@import 'insert.css';	
+@import 'photo_gallery.css';
+
+.box div input[name = "carPrice"]
+, .box div input[name = "carPower"]
+, .box div select[name = "carClr"]
+, .box div input[name = "carKM"]{
+	width: 49%;
+}
+
+.box div select[name = "carPriceType"]
+, .box div select[name = "carPowerType"]
+, .box div select[name = "carKMType"]{
+	width: 40%;
+}
+
+.box div select[name = "carClr"]{
+	width: 60%;
+}
+
+input, textarea, select, option{
+	padding: 0.15em;
+	vertical-align: middle;
+}
+

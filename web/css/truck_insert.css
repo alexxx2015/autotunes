@@ -1,0 +1,25 @@
+@CHARSET "ISO-8859-1";
+@import 'insert.css';
+@import 'photo_gallery.css';
+
+.box #truckPrice input
+, .box #truckPower input
+, .box #truckClr input
+, .box #truckKM input{
+	width: 50%;
+}
+.box #truckPrice select
+, .box #truckPower select
+, .box #truckKM select{
+	width: 40%;
+}
+
+.box #truckClr input{
+	width: auto;
+}
+
+.box #truckClr select{
+	width: 60%;
+}
+
+

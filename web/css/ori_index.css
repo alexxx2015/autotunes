@@ -1,0 +1,83 @@
+@CHARSET "ISO-8859-1";
+@import 'search.css';
+@import 'register.css';
+
+#qs{
+	position: relative;
+	top: auto;
+	left: auto;
+	width: 100%;
+	margin-left: 0;
+	margin-top: 0;
+	padding-top: 0;
+}
+
+#qs form{
+	padding: 0;
+	margin: 0;
+}
+
+.box{
+	float: left;
+	width: 48.5%;
+	padding: 0 0.5% 0 0.5%;
+	margin: 0 0.25% 0 0.25%;
+	position: relative;
+	margin-bottom: 2em;
+	border: 0;
+}
+
+.box .twoCol input,
+.box .twoCol select{
+	width: 48.5%;
+	margin: 0 0.5% 0 0.5%;
+	padding: 0;
+}
+
+.box .twoCol input{
+	width: 47.5%;
+}
+
+.box div ul,
+.box div select{
+	width: 98%;
+	padding: 0;
+	margin: 0;
+}
+
+.box h3 {
+	margin: 0 auto 0.5em auto;
+}
+#qs h1{
+	margin: 0 auto 0em auto;
+}
+.box form{
+	margin: 0;
+	padding: 1%;
+}
+
+.box input[name="search2"]{
+	width: auto;
+	padding: 0.5em;
+	margin-top: 0.5em;
+}
+
+.search_res .search_res_entry{
+	height: 4em;
+}
+
+.box .search_res{
+	height: 24em;
+	overflow: auto;
+}
+
+.lastAds{
+	margin-bottom: 2em;
+}
+
+.box div.boxBigHeight{
+	height: 40em;
+}
+div.boxMedHeight{
+	height: 22em;
+}

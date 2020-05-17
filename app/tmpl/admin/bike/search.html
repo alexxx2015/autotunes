@@ -1,0 +1,23 @@
+<ul class="subMenu">
+	<li><a href="{-ADMIN_MOD_PATH-}/bike/insert">{-TXT_99-}</a></li>
+	<li><a href="{-ADMIN_MOD_PATH-}/system/bikebrandmodel">{-ATXT_59-} {-ATXT_64-}</a></li>
+	<li><a href="{-ADMIN_MOD_PATH-}/bike/bikeextra">{-ATXT_81-}</a></li>
+	<li><a href="{-ADMIN_MOD_PATH-}/bike/bikecat">{-ATXT_98-}</a></li>
+</ul>
+
+<br class="nl" />
+
+{-INFO-}
+
+<fieldset class="qs">
+	<legend><strong>{-TXT_161-}</strong></legend>
+	<form action="{-ADMIN_MOD_PATH-}/bike/search" method="POST">
+		{-BIKE_QUICK_SEARCH_BOX-}
+		<input type="submit" name="search1" value="{-TXT_31-}"/>
+	</form>
+</fieldset>	
+
+<fieldset class="searchRes">
+	<legend><strong>{-ATXT_11-}</strong></legend>
+	{-BIKE_SEARCH_RES_VAL-}
+</fieldset>

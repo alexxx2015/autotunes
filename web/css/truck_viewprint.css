@@ -1,0 +1,40 @@
+@CHARSET "ISO-8859-1";
+
+body{
+	font-size: 10pt;
+}
+
+#main{
+	width: 23cm;
+	position: relative;
+	left: auto;
+	margin-left: 0;
+}
+
+#logo{	
+	margin-left: 0;
+	color: #FFFFFF;
+	top: 0;
+	left: 0;
+	float: none;
+	position: relative;
+}
+
+#header{	
+	left: 0%;
+	width: 100%;
+	background: transparent;
+	margin-bottom: 0;
+	margin-left: 0;
+	z-index: 10;
+	position: relative;
+}
+
+#content{
+	width: 100%;
+	position: relative;
+	margin: 0;
+	left: 0%;
+	z-index: 1;
+	clear: both;
+}

@@ -1,0 +1,403 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100812
+ * Desc:		This is the view of Truck insert confirmation section
+ *********************************************************************************/
+include_once('default/views/filters/FilterIsEmptyString.php');
+include_once('default/views/filters/FormatStr2Num.php');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$this -> truckCat = $this -> truckCat;
+$str2NumFilter = new FormatSt2Num();
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/truck.css" />
+								<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/truck_insert.css" />
+								<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/detail.css" />'
+				);
+	/*			
+$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/js_active.js"></script>');
+*/
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/truck/insert2.html');
+
+$fCheckSpace = new FilterIsEmptyString();
+
+//Set TRUCK_BRAND
+$tmpl -> setValue('TRUCK_BRAND', $this -> truck['truckBrandTxt']);
+
+//Set TRUCK_MODEL
+$this -> truckModel = '';
+if(isset($this -> truck['truckModelTxt']) && ($this -> truck['truckModelTxt'] != null)){
+	$this -> truckModel = $this -> truck['truckModelTxt'];
+}
+$tmpl -> setValue('TRUCK_MODEL', $this -> truckModel);
+
+//SET TRUCK_MODEL_VAR
+$truckModelVar = $lang['TXT_40'];
+if (isset($this -> truck['truckModelVar']) && ($this->truck['truckModelVar'] != null)){
+	$truckModelVar = $this -> truck['truckModelVar'];
+}
+$tmpl -> setValue('TRUCK_MODEL_VAR', $truckModelVar);
+
+//Set TRUCK_PRICE
+$truckPriceVal = '<table>';
+
+if(isset($this->truck['mwst']) && ($this->truck['mwst'] == '1') && isset($this->truck['mwstSatz']) && in_array($this->truck['mwstSatz'],$lang['V_MWST'])){
+	$truckPriceVal .= '<tr><td>'.$str2NumFilter -> filter(array('val' => $this->truck['truckPrice']*($this->truck['mwstSatz']/100+1),
+												'dec_place' => 0
+												)
+										). '{-TRUCK_PRICE_CURR-} ('.$lang['TXT_273'].')</td></tr>
+					<tr><td>'.$str2NumFilter -> filter(array('val' => $this->truck['truckPrice'],
+												'dec_place' => 0
+												)
+										).'{-TRUCK_PRICE_CURR-} ('.$lang['TXT_274'].')</td></tr>
+					<tr><td>'.$this->truck['mwstSatz'].'% '.$lang['TXT_270'].'</td></tr>';
+}
+elseif(isset($this->truck['mwst']) && ($this->truck['mwst'] == '1')){
+	$truckPriceVal .= '<tr><td>'.$str2NumFilter -> filter(array('val' => $this->truck['truckPrice'],
+												'dec_place' => 0
+												)
+										).'{-TRUCK_PRICE_CURR-}</td></tr>
+					<tr><td>'.$lang['TXT_270'].'</td></tr>';
+}else{
+	$truckPriceVal .= '<tr><td>'.$str2NumFilter -> filter(array('val' => $this->truck['truckPrice'],
+												'dec_place' => 0
+												)
+										).'{-TRUCK_PRICE_CURR-}</td></tr>
+					<tr><td>'.$lang['TXT_275'].'</td></tr>';
+}
+$truckPriceVal .= '</table>';
+$tmpl -> setValue('TRUCK_PRICE', $truckPriceVal);
+
+$truckPriceCurr = '';
+if (isset($lang['TXT_74'][$this->truck['truckPriceCurr']])){
+	$truckPriceCurr = $lang['TXT_74'][$this->truck['truckPriceCurr']];
+}
+$tmpl -> setValue('TRUCK_PRICE_CURR', $truckPriceCurr);
+
+
+$truckPriceType = '';
+if (isset($this->truck['truckPriceType']) && isset($lang['TXT_70'][$this->truck['truckPriceType']])){
+	$truckPriceType = ', '.$lang['TXT_70'][$this->truck['truckPriceType']];
+}
+$tmpl -> setValue('TRUCK_PRICE_TYPE', $truckPriceType);
+
+//Set TRUCK_KM
+$tmpl -> setValue('TRUCK_KM', $str2NumFilter -> filter(array('val' => $this -> truck['truckKM'],
+												'dec_place' => 0
+												)
+										));
+$truckKMType = '';
+if (isset($this -> truck['truckKMType']) && isset($lang['TXT_75'][$this -> truck['truckKMType']])){
+	$truckKMType = $lang['TXT_75'][$this -> truck['truckKMType']];
+}
+$tmpl -> setValue('TRUCK_KM_TYPE', $truckKMType);										
+
+//Set TRUCK_POWER
+$truckPower = '';
+if (isset($this -> truck['truckPowerType']) && isset($lang['TXT_72'][$this -> truck['truckPowerType']])){
+	if ($this -> truck['truckPowerType'] == 0){
+		$truckPower = $str2NumFilter -> filter(array('val' => $this -> truck['truckPower'],
+												'dec_place' => 0
+												)
+										).' '.$lang['TXT_72'][0]
+					.' ('.$str2NumFilter -> filter(array('val' => ($this -> truck['truckPower']*90/66),
+												'dec_place' => 0
+												)
+										).' '.$lang['TXT_72'][1].')';
+	}
+	elseif ($this -> truck['truckPowerType'] == 1){
+		$truckPower = ($this -> truck['truckPower']*66/90).' '.$lang['TXT_72'][0]
+					.' ('.$this -> truck['truckPower'].' '.$lang['TXT_72'][1].')';
+	}
+}
+$tmpl -> setValue('TRUCK_POWER', $truckPower);
+
+//Set TRUCK_EZ
+$tmpl -> setValue('TRUCK_EZ', $this -> truck['truckEZM'].'/'.$this -> truck['truckEZY']);
+
+//HSN
+$this -> truckHSN = $lang['TXT_40'];
+if (isset($this -> truck['truckHSN']) && ($this -> truck['truckHSN'] != false)){
+	$this -> truckHSN = $this -> truck['truckHSN'];
+}
+$tmpl -> setValue('TRUCK_HSN', $this -> truckHSN);
+
+//TSN
+$this -> truckTSN = $lang['TXT_40'];
+if (isset($this -> truck['truckTSN']) && ($this -> truck['truckTSN'] != false)){
+	$this -> truckTSN = $this -> truck['truckTSN'];
+}
+$tmpl -> setValue('TRUCK_TSN', $this -> truckTSN);
+
+//FIN
+$this -> truckFIN = $lang['TXT_40'];
+if (isset($this -> truck['truckFIN']) && ($this -> truck['truckFIN'] != false)){
+	$this -> truckFIN = $this -> truck['truckFIN'];
+}
+$tmpl -> setValue('TRUCK_FIN', $this -> truckFIN);
+
+//Set TRUCK_TUV
+$this -> truckTUV = $lang['TXT_40'];
+if (isset($this -> truck['truckTUVY']) && ($this -> truck['truckTUVY'] != false) && ($this -> truck['truckTUVY'] != -1)){
+	$this -> truckTUV = $this -> truck['truckTUVY'];
+	if (isset($this -> truck['truckTUVM']) && ($this -> truck['truckTUVM'] != false) && ($this -> truck['truckTUVM'] != -1)){
+		$this -> truckTUV = $this -> truck['truckTUVM'].'/'.$this -> truckTUV;
+	}
+}
+$tmpl -> setValue('TRUCK_TUV', $this -> truckTUV);
+
+//Set TRUCK_AU
+$this -> truckAU = $lang['TXT_40'];
+if (isset($this -> truck['truckAUY']) && ($this -> truck['truckAUY'] != false) && ($this -> truck['truckAUY'] != -1)){
+	$this -> truckAU = $this -> truck['truckAUY'];
+	if (isset($this -> truck['truckAUM']) && ($this -> truck['truckAUM'] != false) && ($this -> truck['truckAUM'] != -1)){
+		$this -> truckAU = $this -> truck['truckAUM'].'/'.$this -> truckAU;
+	}
+}
+$tmpl -> setValue('TRUCK_AU', $this -> truckAU);
+
+//Set TRUCK_SHIFT
+$this -> truckShift = $lang['TXT_40'];
+if (isset($this -> truck['truckShift']) && isset($lang['V_SHIFT'][$this -> truck['truckShift']]) ){
+	$this -> truckShift = $lang['V_SHIFT'][$this -> truck['truckShift']];
+}
+$tmpl -> setValue('TRUCK_SHIFT', $this -> truckShift);
+
+//Set TRUCK_WEIGHT
+$this -> truckWeight = $lang['TXT_40'];
+if (isset($this -> truck['truckWeight']) && ($this -> truck['truckWeight'] != false)){
+	$this -> truckWeight = $this -> truck['truckWeight'];
+}
+$tmpl -> setValue('TRUCK_WEIGHT', $this -> truckWeight);
+
+//Set TRUCK_CYL
+$this -> truckCyl = $lang['TXT_40'];
+if (isset($this -> truck['truckCyl']) && ($this -> truck['truckCyl'] != false)){
+	$this -> truckCyl = $this -> truck['truckCyl'];
+}
+$tmpl -> setValue('TRUCK_CYL', $this -> truckCyl);
+
+//Set TRUCK_CUB
+$this -> truckCub = $lang['TXT_40'];
+if (isset($this -> truck['truckCub']) && ($this -> truck['truckCub'] != false)){
+	$this -> truckCub = $this -> truck['truckCub'];
+}
+$tmpl -> setValue('TRUCK_CUB', $this -> truckCub);
+
+//Set TRUCK_USE_IN
+$this -> truckUseIn = $lang['TXT_40'];
+if (isset($this -> truck['truckUseIn']) && ($fCheckSpace -> filter($this -> truck['truckUseIn']) == false)){
+	$this -> truckUseIn = $this -> truck['truckUseIn'].' '.$lang['TXT_64'];
+}
+$tmpl -> setValue('TRUCK_USE_IN', $this -> truckUseIn);
+
+//Set TRUCK_USE_OUT
+$this -> truckUseOut = $lang['TXT_40'];
+if (isset($this -> truck['truckUseOut']) && ($fCheckSpace -> filter($this -> truck['truckUseOut']) == false)){
+	$this -> truckUseOut = $this -> truck['truckUseOut'].' '.$lang['TXT_64'];
+}
+$tmpl -> setValue('TRUCK_USE_OUT', $this -> truckUseOut);
+
+//Set TRUCK_CO2
+$this -> truckCO2 = $lang['TXT_40'];
+if (isset($this -> truck['truckCO2']) && ($fCheckSpace -> filter($this -> truck['truckCO2']) == false)){
+	$this -> truckCO2 = $this -> truck['truckCO2'].' '.$lang['TXT_66'];
+}
+$tmpl -> setValue('TRUCK_CO2', $this -> truckCO2);
+
+//Set TRUCK_STATE
+$this -> truckState = $lang['TXT_40'];
+if (isset($this -> truck['truckState']) && isset($lang['V_STATE'][$this -> truck['truckState']]) ){
+	$this -> truckState = $lang['V_STATE'][$this -> truck['truckState']];
+}
+$tmpl -> setValue('TRUCK_STATE', $this -> truckState);
+
+//Set TRUCK_CAT
+$this -> truckCatVal = $lang['TXT_40'];	
+if (isset($this -> truck['truckCat']) && is_array($this -> truckCat)){
+	foreach($this -> truckCat as $key => $kVal){
+		if (($kVal['truckCatID'] == $this -> truck['truckCat']) && isset($lang['V_CAT'][$kVal['vcatID']])){
+			$this -> truckCatVal = $lang['V_CAT'][$kVal['vcatID']];
+			break;
+		}
+	}
+}
+$tmpl -> setValue('TRUCK_CAT', $this -> truckCatVal);
+/*
+$this -> truckCat = '';
+if (isset($this -> truck['truckCat']) && isset($lang['TRUCK_CAT'][$this -> truck['truckCat']]) ){
+	$this -> truckCat .= $lang['TRUCK_CAT'][$this -> truck['truckCat']];
+}
+$tmpl -> setValue('TRUCK_CAT', $this -> truckCat);
+*/
+//Set TRUCK_FUEL
+$this -> truckFuel = $lang['TXT_40'];
+if (isset($this -> truck['truckFuel']) && isset($lang['V_FUEL'][$this -> truck['truckFuel']]) ){
+	$this -> truckFuel = $lang['V_FUEL'][$this -> truck['truckFuel']];
+}
+$tmpl -> setValue('TRUCK_FUEL', $this -> truckFuel);
+
+//Set TRUCK_CLR
+$this -> truckClr = $lang['TXT_40'];
+if (isset($this -> truck['truckClr']) && isset($lang['V_CLR'][$this -> truck['truckClr']]) ){
+	$this -> truckClr = $lang['V_CLR'][$this -> truck['truckClr']];
+	if (isset($this -> truck['truckClrMet'])){
+		$this -> truckClr .= ' '.$lang['TXT_20'];
+	}
+}
+$tmpl -> setValue('TRUCK_CLR', $this -> truckClr);
+
+//Set TRUCK_EMISSION_NORM
+$this -> truckEmissionNorm = $lang['TXT_40'];
+if (isset($this -> truck['truckEmissionNorm']) && isset($lang['V_EMISSION_NORM'][$this -> truck['truckEmissionNorm']]) ){
+	$this -> truckEmissionNorm = $lang['V_EMISSION_NORM'][$this -> truck['truckEmissionNorm']];
+}
+$tmpl -> setValue('TRUCK_EMISSION_NORM', $this -> truckEmissionNorm);
+
+//Set TRUCK_ECOLOGIC_TAG
+$this -> truckEcologicTag = $lang['TXT_40'];
+if (isset($this -> truck['truckEcologicTag']) && isset($lang['V_ECOLOGIC_TAG'][$this -> truck['truckEcologicTag']]) ){
+	$this -> truckEcologicTag = $lang['V_ECOLOGIC_TAG'][$this -> truck['truckEcologicTag']];
+}
+$tmpl -> setValue('TRUCK_ECOLOGIC_TAG', $this -> truckEcologicTag);
+
+//Set TRUCK_KLIMA
+$this -> truckKlima = $lang['TXT_40'];
+if (isset($this -> truck['truckKlima']) && isset($lang['V_KLIMA'][$this -> truck['truckKlima']]) ){
+	$this -> truckKlima = $lang['V_KLIMA'][$this -> truck['truckKlima']];
+}
+$tmpl -> setValue('TRUCK_KLIMA', $this -> truckKlima);
+
+//Set TRUCK_ECOLOGIC_TAG
+$this -> truckDesc = $lang['TXT_40'];
+if (isset($this -> truck['truckDesc']) && ($fCheckSpace -> filter($this -> truck['truckDesc']) == false)){
+	$this -> truckDesc = $this -> truck['truckDesc'];
+}
+$tmpl -> setValue('TRUCK_DESC', $this -> truckDesc);
+
+//Set TRUCK_EXT
+$this -> truckExt = '';
+if (isset($this -> truck['truckExtDB']) && is_array($this -> truck['truckExtDB'])){
+	foreach ($this -> truck['truckExtDB'] as $this -> truckExtDB){
+		$this -> truckExt .= $lang['V_EXTRA'][$this -> truckExtDB['vextID']].', ';
+	}
+}
+if ($this -> truckExt == ''){
+	$this -> truckExt = $lang['TXT_40'];
+}
+$tmpl -> setValue('TRUCK_EXTRA', $this -> truckExt);
+
+//Set USER_ADS
+$userAds = '';
+if (isset($this -> truck['userAds']) ){
+	if($this -> truck['userAds'] == 1){
+		$userAds = $lang['TXT_33'][1];
+	}
+	else if($this -> truck['userAds'] == 2){
+		$userAds = $lang['TXT_33'][2];
+	}
+	else if($this -> truck['userAds'] == 3){
+		$userAds = $lang['TXT_33'][3];
+	}
+}
+$tmpl -> setValue('USER_ADS', $userAds);
+
+//Set USER_FIRM
+$userFirm = $lang['TXT_40'];
+if (isset($this -> truck['userFirm']) && ($fCheckSpace -> filter($this -> truck['userFirm']) == false)){
+	$userFirm = $this -> truck['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM', $userFirm);
+
+//Set USER_VNAME, USER_NNAME
+$tmpl -> setValue('USER_NAME', $this->truck['userNName'].' '.$this->truck['userVName']);
+//$tmpl -> setValue('USER_NNAME', $this -> truck['userNName']);
+//$tmpl -> setValue('USER_VNAME', $this -> truck['userVName']);
+
+//Set USER_EMAIL
+$tmpl -> setValue('USER_EMAIL', $this -> truck['userEMail']);
+
+//Set USER_ADRESS
+$userAdress = '';
+if (isset($this -> truck['userAdress']) || isset($this -> truck['userPLZ']) || isset($this -> truck['userOrt'])){
+	$userAddress = '';
+	if (isset($this -> truck['userAdress']) && ($fCheckSpace -> filter($this -> truck['userAdress']) == false)){
+		$userAddress .= '<li>'.$this -> truck['userAdress'].'</li>';
+	}
+	if (isset($this -> truck['userPLZ']) && isset($this -> truck['userOrt'])
+		 && ($fCheckSpace -> filter($this -> truck['userPLZ']) == false)
+		  && ($fCheckSpace -> filter($this -> truck['userOrt']) == false)){
+		$userAddress .= '<li>'.$this -> truck['userPLZ'].' '.$this -> truck['userOrt'].'</li>';
+	}
+	else if (isset($this -> truck['userPLZ']) && ($fCheckSpace -> filter($this -> truck['userPLZ']) == false)){
+		$userAddress .= '<li>'.$this -> truck['userPLZ'].'</li>';
+	}
+	else if (isset($this -> truck['userOrt']) && ($fCheckSpace -> filter($this -> truck['userOrt']) == false)){
+		$userAddress .= '<li>'.$this -> truck['userOrt'].'</li>';
+	}
+}
+if ($userAddress != ''){
+	//$userAddress = '	<li><span>'.$lang['TXT_54'].'</span><ul>'.$userAddress.'</ul></li>';
+	$userAddress = '	<li><ul>'.$userAddress.'</ul></li>';
+}
+else{
+	$userAddress = $lang['TXT_40'];
+}
+$tmpl -> setValue('USER_ADDRESS', $userAddress);
+
+
+//Set USER_TEL1
+$userTel = $lang['TXT_40'];
+if (isset($this -> truck['userTel1']) && ($fCheckSpace -> filter($this -> truck['userTel1']) == false)){
+	//$userTel .= '<li><span>'.$lang['TXT_80'].'</span>'.$this -> truck['userTel1'].'</li>';
+	$userTel = $this -> truck['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1', $userTel);
+
+//Set USER_TEL2
+$userTel = $lang['TXT_40'];
+if (isset($this -> truck['userTel2']) && ($fCheckSpace -> filter($this -> truck['userTel2']) == false)){
+	//$userTel .= '<li><span>'.$lang['TXT_80'].'</span>'.$this -> truck['userTel2'].'</li>';
+	$userTel = $this -> truck['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2', $userTel);
+
+//truckLoc
+$truckLoc = '';
+if (isset($this -> truck['truckLocPLZ']) && ($this -> truck['truckLocPLZ'] != null)){
+	if ($truckLoc != ''){
+		$truckLoc .= ' ';
+	}
+	$truckLoc .= $this -> truck['truckLocPLZ'];
+}
+if (isset($this -> truck['truckLocOrt']) && ($this -> truck['truckLocOrt'] != null)){
+	if ($truckLoc != ''){
+		$truckLoc .= ' ';
+	}
+	$truckLoc .= ' '.$this -> truck['truckLocOrt'];
+}
+if (isset($this -> truck['truckLocCountry']) && isset($lang['COUNTRY'][$this -> truck['truckLocCountry']])){
+	if ($truckLoc != ''){
+		$truckLoc .= ', ';
+	}
+	$truckLoc .= ' '.$lang['COUNTRY'][$this -> truck['truckLocCountry']];
+}
+$tmpl -> setValue('TRUCK_LOC', $truckLoc);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

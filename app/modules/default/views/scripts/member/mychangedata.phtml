@@ -1,0 +1,107 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+
+$tmpl -> readTmplFile('CONTENT', 'default/member/mychangedata.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/mychangedata.css" />');
+
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES')
+								.'	
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/ci.js"></script>'
+								);
+//USER_FIRM_VAL
+$userFirmVal = '';
+if (isset($user['userFirm'])){
+	$userFirmVal = $user['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirmVal);
+
+//USER_NNAME_VAL
+$userNNameVal = '';
+if (isset($user['userNName'])){
+	$userNNameVal = $user['userNName'];
+}
+$tmpl -> setValue('USER_NNAME_VAL', $userNNameVal);
+
+//USER_VNAME_VAL
+$userVNameVal = '';
+if (isset($user['userVName'])){
+	$userVNameVal = $user['userVName'];
+}
+$tmpl -> setValue('USER_VNAME_VAL', $userVNameVal);
+
+//USER_EMAIL_VAL
+$userEMailVal = '';
+if (isset($user['userEMail'])){
+	$userEMailVal = $user['userEMail'];
+}
+$tmpl -> setValue('USER_EMAIL_VAL', $userEMailVal);
+
+//USER_TEL1_VAL
+$userTel1 = '';
+if (isset($user['userTel1'])){
+	$userTel1 = $user['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1_VAL', $userTel1);
+
+//USER_TEL2_VAL
+$userTel2 = '';
+if (isset($user['userTel2'])){
+	$userTel2 = $user['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2_VAL', $userTel2);
+
+//USER_ADRESS_VAL
+$userAdress = '';
+if (isset($user['userAdress'])){
+	$userAdress = $user['userAdress'];
+}
+$tmpl -> setValue('USER_ADRESS_VAL', $userAdress);
+
+//USER_PLZ_VAL
+$userPLZ = '';
+if (isset($user['userPLZ'])){
+	$userPLZ = $user['userPLZ'];
+}
+$tmpl -> setValue('USER_PLZ_VAL', $userPLZ);
+
+//USER_ORT_VAL
+$userOrt = '';
+if (isset($user['userOrt'])){
+	$userOrt = $user['userOrt'];
+}
+$tmpl -> setValue('USER_ORT_VAL', $userOrt);
+
+//USER_NEWS_VAL
+$userNewsVal = '<input type="checkbox" name="userNews" ';
+if (isset($user['userNews']) && ($user['userNews'] == 1)){
+	$userNewsVal .= 'checked';
+}
+$userNewsVal .= '/>';
+$tmpl -> setValue('USER_NEWS_VAL', $userNewsVal);
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+
+
+?>

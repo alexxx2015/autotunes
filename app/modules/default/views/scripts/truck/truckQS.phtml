@@ -1,0 +1,239 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100819
+ * Desc:		This is the view of INDEX
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+
+if (!isset($tmpl)){	
+	$tmpl = $this -> tmpl;
+}
+$lang = $this -> lang;
+
+$searchParam = $this -> searchParam;
+$quickSearch = $tmpl -> readTmplFile('QUICK_SEARCH', 'default/truck/truckQS.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/q_search.css" />'
+				);
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'	
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/ts.js"></script>');
+								//<script type="text/javascript" src="'.System_Properties::JS_PATH.'/quick_search.js"></script>');
+				
+				
+//Set TRUCK_BRAND
+$truckBrands = '';
+if(isset($this -> truckBrand) && is_array($this -> truckBrand)){
+	$i2 = 0;
+	$truckBrands .= '	<ul class="brand">';
+	foreach ($this -> truckBrand as $truckBrand){
+		$truckModel = '';
+		$truckBrands .= '<li '.(($i2%2) == 0 ? 'class="grey"' : '').'><input type="checkbox" name="truckBrand[]" value="'.$truckBrand['truckBrandID'].'" class="truckBrand" ';
+		if (isset($searchParam['truckBrand']) && is_array($searchParam['truckBrand']) && in_array($truckBrand['truckBrandID'], $searchParam['truckBrand'])){
+			$truckBrands .= 'checked';
+			
+			//process truck model
+			if (isset($this -> truckModel) && is_array($this -> truckModel)){
+				$truckModel = '<ul class="model">';
+				foreach ($this -> truckModel as $cm){
+					if ($cm['truckBrandID'] == $truckBrand['truckBrandID']){
+						$truckModel .= '<li class="l'.$cm['level'].'"><input type="checkbox" name="truckModel[]" value="'.$cm['truckModelID'].'" ';
+						if (isset($searchParam['truckModel']) && in_array($cm['truckModelID'], $searchParam['truckModel'])){
+							$truckModel .= 'checked';
+						}						
+						$truckModel .= '/>'.$cm['truckModelName'].'</li>';
+					}
+				}
+				$truckModel .= '</ul>';
+			}
+		}
+		$truckBrands .= '>'.$truckBrand['brandName'].$truckModel.'</li>';
+		$i2++;
+	}
+	$truckBrands .= '</ul>';
+}
+$tmpl -> setValue('TRUCK_BRAND_N_MODEL', $truckBrands);
+				
+
+//Set TRUCK_EZ_M and CAT_EZ_Y
+$truckEZF = '	<select name="truckEZF">
+				<option value="-1" selected>{-TXT_8-}</option>';
+for($i = date('Y'); $i > 1900; $i--){
+	$truckEZF .= '<option value="'.$i.'" ';
+	if (isset($searchParam['truckEZF']) && ($searchParam['truckEZF'] == $i)){
+		$truckEZF .= 'selected';
+	}
+	$truckEZF .= '>'.$i.'</option>';
+  }            
+$truckEZF .= '</select>';
+$tmpl -> setValue('TRUCK_EZF', $truckEZF);
+
+$truckEZT = '<select name="truckEZT">
+				<option value="-1">{-TXT_9-}</option>';
+for($i = date('Y'); $i > 1900; $i--){
+	$truckEZT .= '<option value="'.$i.'" ';
+	if (isset($searchParam['truckEZT']) && ($searchParam['truckEZT'] == $i)){
+		$truckEZT .= 'selected';
+	}	
+	$truckEZT .= '>'.$i.'</option>';
+}            
+$truckEZT .= '</select>';
+$tmpl -> setValue('TRUCK_EZT', $truckEZT);
+
+
+//TRUCK_POWER_F
+$filterPSPower = new FilterPower(array('kind' => FilterPower::PS));
+$truckPowerF = '<select name="truckPowerF">
+				<option value="-1">'.$lang['TXT_8'].'</option>
+	  			<option value="0">'.$lang['TXT_11'].' '.$lang['TRUCK_POWER'][0].' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($lang['TRUCK_POWER'][0]), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>';
+foreach ($lang['TRUCK_POWER'] as $truckPower){
+	$truckPowerF .= '<option value="'.$truckPower.'" ';
+	if (isset($searchParam['truckPowerF']) && ($searchParam['truckPowerF'] == $truckPower)){
+		$truckPowerF .= 'selected';
+	}	
+	$truckPowerF .= '>'.$truckPower.' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($truckPower), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>';
+}
+$truckPowerF .= '</select>';
+$tmpl -> setValue('TRUCK_POWER_F', $truckPowerF);
+//TRUCK_POWER_T
+$truckPowerT = '<select name="truckPowerT">
+				<option value="-1">'.$lang['TXT_9'].'</option>';
+foreach ($lang['TRUCK_POWER'] as $truckPower){
+	$truckPowerT .= '<option value="'.$truckPower.'" ';
+	if (isset($searchParam['truckPowerT']) && ($searchParam['truckPowerT'] == $truckPower)){
+		$truckPowerT .= 'selected';
+	}	
+	$truckPowerT .= '>'.$truckPower.' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($truckPower), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>';
+}
+$truckPowerT .= '<option value="0">'.$lang['TXT_12'].' '.$truckPower.' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($truckPower), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>
+				</select>';
+$tmpl -> setValue('TRUCK_POWER_T', $truckPowerT);
+
+
+//TRUCK_PRICE_F
+$truckPriceF = '<select name="truckPriceF">
+				<option value="-1" '.(isset($searchParam['truckPriceF']) && ($searchParam['truckPriceF'] == -1)?'selected':'').'>'.$lang['TXT_8'].'</option>
+		  		<option value="0" '.(isset($searchParam['truckPriceF']) && ($searchParam['truckPriceF'] == 0)?'selected':'').'>'.$lang['TXT_11'].' '.number_format($lang['TRUCK_PRICE'][0], 0, ',', '.').'</option>';
+foreach ($lang['TRUCK_PRICE'] as $truckPrice){
+	$truckPriceF .= '<option value="'.$truckPrice.'" ';
+	if (isset($searchParam['truckPriceF']) && ($searchParam['truckPriceF'] == $truckPrice)){
+		$truckPriceF .= 'selected';
+	}	
+	$truckPriceF .= '>'.number_format($truckPrice, 0, ',', '.').'</option>';
+}
+$truckPriceF .= '</select>';
+$tmpl -> setValue('TRUCK_PRICE_F', $truckPriceF);
+//TRUCK_PRICE_T
+$truckPriceT = '<select name="truckPriceT">
+				<option value="-1" '.(isset($searchParam['truckPriceT']) && ($searchParam['truckPriceT'] == -1)?'selected':'').'>'.$lang['TXT_9'].'</option>';
+foreach ($lang['TRUCK_PRICE'] as $truckPrice){
+	$truckPriceT .= '<option value="'.$truckPrice.'" ';
+	if (isset($searchParam['truckPriceT']) && ($searchParam['truckPriceT'] == $truckPrice)){
+		$truckPriceT .= 'selected';
+	}	
+	$truckPriceT .= '>'.number_format($truckPrice, 0, ',', '.').'</option>';
+}
+$truckPriceT .= '	<option value="0" '.(isset($searchParam['truckPriceT']) && ($searchParam['truckPriceT'] == 0)?'selected':'').'>'.$lang['TXT_12'].' '.number_format($truckPrice, 0, ',', '.').'</option>
+		  		</select>';
+$tmpl -> setValue('TRUCK_PRICE_T', $truckPriceT);
+$tmpl -> setValue('TRUCK_PRICE_TYPE', $lang['TXT_128'].' '.$lang['TXT_74'][0]);
+
+
+//TRUCK_KM_F
+$truckKMF = '<select name="truckKMF">
+			<option value="-1">'.$lang['TXT_8'].'</option>			
+		  	<option value="0">'.$lang['TXT_11'].' '.number_format($lang['TRUCK_KM'][0], 0, ',', '.').'</option>';
+foreach($lang['TRUCK_KM'] as $truckKM){
+	$truckKMF .= '<option value="'.$truckKM.'" ';
+	if (isset($searchParam['truckKMF']) && ($searchParam['truckKMF'] == $truckKM)){
+		$truckKMF .= 'selected';
+	}	
+	$truckKMF .= '>'.number_format($truckKM, 0, ',', '.').'</option>';
+}
+$truckKMF .= '</select>';
+$tmpl -> setValue('TRUCK_KM_F', $truckKMF);
+//TRUCK_KM_T
+$truckKMT = '<select name="truckKMT">
+			<option value="-1">'.$lang['TXT_9'].'</option>';
+foreach($lang['TRUCK_KM'] as $truckKM){
+	$truckKMT .= '<option value="'.$truckKM.'" ';
+	if (isset($searchParam['truckKMT']) && ($searchParam['truckKMT'] == $truckKM)){
+		$truckKMT .= 'selected';
+	}	
+	$truckKMT .= '>'.number_format($truckKM, 0, ',', '.').'</option>';
+}
+$truckKMT .= '<option value="0">'.$lang['TXT_12'].' '.number_format($truckKM, 0, ',', '.').'</option>
+			</select>';
+$tmpl -> setValue('TRUCK_KM_T', $truckKMT);
+
+//Set USER_ADS_VAL
+$userAdsVal = '	<select name="userAds" id="userAds">					
+				  <option value="-1" '.(isset($searchParam['userAds']) && ($searchParam['userAds'] == -1)? 'selected':'').'>'.$lang['TXT_16'].'</option>
+				  <option value="1" '.(isset($searchParam['userAds']) && ($searchParam['userAds'] == 1)? 'selected':'').'>'.$lang['TXT_33'][1].'</option>
+				  <option value="2" '.(isset($searchParam['userAds']) && ($searchParam['userAds'] == 2)? 'selected':'').'>'.$lang['TXT_33'][2].'</option>
+				</select> ';
+$tmpl -> setValue('USER_ADS_VAL', $userAdsVal);
+
+
+//SET TRUCK_SORT
+
+$truckSort = '
+		<select name="truckSort">
+		  <option value="-1" '.(isset($searchParam['truckSort']) && ($searchParam['truckSort'] == '-1')? 'selected':'').'>{-TXT_16-}</option>
+		  <option value="0" '.(isset($searchParam['truckSort']) && ($searchParam['truckSort'] == '0')? 'selected':'').'>{-TXT_13-}</option>
+		  <option value="1" '.(isset($searchParam['truckSort']) && ($searchParam['truckSort'] == '1')? 'selected':'').'>{-TXT_10-}</option>
+		  <option value="2" '.(isset($searchParam['truckSort']) && ($searchParam['truckSort'] == '2')? 'selected':'').'>{-TXT_14-}</option>
+		  <option value="3" '.(isset($searchParam['truckSort']) && ($searchParam['truckSort'] == '3')? 'selected':'').'>{-TXT_26-}</option>
+		</select><select name="truckSortOpt" '.(!isset($searchParam['truckSortOpt'])? 'disabled':'').'>
+		  <option value="0" '.(isset($searchParam['truckSortOpt']) && ($searchParam['truckSortOpt'] == '0')? 'selected':'').'>{-TXT_35-}</option>
+		  <option value="1" '.(isset($searchParam['truckSortOpt']) && ($searchParam['truckSortOpt'] == '1')? 'selected':'').'>{-TXT_36-}</option>
+		</select>';
+$tmpl -> setValue('TRUCK_SORT_VAL', $truckSort);
+
+//SET TRUCK_PLZ
+$truckPLZ = '<input type="text" name="truckPLZ" value="'.(isset($searchParam['truckPLZ'])? $searchParam['truckPLZ'] :'').'"/>
+			<select name="truckCC" '.(!isset($searchParam['truckPLZ']) || (empty($searchParam['truckPLZ']))? 'disabled':'').'>
+			  <option value="-1" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '-1')? 'selected':'').'>{-TXT_28-}</option>
+			  <option value="10" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '10')? 'selected':'').'>10 {-TXT_75_0-}</option>
+			  <option value="20" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '20')? 'selected':'').'>20 {-TXT_75_0-}</option>
+			  <option value="30" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '30')? 'selected':'').'>30 {-TXT_75_0-}</option>
+			  <option value="40" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '40')? 'selected':'').'>40 {-TXT_75_0-}</option>
+			  <option value="50" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '50')? 'selected':'').'>50 {-TXT_75_0-}</option>
+			  <option value="100" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '100')? 'selected':'').'>100 {-TXT_75_0-}</option>
+			  <option value="150" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '150')? 'selected':'').'>150 {-TXT_75_0-}</option>
+			  <option value="200" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '200')? 'selected':'').'>200 {-TXT_75_0-}</option>
+			  <option value="250" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '250')? 'selected':'').'>250 {-TXT_75_0-}</option>
+			  <option value="300" '.(isset($searchParam['truckCC']) && ($searchParam['truckCC'] == '300')? 'selected':'').'>300 {-TXT_75_0-}</option>
+			</select>
+		';
+$tmpl -> setValue('TRUCK_PLZ_VAL', $truckPLZ);
+/*
+//Set TRUCK_SHIFT
+$truckShift = '<select name="truckShift">
+              	<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_SHIFT'] as $key => $val) {
+	$truckShift .= '<option value="'.$key.'" ';
+	if (isset($searchParam['truckShift']) && ($searchParam['truckShift'] == $key)){
+		$truckShift .= 'selected';
+	}	
+	$truckShift .= '>'.$val.'</option>';
+}
+$truckShift .= '</select>';
+$tmpl -> setValue('TRUCK_SHIFT_VAL', $truckShift);
+
+//Set TRUCK_DOOR
+$truckDoor = '<select name="truckDoor">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['TRUCK_DOOR'] as $key => $val){
+	$truckDoor .= '<option value="'.$key.'" ';
+	if (isset($searchParam['truckDoor']) && ($searchParam['truckDoor'] == $key)){
+		$truckDoor .= 'selected';
+	}	
+	$truckDoor .= '>'.$val.' {-TXT_24-}</option>';
+}
+$truckDoor .= '</select>';
+$tmpl -> setValue('TRUCK_DOOR_VAL', $truckDoor);
+*/
+
+?>

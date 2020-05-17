@@ -1,0 +1,79 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100916
+ * Desc:		Generate page counter for search results in the form of 
+ * 				1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+ *********************************************************************************/
+define("MAX_PAGES", "7");
+
+//zeigt unten in die Anzahl der Seiten eines Suchergebnisses + neue suche + suche ver�ndern
+function pageCounter($numOfAds, $link, $page, $adsPerPage){
+//1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+//echo $numOfAds.', '.$link.', '.$page.', '.$adsPerPage;
+  if($numOfAds > $adsPerPage){ 
+    $return = ' <div id="pageCounter">Page: ';  
+      
+    $numOfPages = floor($numOfAds/$adsPerPage);
+    $rest = $numOfAds%$adsPerPage;
+      
+    if($rest!=0){
+      $numOfPages++;
+    }
+    
+    ($page < 1)?($currentPage = 1):($currentPage = $page);  
+      
+    $inFront = '';
+    $back = '';  
+    if($numOfPages > MAX_PAGES){
+      //aktuelle Seite unter 6
+      if(($currentPage < MAX_PAGES) && ($currentPage >= 1)){
+        $pageStart = 1;
+        $pageEnd = MAX_PAGES;
+        $back = '<a href="'.$link.$numOfPages.'">&gt;&gt;</a>...';
+      }
+      //aktuelle seite zwischen MAX_PAGES und (Ende-MAX_PAGES)
+      else if(($currentPage >= MAX_PAGES) && ($currentPage <= $numOfPages-MAX_PAGES)){
+        $pageStart = $currentPage-5;
+        //($pageStart < 1)?($pageStart = 1):($pageStart=$pageStart);
+        $pageEnd = $currentPage + 5;
+        //($pageEnd > $numOfPages)?($pageEnd = $numOfPages):($pageEnd=$pageEnd);
+        
+        $inFront = '...<a href="'.$link.'1">&lt;&lt;</a>';
+        $back = '<a href="'.$link.$numOfPages.'">&gt;&gt;</a>...';
+      }
+      //aktuelle seite im bereich von (Ende-MAX_PAGES)
+      else if(($currentPage > ($numOfPages - MAX_PAGES)) && ($currentPage <= $numOfPages)){
+        $pageStart = $numOfPages - MAX_PAGES+1;
+        $pageEnd = $numOfPages;
+        $inFront = '...<a href="'.$link.'1">&lt;&lt;</a>';          
+      }
+      else{
+      }
+    }    
+    else{
+      $pageStart = 1;
+      $pageEnd = $numOfPages; 
+    }
+      
+    $return .= $inFront.' ';
+    for($i = $pageStart; $i <= $pageEnd; $i++){
+      if($i==$currentPage)
+        $return .= '<a class="active">'.$i.'</a>';
+      else
+        $return .= '<a href="'.$link.$i.'">'.$i.'</a>';
+      
+      if($i != $pageEnd)          
+        $return .= ' | ';
+    }
+    //$return = substr($return,0,-4);
+    
+    $return .= ' '.$back.'  </div>';
+  }
+  else{
+    $return = '';
+  }
+    
+  return $return;
+} 
+?>

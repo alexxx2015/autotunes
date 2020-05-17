@@ -1,0 +1,69 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for bike maintenance
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/bike/bikeQuickSearch.phtml');
+include_once('default/views/helpers/func_pageCounter.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$searchParam = $this -> searchParam;
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/bike/search.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/bike.css" />');
+
+
+												
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["ADMIN_MOD_PATH"] = "'.System_Properties::ADMIN_MOD_PATH.'";'
+				);
+				
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/bs.js"></script>');	
+
+//process search results
+$bikeSearchResVal = '';
+if (isset($this -> bikeAds)
+	&& is_array($this -> bikeAds)
+	&& (count($this -> bikeAds) > 0) 
+	){	
+		//print_r($this -> bikeAds);
+	$bikeSearchResVal .= '<table>';	
+	foreach ($this -> bikeAds['bikeAds'] as $bike){
+		$bikeBrandNModel = $bike['bikeBrandName'];
+		if (isset($bike['bikeModelName'])){
+			$bikeBrandNModel .= ' '.$bike['bikeModelName'];
+		}
+		
+		$bikeSearchResVal .= '<tr>
+							<td><a href="{-ADMIN_MOD_PATH-}/bike/detail/id/'.$bike['bikeID'].'" title="'.$lang['TXT_122'].'">'.$bikeBrandNModel.'</a></td>
+							<td><a href="/bike/'.$bike['bikeID'].'" target="blank">{-TXT_125-}</a></td>
+							</tr>';
+	}			
+	$bikeSearchResVal .= '</table>';
+	$bikeSearchResVal .= pageCounter($this -> bikeAds['totalAds'], '{-ADMIN_MOD_PATH-}/bike/search/page/', $this -> bikeAds['actPage'], $this -> bikeAds['numAds']);
+}else{
+	$searchResVal = $lang['AERR_10'];
+}
+$tmpl -> setValue('BIKE_SEARCH_RES_VAL', $bikeSearchResVal);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

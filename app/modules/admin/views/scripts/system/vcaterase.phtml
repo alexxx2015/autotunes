@@ -1,0 +1,50 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$carCat = $this -> carCat;
+$bikeCat = $this -> bikeCat;
+$truckCat = $this -> truckCat;
+
+$vcat = $this -> vcat;		
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/vcaterase.html');
+
+$tmpl -> setValue('VCAT_ID', $vcat['vcatID']);
+
+//set confirmation tcat
+$tmpl -> setValue('ERASE_VCAT_CONFIRM_TCAT', $lang['ATXT_91']);
+if (isset($lang['V_CAT'][$vcat['vcatID']])){
+	$tmpl -> setValue('VCAT_NAME', $lang['V_CAT'][$vcat['vcatID']]);
+}
+
+//set number of car vehicle cat
+$numCarCat = 0;
+if (($carCat != false) && is_array($numCarCat)){
+	$numCarCat = count($carCat);
+}
+$tmpl -> setValue('NUM_CAR_CAT', $numCarCat);
+
+//set number of bike vehicle cat
+$numBikeCat = 0;
+if (($bikeCat != false) && is_array($numBikeCat)){
+	$numBikeCat = count($bikeCat);
+}
+$tmpl -> setValue('NUM_BIKE_CAT', $numBikeCat);
+
+
+//set number of truck vehicle cat
+$numTruckCat = 0;
+if (($truckCat != false) && is_array($numTruckCat)){
+	$numTruckCat = count($truckCat);
+}
+$tmpl -> setValue('NUM_TRUCK_CAT', $numTruckCat);
+
+
+echo $this -> tmpl -> render();
+?>

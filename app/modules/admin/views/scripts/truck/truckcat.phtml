@@ -1,0 +1,79 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for truck maintenance
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+//include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/truck/truckQuickSearch.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$vcat = $this -> vcat;
+$truckCat = $this -> truckCat;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/truck/truckcat.html');	
+	
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/truckd.css" />
+								<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />
+								');
+	/*							
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["ADMIN_MOD_PATH"] = "'.System_Properties::ADMIN_MOD_PATH.'";'
+				);
+				
+$tmpl -> setValue('JS_FILES', '	<script type="tcat/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="tcat/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/cs.js"></script>');	
+
+*/
+								
+//process vcat new
+$vcatNew = '<select name="vcatNew">';
+if (is_array($vcat)){
+	foreach($vcat as $key => $vValue){
+		if (isset($lang['V_CAT'][$vValue['vcatID']])){
+			$vcatNew .= '<option value="'.$vValue['vcatID'].'">'.$lang['V_CAT'][$vValue['vcatID']].'</option>';
+		}
+	}
+}
+$vcatNew .= '</select>';
+$tmpl -> setValue('V_CAT_NEW', $vcatNew);
+
+//process vcat parent list and truck cat list
+$vcatParent = '<select name="vcatParent">
+					<option value="-1">'.$lang['ATXT_63'].'</option>';
+$truckCatVal = '<table>';
+if (is_array($truckCat)){
+	foreach($truckCat as $key => $vpValue){
+		if (isset($lang['V_CAT'][$vpValue['vcatID']])){
+			$vcatParent .= '<option value="'.$vpValue['vcatID'].'" class="level'.$vpValue['level'].'">'.$lang['V_CAT'][$vpValue['vcatID']].'</option>';
+			$truckCatVal .= '<tr>
+								<td><a href="/'.System_Properties::ADMIN_MOD_PATH.'/truck/truckcatedit/tcid/'.$vpValue['truckCatID'].'">'.$lang['TXT_144'].'</a></td>
+								<td class="level'.$vpValue['level'].'">'.$lang['V_CAT'][$vpValue['vcatID']].'</td>
+							</tr>';
+		}
+	}
+}
+$vcatParent .= '</select>';
+$truckCatVal .= '</table>';
+$tmpl -> setValue('V_CAT_PARENT', $vcatParent);
+$tmpl -> setValue('TRUCK_CAT_VAL', $truckCatVal);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

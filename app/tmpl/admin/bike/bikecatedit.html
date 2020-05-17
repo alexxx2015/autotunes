@@ -1,0 +1,25 @@
+
+<fieldset>
+	<legend>{-ATXT_101-}</legend>
+	<form action="{-ADMIN_MOD_PATH-}/bike/bikecatedit/bcid/{-BIKE_CAT_ID-}" method="POST">	
+		<table>
+		<tr>
+			<th>{-ATXT_100-}</th>
+			<th>{-ATXT_62-}</th>
+		</tr>
+		<tr>
+			<td>{-V_CAT_NEW-}</td>
+			<td>
+				{-V_CAT_PARENT-}
+			</td>
+			<td><input type="submit" name="bikeCatEdit" value="{-TXT_156-}"/></td>
+		</tr>
+		</table>
+	</form>
+	
+	<form method="POST" action="{-ADMIN_MOD_PATH-}/bike/bikecaterase/bcid/{-BIKE_CAT_ID-}">
+		<input type="submit" name="bikeCatErase1" value="{-ATXT_102-}"/>
+	</form>
+</fieldset>
+
+{-INFO-}

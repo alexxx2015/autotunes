@@ -1,0 +1,35 @@
+@CHARSET "ISO-8859-1";
+@import 'detail.css';
+
+.boxRight{
+	width: 495px;
+	float: left;
+	margin: 0px;
+	margin-left: 5px;
+}
+
+.boxLeft{
+	width: 300px;
+	margin: 0px;
+	float: left;
+}
+.boxLeft li .heading, 
+.boxRight li .heading{
+	margin-top: 10px;
+	display: block;
+}
+.boxLeft li{
+	padding-top: 2px;
+	padding-bottom: 2px;
+	clear: both;
+}
+.boxLeft li span{
+	width: 45%;
+	display: block;
+	float: left;
+}
+.boxLeft li ul{
+	float: left;
+	margin: 0px;
+	width: 55%;
+}

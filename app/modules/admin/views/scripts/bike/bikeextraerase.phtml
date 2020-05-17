@@ -1,0 +1,74 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for bike maintenance
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/bike/bikeQuickSearch.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$bikeExt = $this -> bikeExt;
+$cntBike2Ext = $this -> cntBike2Ext;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/bike/bikeextraerase.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/bike.css" />
+								<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+	/*							
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["ADMIN_MOD_PATH"] = "'.System_Properties::ADMIN_MOD_PATH.'";'
+				);
+				
+$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/cs.js"></script>');	
+
+*/
+
+$tmpl -> setValue('BIKE_EXTRA_CONFIRM_TEXT', $lang['ATXT_85']);
+
+//BIKE_EXTRA_ID
+$tmpl -> setValue('BIKE_EXTRA_ID', $bikeExt['bikeExtID']);
+
+//NUM_SUB_EXT
+$numBikeExt = 0;
+if (is_array($bikeExt) && isset($bikeExt['children'])){
+	$numBikeExt = $bikeExt['children'];
+}
+$tmpl -> setValue('NUM_SUB_EXT', $numBikeExt);
+
+//NUM_BIKE_ADS
+$numBike2Ext = 0;
+if (is_array($cntBike2Ext) && isset($cntBike2Ext['count_num'])){
+	$numBike2Ext = $cntBike2Ext['count_num'];
+}
+$tmpl -> setValue('NUM_BIKE_ADS', $numBike2Ext);
+
+
+//BIKE_EXT_NAME
+$bikeExtName = '';
+if (isset($bikeExt['vextID']) && isset($lang['V_EXTRA'][$bikeExt['vextID']])){
+	$bikeExtName = $lang['V_EXTRA'][$bikeExt['vextID']];
+}
+$tmpl -> setValue('BIKE_EXT_NAME', $bikeExtName);
+
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

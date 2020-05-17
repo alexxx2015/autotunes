@@ -1,0 +1,199 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101213
+ * Desc:		This view describe the UI to create a new user
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$user = $this -> user;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/user/newuser.html');	
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/user.css" />');
+
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/user.js"></script>');
+
+//HEADING
+$tmpl -> setValue('HEADING', '<a href="{-ADMIN_MOD_PATH-}/user">'.$lang['ATXT_9'].'</a> | '.$lang['ATXT_14']);
+
+//SUBMIT_BTN
+$tmpl -> setValue('SUBMIT_BTN', '<input type="submit" name="userNew" value="{-ATXT_19-}"/>');
+
+//ACTION_VAL
+$tmpl -> setValue('ACTION_VAL', '{-ADMIN_MOD_PATH-}/user/newuser');
+
+$userGroupVal = '<select name="userGroup" id="userGroup">';
+if (isset($this -> userGroup)
+	&& is_array($this -> userGroup)){
+	foreach($this -> userGroup AS $userGroup){
+		$userGroupVal .= '<option value="'.$userGroup['groupID'].'" ';
+		if (isset($user['userGroup'])
+			&& ($user['userGroup'] == $userGroup['groupID'])){
+			$userGroupVal .= 'selected';	
+		}
+		$userGroupVal .= '>'.$userGroup['groupName'].'</option>';
+	}
+}			
+$userGroupVal .='</select> ';
+$tmpl -> setValue('USER_GROUP_VAL', $userGroupVal);
+
+$userModeVal = '<select name="userMode" id="userMode">					
+				  <option value="-1">'.$lang['TXT_40'].'</option>';
+foreach ($lang['TXT_33'] AS $key => $txt33){
+	$userModeVal .= '<option value="'.$key.'" ';
+	if (isset($user['userMode'])
+		&& ($user['userMode'] == $key)){
+		$userModeVal .= 'selected';	
+	}
+	$userModeVal .= '>'.$txt33.'</option>';
+}
+$userModeVal .= '</select> ';
+$tmpl -> setValue('USER_MODE_VAL', $userModeVal);
+
+$userStatVal = '<select name="userStat" id="userStat">';
+foreach ($lang['ATXT_18'] AS $key => $atxt18){
+	$userStatVal .= '<option value="'.$key.'" ';
+	if (isset($user['userStat'])
+		&& ($user['userStat'] == $key)){
+		$userStatVal .= 'selected';	
+	}
+	$userStatVal .= '>'.$atxt18.'</option>';
+}
+$userStatVal .= '</select> ';
+$tmpl -> setValue('USER_STAT_VAL', $userStatVal);
+
+$userFirmVal = '';
+if (isset($user['userFirm'])){
+	$userFirmVal .= $user['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirmVal);
+
+$userNNameVal = '';
+if (isset($user['userNName'])){
+	$userNNameVal .= $user['userNName'];
+}
+$tmpl -> setValue('USER_NNAME_VAL', $userNNameVal);
+
+$userVNameVal = '';
+if (isset($user['userVName'])){
+	$userVNameVal .= $user['userVName'];
+}
+$tmpl -> setValue('USER_VNAME_VAL', $userVNameVal);
+
+$userEMailVal = '';
+if (isset($user['userEMail'])){
+	$userEMailVal .= $user['userEMail'];
+}
+$tmpl -> setValue('USER_EMAIL_VAL', $userEMailVal);
+
+$userTel1Val = '';
+if (isset($user['userTel1'])){
+	$userTel1Val .= $user['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1_VAL', $userTel1Val);
+
+$userTel2Val = '';
+if (isset($user['userTel2'])){
+	$userTel2Val .= $user['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2_VAL', $userTel2Val);
+
+$userPLZVal = '';
+if (isset($user['userPLZ'])){
+	$userPLZVal .= $user['userPLZ'];
+}
+$tmpl -> setValue('USER_PLZ_VAL', $userPLZVal);
+
+$userOrtVal = '';
+if (isset($user['userOrt'])){
+	$userOrtVal .= $user['userOrt'];
+}
+$tmpl -> setValue('USER_ORT_VAL', $userOrtVal);
+
+$userAdressVal = '';
+if (isset($user['userAdress'])){
+	$userAdressVal .= $user['userAdress'];
+}
+$tmpl -> setValue('USER_ADRESS_VAL', $userAdressVal);
+
+$userAGBVal = '<input type="checkbox" name="userAGB" id="userAGB" ';
+if (isset($user['userAGB'])){
+	$userAGBVal .= 'checked';
+}
+$userAGBVal .= '/>';
+$tmpl -> setValue('USER_AGB_VAL', $userAGBVal);
+
+$userNewsVal = '<input type="checkbox" name="userNews" id="userNews" ';
+if (isset($user['userNews'])){
+	$userNewsVal .= 'checked';
+}
+$userNewsVal .= '/>';
+$tmpl -> setValue('USER_NEWS_VAL', $userNewsVal);
+
+//DATEX_IMP_CONF_CHECKED
+$datexImp = '';
+if (isset($user['datexImp'])){// && ($user['datexImp'] == 1)){
+	$datexImp = 'checked';
+}
+$tmpl -> setValue('DATEX_IMP_CONF_CHECKED', $datexImp);
+
+//V_TYPE
+$vType = '<select name="vType">
+			<option value="-1" '.($user['datexFTPVType'] == '-1'?'selected':'').'>'.$lang['TXT_216'].'</option>
+			<option value="c" '.($user['datexFTPVType'] == 'c'?'selected':'').'>'.$lang['TXT_2'].'</option>
+			<option value="b" '.($user['datexFTPVType'] == 'b'?'selected':'').'>'.$lang['TXT_3'].'</option>
+			<option value="t" '.($user['datexFTPVType'] == 't'?'selected':'').'>'.$lang['TXT_4'].'</option>
+		</select>';
+$tmpl -> setValue('V_TYPE', $vType);
+
+//DATEX_FTP_IMP_CONF_CKECKED
+$datexFTPImp = '';
+if (isset($user['datexFTPImp'])){// && ($user['datexFTPImp'] == 1)){
+	$datexFTPImp = 'checked';
+}
+$tmpl -> setValue('DATEX_FTP_IMP_CONF_CKECKED', $datexFTPImp);
+
+//DATEX_AUTO_IMP_CONF_CHECKED
+$datexAutoImp = '';
+if (isset($user['datexAutoImp'])){// && ($user['datexAutoImp'] == 1)){
+	$datexAutoImp = 'checked';
+}
+$tmpl -> setValue('DATEX_AUTO_IMP_CONF_CHECKED', $datexAutoImp);
+
+//DATEX_EXP_CONF_CHECKED
+$datexExp = '';
+if (isset($user['datexExp'])){// && ($user['datexExp'] == 1)){
+	$datexExp = 'checked';
+}
+$tmpl -> setValue('DATEX_EXP_CONF_CHECKED', $datexExp);
+
+//FORMAT_VAL
+//<li><input type="checkbox" name="datexAutoImp" {-DATEX_AUTO_IMP_CONF_CHECKED-}/>{-TXT_187-}</li>
+$formatVal = '<select name="datexFormat" id="fileImpFormat">';
+if (isset($lang['TXT_181']) && is_array($lang['TXT_181'])){
+	$formatVal .= '<option value="-1">'.$lang['TXT_216'].'</option>';
+	foreach ($lang['TXT_181'] as $key => $kVal){
+		$formatVal .= '<option value="'.$key.'" '.($user['datexFormat']==$key?'selected':'').'>'.$kVal.'</option>';
+	}
+}
+$formatVal .= '</select>';
+$tmpl -> setValue('FORMAT', $formatVal);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

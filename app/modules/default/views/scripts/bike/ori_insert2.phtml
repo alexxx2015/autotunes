@@ -1,0 +1,316 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100812
+ * Desc:		This is the view of Bike insert confirmation section
+ *********************************************************************************/
+include_once('default/views/filters/FilterIsEmptyString.php');
+include_once('default/views/filters/FormatStr2Num.php');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$bikeCat = $this -> bikeCat;
+
+$str2NumFilter = new FormatSt2Num();
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/bike_insert.css" />'
+				);
+	/*			
+$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::JS_PATH.'/jq_141_min.js"></script>
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/js_active.js"></script>');
+*/
+$tmpl -> readTmplFile('CONTENT', 'default/bike/insert2.html');
+
+$fCheckSpace = new FilterIsEmptyString();
+
+
+//Set BIKE_BRAND
+$tmpl -> setValue('BIKE_BRAND_VAL', $this -> bike['bikeBrandTxt']);
+
+//Set BIKE_MODEL
+$bikeModel = '';
+if(isset($this -> bike['bikeModelTxt']) && ($this -> bike['bikeModelTxt'] != null)){
+	$bikeModel = $this -> bike['bikeModelTxt'];
+}
+$tmpl -> setValue('BIKE_MODEL_VAL', $bikeModel);
+
+//Set BIKE_PRICE
+$bikePriceVal = $str2NumFilter -> filter(array('val' => $this -> bike['bikePrice'],
+												'dec_place' => 0
+												)
+										);
+if (isset($lang['TXT_74'][$this->bike['bikePriceCurr']])){
+	$bikePriceVal .= ' '.$lang['TXT_74'][$this->bike['bikePriceCurr']];
+}										
+$tmpl -> setValue('BIKE_PRICE_VAL', $bikePriceVal);
+
+$bikePriceType = '';
+if (isset($this -> bike['bikePriceType']) && isset($lang['TXT_70'][$this -> bike['bikePriceType']])){
+	$bikePriceType = $lang['TXT_70'][$this -> bike['bikePriceType']];
+}
+$tmpl -> setValue('BIKE_PRICE_TYPE_VAL', $bikePriceType);
+
+//Set BIKE_KM
+$tmpl -> setValue('BIKE_KM_VAL', $str2NumFilter -> filter(array('val' => $this -> bike['bikeKM'],
+												'dec_place' => 0
+												)
+										));
+$bikeKMType = '';
+if (isset($this -> bike['bikeKMType']) && isset($lang['TXT_75'][$this -> bike['bikeKMType']])){
+	$bikeKMType = $lang['TXT_75'][$this -> bike['bikeKMType']];
+}
+$tmpl -> setValue('BIKE_KM_TYPE_VAL', $bikeKMType);										
+
+//Set BIKE_POWER
+$bikePower = '';
+if (isset($this -> bike['bikePowerType']) && isset($lang['TXT_72'][$this -> bike['bikePowerType']])){
+	if ($this -> bike['bikePowerType'] == 0){
+		$bikePower = $str2NumFilter -> filter(array('val' => $this -> bike['bikePower'],
+												'dec_place' => 0
+												)
+										).' '.$lang['TXT_72'][0]
+					.' ('.$str2NumFilter -> filter(array('val' => ($this -> bike['bikePower']*90/66),
+												'dec_place' => 0
+												)
+										).' '.$lang['TXT_72'][1].')';
+	}
+	elseif ($this -> bike['bikePowerType'] == 1){
+		$bikePower = ($this -> bike['bikePower']*66/90).' '.$lang['TXT_72'][0]
+					.' ('.$this -> bike['bikePower'].' '.$lang['TXT_72'][1].')';
+	}
+}
+$tmpl -> setValue('BIKE_POWER_VAL', $bikePower);
+
+//Set BIKE_EZ
+$tmpl -> setValue('BIKE_EZ_VAL', $this -> bike['bikeEZM'].'/'.$this -> bike['bikeEZY']);
+
+//Set BIKE_TUV
+$bikeTUV = '';
+if (isset($this -> bike['bikeTUVY']) && ($this -> bike['bikeTUVY'] != false)){
+	$bikeTUV .= $this -> bike['bikeTUVY'];
+	if (isset($this -> bike['bikeTUVM']) && ($this -> bike['bikeTUVM'] != false)){
+		$bikeTUV = $this -> bike['bikeTUVM'].'/'.$bikeTUV;
+	}
+}
+$tmpl -> setValue('BIKE_TUV_VAL', $bikeTUV);
+
+//Set BIKE_AU
+$bikeAU = '';
+if (isset($this -> bike['bikeAUY']) && ($this -> bike['bikeAUY'] != false)){
+	$bikeAU .= $this -> bike['bikeAUY'];
+	if (isset($this -> bike['bikeAUM']) && ($this -> bike['bikeAUM'] != false)){
+		$bikeAU = $this -> bike['bikeAUM'].'/'.$bikeAU;
+	}
+}
+$tmpl -> setValue('BIKE_AU_VAL', $bikeAU);
+
+//Set BIKE_SHIFT
+$bikeShift = '';
+if (isset($this -> bike['bikeShift']) && isset($lang['V_SHIFT'][$this -> bike['bikeShift']]) ){
+	$bikeShift .= $lang['V_SHIFT'][$this -> bike['bikeShift']];
+}
+$tmpl -> setValue('BIKE_SHIFT_VAL', $bikeShift);
+
+//Set BIKE_WEIGHT
+$bikeWeight = '';
+if (isset($this -> bike['bikeWeight']) && ($this -> bike['bikeWeight'] != false)){
+	$bikeWeight .= $this -> bike['bikeWeight'];
+}
+$tmpl -> setValue('BIKE_WEIGHT_VAL', $bikeWeight);
+
+//Set BIKE_CYL
+$bikeCyl = '';
+if (isset($this -> bike['bikeCyl']) && ($this -> bike['bikeCyl'] != false)){
+	$bikeCyl .= $this -> bike['bikeCyl'];
+}
+$tmpl -> setValue('BIKE_CYL_VAL', $bikeCyl);
+
+//Set BIKE_CUB
+$bikeCub = '';
+if (isset($this -> bike['bikeCub']) && ($this -> bike['bikeCub'] != false)){
+	$bikeCub .= $this -> bike['bikeCub'];
+}
+$tmpl -> setValue('BIKE_CUB_VAL', $bikeCub);
+
+//Set BIKE_USE_IN
+$bikeUseIn = '';
+if (isset($this -> bike['bikeUseIn']) && ($this -> bike['bikeUseIn'] != '')){
+	$bikeUseIn .= $this -> bike['bikeUseIn'].' '.$lang['TXT_64'];
+}
+$tmpl -> setValue('BIKE_USE_IN_VAL', $bikeUseIn);
+
+//Set BIKE_USE_OUT
+$bikeUseOut = '';
+if (isset($this -> bike['bikeUseOut'])){
+	$bikeUseOut .= $this -> bike['bikeUseOut'].' '.$lang['TXT_64'];
+}
+$tmpl -> setValue('BIKE_USE_OUT_VAL', $bikeUseOut);
+
+//Set BIKE_CO2
+$bikeCO2 = '';
+if (isset($this -> bike['bikeCO2'])){
+	$bikeCO2 .= $this -> bike['bikeCO2'].' '.$lang['TXT_66'];
+}
+$tmpl -> setValue('BIKE_CO2_VAL', $bikeCO2);
+
+//Set BIKE_STATE
+$bikeState = '';
+if (isset($this -> bike['bikeState']) && isset($lang['V_STATE'][$this -> bike['bikeState']]) ){
+	$bikeState .= $lang['V_STATE'][$this -> bike['bikeState']];
+}
+$tmpl -> setValue('BIKE_STATE_VAL', $bikeState);
+
+//Set BIKE_CAT
+$bikeCatVal = '';	
+if (isset($this -> bike['bikeCat']) && is_array($bikeCat)){
+	foreach($bikeCat as $key => $kVal){
+		if (($kVal['bikeCatID'] == $this -> bike['bikeCat']) && isset($lang['V_CAT'][$kVal['vcatID']])){
+			$bikeCatVal .= $lang['V_CAT'][$kVal['vcatID']];
+			break;
+		}
+	}
+}
+$tmpl -> setValue('BIKE_CAT_VAL', $bikeCatVal);
+
+/*
+$bikeCat = '';
+if (isset($this -> bike['bikeCat']) && isset($lang['BIKE_CAT'][$this -> bike['bikeCat']]) ){
+	$bikeCat .= $lang['BIKE_CAT'][$this -> bike['bikeCat']];
+}
+$tmpl -> setValue('BIKE_CAT_VAL', $bikeCat);
+*/
+
+//Set BIKE_FUEL
+$bikeFuel = '';
+if (isset($this -> bike['bikeFuel']) && isset($lang['V_FUEL'][$this -> bike['bikeFuel']]) ){
+	$bikeFuel .= $lang['V_FUEL'][$this -> bike['bikeFuel']];
+}
+$tmpl -> setValue('BIKE_FUEL_VAL', $bikeFuel);
+
+//Set BIKE_CLR
+$bikeClr = '';
+if (isset($this -> bike['bikeClr']) && isset($lang['V_CLR'][$this -> bike['bikeClr']]) ){
+	$bikeClr .= $lang['V_CLR'][$this -> bike['bikeClr']];
+	if (isset($this -> bike['bikeClrMet'])){
+		$bikeClr .= ' '.$lang['TXT_20'];
+	}
+}
+$tmpl -> setValue('BIKE_CLR_VAL', $bikeClr);
+
+//Set BIKE_EMISSION_NORM
+$bikeEmissionNorm = '';
+if (isset($this -> bike['bikeEmissionNorm']) && isset($lang['V_EMISSION_NORM'][$this -> bike['bikeEmissionNorm']]) ){
+	$bikeEmissionNorm .= $lang['V_EMISSION_NORM'][$this -> bike['bikeEmissionNorm']];
+}
+$tmpl -> setValue('BIKE_EMISSION_NORM_VAL', $bikeEmissionNorm);
+
+//Set BIKE_ECOLOGIC_TAG
+$bikeEcologicTag = '';
+if (isset($this -> bike['bikeEcologicTag']) && isset($lang['V_ECOLOGIC_TAG'][$this -> bike['bikeEcologicTag']]) ){
+	$bikeEcologicTag .= $lang['V_ECOLOGIC_TAG'][$this -> bike['bikeEcologicTag']];
+}
+$tmpl -> setValue('BIKE_ECOLOGIC_TAG_VAL', $bikeEcologicTag);
+
+//Set BIKE_ECOLOGIC_TAG
+$bikeDesc = '';
+if (isset($this -> bike['bikeDesc'])){
+	$bikeDesc .= $this -> bike['bikeDesc'];
+}
+$tmpl -> setValue('BIKE_DESC_VAL', $bikeDesc);
+
+//Set BIKE_EXT
+$bikeExt = '';
+if (isset($this -> bike['bikeExtDB']) && is_array($this -> bike['bikeExtDB'])){
+	foreach ($this -> bike['bikeExtDB'] as $bikeExtDB){
+		$bikeExt .= $lang['V_EXTRA'][$bikeExtDB['vextID']].', ';
+	}
+}
+$tmpl -> setValue('BIKE_EXT_VAL', $bikeExt);
+
+//Set USER_ADS
+$userAds = '';
+if (isset($this -> bike['userAds']) ){
+	if($this -> bike['userAds'] == 1){
+		$userAds = $lang['TXT_33'][1];
+	}
+	else if($this -> bike['userAds'] == 2){
+		$userAds = $lang['TXT_33'][2];
+	}
+}
+$tmpl -> setValue('USER_ADS_VAL', $userAds);
+
+//Set USER_FIRM
+$userFirm = '';
+if (isset($this -> bike['userFirm']) ){
+	$userFirm .= $this -> bike['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirm);
+
+//Set USER_VNAME_VAL, USER_NNAME_VAL
+$tmpl -> setValue('USER_NNAME_VAL', $this -> bike['userNName']);
+$tmpl -> setValue('USER_VNAME_VAL', $this -> bike['userVName']);
+
+//Set USER_EMAIL_VAL
+$tmpl -> setValue('USER_EMAIL_VAL', $this -> bike['userEMail']);
+
+//Set USER_ADRESS
+$userAdress = '';
+if (isset($this -> bike['userAdress'])){
+	$userAdress .= $this -> bike['userAdress'];
+}
+$tmpl -> setValue('USER_ADRESS_VAL', $userAdress);
+
+//Set USER_TEL1
+$userTel1 = '';
+if (isset($this -> bike['userTel1'])){
+	$userTel1 .= $this -> bike['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1_VAL', $userTel1);
+
+//Set USER_TEL2
+$userTel2 = '';
+if (isset($this -> bike['userTel2'])){
+	$userTel2 .= $this -> bike['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2_VAL', $userTel2);
+
+$bikeLoc = '';
+if (isset($this -> bike['bikeLocPLZ'])){
+	$bikeLoc = $this -> bike['bikeLocPLZ'];
+	if (isset($this -> bike['bikeLocOrt'])){
+		$bikeLoc .= ' '.$this -> bike['bikeLocOrt'];
+	}
+}
+$tmpl -> setValue('BIKE_LOC_VAL', $bikeLoc);
+/*
+//Set BIKE_PHOTO
+$photoUploadEntryTMPL = $tmpl -> readFile('default/photoUploadEntry.html');
+
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_SRC_VAL',
+										'p1',
+										$photoUploadEntryTMPL
+									);
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_ID_VAL',
+										'p2',
+										$gl_galIMGPattern
+									);											
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'var $gl_galIMGPattern = \''.$gl_galIMGPattern.'\';'
+				);
+$bikePhotos = '';
+if (isset($this -> bikePhoto) && is_array($this -> bikePhoto)){
+	foreach ($this -> bikePhoto as $key => $bikePhoto){
+		$photoUploadEntry = $tmpl -> replace(	'IMG_SRC_VAL',
+												$bikePhoto,
+												$photoUploadEntryTMPL
+											);
+		$photoUploadEntry = $tmpl -> replace(	'IMG_ID_VAL',
+												$key,
+												$photoUploadEntry
+											);
+		$bikePhotos .= $photoUploadEntry;//'<div><a>X</a><img src="'.$bikePhoto.'" id="'.$key.'"/></div>';
+	}
+}
+$tmpl -> setValue('BIKE_PHOTO', $bikePhotos);
+*/
+echo $tmpl -> render();
+?>

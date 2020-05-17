@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+
+.regForm{
+	width: 50%;
+	left: 50%;
+	margin-left: -25%;
+	position: relative;
+	margin-top: 1em;
+}
+
+fieldset{
+	border: 0;
+	border-top: 0.1em solid #515151;
+	color: #515151;
+}
+
+.box{
+	padding: 1%;
+	margin: 0 0.5% 0 0.5%;
+	float: left;
+	width: 100%;
+}
+
+.twoCol{
+	width: 47%;
+}
+
+.box label{
+	font-weight: bold;
+	display: block;
+}
+
+.box a{
+	display: block;
+	margin: 0.2em 0 0.2em 0 ;
+	clear: both;
+}
+
+#pageCounter a{
+	display: inline;
+	margin: auto;
+	clear: none;
+}
+
+.

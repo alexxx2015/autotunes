@@ -1,0 +1,82 @@
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) {return;}
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/de_DE/all.js#xfbml=1";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+<a href="/truck/search">{-TXT_71-}</a> | 
+<a href="/truck/search/cp/1">{-TXT_97-}</a> |  
+	<a href="/truck/search/{-SEARCH_RES_PAGE-}">{-TXT_129-}</a>
+	
+
+{-INFO-}
+<div id="vdetail">
+	<h1>{-TRUCK_BRAND_VAL-} {-TRUCK_MODEL_VAL-}</h1>	
+	<a href="/truck/viewprint/id/{-TRUCK_ID-}" target="_blank">{-TXT_118-}</a>{-DEALER-}{-BOOKMARK-} 
+	<br/><br/>
+	<div class="box box2">
+		<label for="b1"><strong>{-TXT_84-}</strong></label>
+		<ul id="b1">
+			<li><span>{-TXT_13-}</span>{-TRUCK_PRICE_VAL-}{-TRUCK_PRICE_TYPE_VAL-}</li>
+			<li><span>{-TXT_14-}</span>{-TRUCK_KM_VAL-}</li>
+			<li><span>{-TXT_10-}</span>{-TRUCK_POWER_VAL-}</li>
+			<li><span>{-TXT_7-}</span>{-TRUCK_EZ-}</li>
+			<li><span>{-TXT_124-}</span>{-TRUCK_ID-}</li>
+			<li><span>{-TXT_114-}</span><a name="showMap">{-TRUCK_LOC-}</a></li>
+		</ul>		
+	</div>
+	
+	<div class="box box2">
+		<label for="b2"><strong>{-TXT_86-}{-USER_ADS-}</strong></label>
+		<ul id="b2">
+			{-USER_FIRM-}
+			<li>{-USER_NAME-}</li>
+			{-USER_ADDRESS-}
+			{-USER_TEL-}
+		</ul>
+	</div>	
+	
+	<br class="nl"/>
+	<div>
+		{-PHOTO_GALLERY-}
+	</div>
+	<br class="nl"/>
+	
+	<div class="box box2">
+		{-TRUCK_OPTIONAL_SPEC-}
+		<br/>
+		<label for="b3"><strong>{-TXT_87-}</strong></label>
+		<form action="/truck{-FORM_ACTION_PARAM-}" method="POST"  id="b3">
+		<ul class="contact">
+			<li><span>{-TXT_88-}</span><input type="text" name="emailName" value="{-EMAIL_NAME-}"/></li>
+			<li><span>{-TXT_48-}</span><input type="text" name="emailAddress" value="{-EMAIL_ADDRESS-}"/></li>
+			<li><span>{-TXT_90-}</span><textarea name="emailText">{-EMAIL_TEXT-}</textarea></li>			
+			<li><span title="{-INFO_14-}">{-TXT_220-}</span><input type="text" name="captcha_code" value="{-CAPTCHA_CODE-}"/>
+			<li class="captcha"><img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" /><a href="#" onclick="document.getElementById('captcha').src = '/securimage/securimage_show.php?' + Math.random(); return false"><img src="/securimage/images/refresh.gif"/></a>					
+			</li>
+			<li><span>&nbsp;</span><input type="submit" name="sendEMail" value="{-TXT_91-}"/></li>
+		</ul>
+		</form>
+	</div>
+	
+	<div class="box box2">
+		{-TRUCK_EXTRA-}
+	</div>
+	
+	<div class="box box2">
+		{-TRUCK_DESC-}
+	</div>
+</div>
+<div class="nl">
+	<label for="fbComments"><h3>{-TXT_222-}</h3></label>
+	<div class="commentBox" id="fbComments">
+	<div class="fb-comments"  data-num-posts="10" data-width="600" data-href="{-FB_DATA_HREF-}"></div>
+	</div>
+</div>
+
+<div class="fbLikeBtn">
+	<h2>{-INFO_15-}</h2>
+	 <div class="fb-like" data-send="true" data-layout="button_count" data-width="200" data-show-faces="true" data-font="verdana"></div>
+</div>

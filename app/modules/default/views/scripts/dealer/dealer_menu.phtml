@@ -1,0 +1,34 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100819
+ * Desc:		This is the view of INDEX
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+
+if (!isset($tmpl)){	
+	$tmpl = $this -> tmpl;
+}
+
+$lang = $this -> lang;
+$user = $this -> user;
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/dealer_menu.css" />');
+
+
+$menu = '<ul class="dealerMenu">
+			<li><a href="/dealer/{-DEALER_ID-}">{-TXT_223-}</a></li>
+			<li><a href="/dealer/{-DEALER_ID-}/car">{-TXT_2-}</a></li>
+			<li><a href="/dealer/{-DEALER_ID-}/bike">{-TXT_3-}</a></li>
+			<li class="nf"><a href="/dealer/{-DEALER_ID-}/truck">{-TXT_4-}</a></li>
+		</ul>';
+
+//DEALER_ID
+if (is_array($user) && isset($user['userID'])){
+	$tmpl -> setValue('DEALER_ID', $user['userID']);
+}
+
+$tmpl -> setValue('DEALER_MENU', $menu);
+
+?>

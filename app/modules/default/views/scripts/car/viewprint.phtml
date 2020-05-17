@@ -1,0 +1,522 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100906
+ * Desc:		This file describe the printview
+ *********************************************************************************/
+include_once('default/views/filters/FormatStr2Num.php');
+include_once('default/views/filters/FilterIsEmptyString.php');
+
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$car = $this -> car;
+$carCat = $this -> carCat;
+
+$str2NumFilter = new FormatSt2Num();
+$strIsEmptyFilter = new FilterIsEmptyString();
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'	<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/detail.css" />
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/car_viewprint.css" />
+								');
+												
+$tmpl -> readTmplFile('CONTENT', 'default/car/viewprint.html');
+
+$tmpl -> setValue('HEADER_MENU', '');
+$tmpl -> setValue('FOOTER_MENU', '');
+
+//Set CAR_BRAND CAR_MODEL
+$tmpl -> setValue('CAR_BRAND_VAL', $car['carBrandName']);
+$carModel = '';
+if (isset($car['carModelName']) && ($car['carModelName'] != null)){
+	$carModel = $car['carModelName'];
+}
+
+//Set CAR_MODEL_VAR_VAL
+if (isset($car['carModelVar']) && ($car['carModelVar'] != null)){
+	if ($carModel != ''){
+		$carModel .= ' ';	
+	}
+	$carModel .= $car['carModelVar'];	
+}
+$tmpl -> setValue('CAR_MODEL_VAL', $carModel);
+
+//Set CAR_PRICE
+$carPriceVal = '<table>';
+
+if(isset($car['mwst']) && ($car['mwst'] == '1') && isset($car['mwstSatz']) && in_array($car['mwstSatz'],$lang['V_MWST'])){
+	$carPriceVal .= '<tr><td>'.$str2NumFilter -> filter(array('val' => $car['carPrice']*($car['mwstSatz']/100+1),
+												'dec_place' => 0
+	)
+	). '{-CAR_PRICE_CURR-} ('.$lang['TXT_273'].')</td></tr>
+					<tr><td>'.$str2NumFilter -> filter(array('val' => $car['carPrice'],
+												'dec_place' => 0
+	)
+	).'{-CAR_PRICE_CURR-} ('.$lang['TXT_274'].')</td></tr>
+					<tr><td>'.$car['mwstSatz'].'% '.$lang['TXT_270'].'</td></tr>';
+}
+elseif(isset($car['mwst']) && ($car['mwst'] == '1')){
+	$carPriceVal .= '<tr><td>'.$str2NumFilter -> filter(array('val' => $car['carPrice'],
+												'dec_place' => 0
+	)
+	).'{-CAR_PRICE_CURR-}</td></tr>
+					<tr><td>'.$lang['TXT_270'].'</td></tr>';
+}else{
+	$carPriceVal .= '<tr><td>'.$str2NumFilter -> filter(array('val' => $car['carPrice'],
+												'dec_place' => 0
+	)
+	).'{-CAR_PRICE_CURR-}</td></tr>
+					<tr><td>'.$lang['TXT_275'].'</td></tr>';
+}
+$carPriceVal .= '</table>';
+$tmpl -> setValue('CAR_PRICE_VAL', $carPriceVal);
+
+$carPriceCurr = '';
+if (isset($lang['TXT_74'][$this->car['carPriceCurr']])){
+	$carPriceCurr = $lang['TXT_74'][$this->car['carPriceCurr']];
+}
+$tmpl -> setValue('CAR_PRICE_CURR', $carPriceCurr);
+
+
+$carPriceType = '';
+if (isset($car['carPriceType']) && isset($lang['TXT_70'][$car['carPriceType']])){
+	$carPriceType = ', '.$lang['TXT_70'][$car['carPriceType']];
+}
+$tmpl -> setValue('CAR_PRICE_TYPE_VAL', $carPriceType);
+
+//Set CAR_KM
+$carKMVal = $str2NumFilter -> filter($car['carKM']);
+if (isset($lang['TXT_75'][$car['carKMType']])){
+	$carKMVal .= ' '.$lang['TXT_75'][$car['carKMType']];
+}
+$tmpl -> setValue('CAR_KM_VAL', $carKMVal);
+
+//$tmpl -> setValue('CAR_KM_VAL', $str2NumFilter -> filter($car['carKM']).' '.$lang['TXT_75']);
+
+//Set CAR_POWER
+$carPower = '';
+//KW?
+if ($car['carPowerType'] == 0){
+	$carPower = $str2NumFilter -> filter(array('val' => $car['carPower'],
+												'dec_place' => 0
+												)
+										).$lang['TXT_72'][0].' ('.
+				$str2NumFilter -> filter(array('val' => ($car['carPower']*90/66),
+												'dec_place' => 0
+												)
+										).$lang['TXT_72'][1].')';
+}
+//PS?
+else if($car['carPowerType'] == 1){
+	$carPower = $str2NumFilter -> filter(array('val' => ($car['carPower'] * 66/90),
+												'dec_place' => 0
+												)
+										).$lang['TXT_72'][0].' ('.
+				$str2NumFilter -> filter(array('val' => $car['carPower'],
+												'dec_place' => 0
+												)
+										).$lang['TXT_72'][1].')';	
+}
+$tmpl -> setValue('CAR_POWER_VAL', $carPower);
+
+//Set CAR_EZ
+if($car['carEZY'] == 9999){
+	$tmpl -> setValue('CAR_EZ', $lang['V_STATE'][0]);
+}
+elseif (($car['carEZM'] > 0) && ($car['carEZY'] > 0)){
+	$tmpl -> setValue('CAR_EZ', $car['carEZM'].'/'.$car['carEZY']);
+}else{
+	$tmpl -> setValue('CAR_EZ', '');
+}
+
+
+
+//Set CAR_OPTIONAL_SPEC
+$carOpt = '';
+
+//Add carKlima
+if (isset($lang['V_KLIMA'][$car['carKlima']])){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_109'].'</span> '.$lang['V_KLIMA'][$car['carKlima']].'</li>';
+}
+//Add carCat
+if (isset($car['carCat']) && ($car['carCat'] != -1) && is_array($carCat)){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	foreach ($carCat as $key => $kVal){
+		if (($kVal['carCatID'] == $car['carCat']) && isset($lang['V_CAT'][$kVal['vcatID']])){		
+			$carOpt .= '<li><span>'.$lang['TXT_18'].'</span> '.$lang['V_CAT'][$kVal['vcatID']].'</li>';
+		}
+	}
+}
+/*
+$carCatVal = '';	
+if (isset($this -> car['carCat']) && is_array($carCat)){
+	foreach($carCat as $key => $kVal){
+		if (($kVal['carCatID'] == $this -> car['carCat']) && isset($lang['V_CAT'][$kVal['vcatID']])){
+			$carCatVal .= $lang['V_CAT'][$kVal['vcatID']];
+			break;
+		}
+	}
+}
+$tmpl -> setValue('CAR_CAT_VAL', $carCatVal);
+*/
+
+//Add carFuel
+if (isset($lang['V_FUEL'][$car['carFuel']])){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_15'].'</span> '.$lang['V_FUEL'][$car['carFuel']].'</li>';
+}
+//Add carClr
+if (isset($lang['V_CLR'][$car['carClr']])){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	$carOpt .= '<li><span>'.$lang['TXT_19'].'</span> '.$lang['V_CLR'][$car['carClr']];
+	if (isset($car['carClrMet'])){
+		$carOpt .= ' '.$lang['TXT_20'];
+	}
+	$carOpt .= '</li>';
+}
+//Add carTUV
+if (isset($car['carTUVY']) && ($car['carTUVY'] > 0)){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_76'].'</span>';
+	if (isset($car['carTUVM']) && ($car['carTUVM'] > 0)){
+		$carOpt .= $car['carTUVM'].'/';
+	}
+	$carOpt .= $car['carTUVY'].'</li>';
+}
+//Add carAUV
+if (isset($car['carAUY']) && ($car['carAUY'] > 0)){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_77'].'</span>';
+	if (isset($car['carAUM']) && ($car['carAUM'] > 0)){
+		$carOpt .= $car['carAUM'].'/';
+	}
+	$carOpt .= $car['carAUY'].'</li>';
+}
+//Add carEcologicTag
+if (isset($lang['V_ECOLOGIC_TAG'][$car['carEcologicTag']])){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_85'].'</span> '.$lang['V_ECOLOGIC_TAG'][$car['carEcologicTag']].'</li>';
+}
+//Add carEmissionNorm
+if (isset($lang['V_EMISSION_NORM'][$car['carEmissionNorm']])){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_22'].'</span> '.$lang['V_EMISSION_NORM'][$car['carEmissionNorm']].'</li>';
+}
+//Add carCO2
+if (isset($car['carCO2']) && ($car['carCO2'] != null)){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_65'].'</span> '. $str2NumFilter -> filter(array(	'val' => $car['carCO2'],
+																			'dec_place' => 0
+																		)
+																).'&nbsp;'.$lang['TXT_66'].'</li>';
+}
+//Add carUseIn
+if (isset($car['carUseIn']) && ($car['carUseIn'] != null)){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_62'].'</span> '. $str2NumFilter -> filter(array(	'val' => $car['carUseIn'],
+																			'dec_place' => 1
+																		)
+																).'&nbsp;'.$lang['TXT_64'].'</li>';
+}
+//Add carUseOut
+if (isset($car['carUseOut']) && ($car['carUseOut'] != null)){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_63'].'</span> '. $str2NumFilter -> filter(array(	'val' => $car['carUseOut'],
+																			'dec_place' => 1
+																		)
+																).'&nbsp;'.$lang['TXT_64'].'</li>';
+}
+//Add carCub
+if (isset($car['carCub']) && ($car['carCub'] > 0)){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_59'].'</span> '. $str2NumFilter -> filter(array(	'val' => $car['carCub'],
+																			'dec_place' => 0
+																		)
+																).'&nbsp;'.$lang['TXT_60'].'</li>';
+}
+//Add carShift
+if (isset($lang['V_SHIFT'][$car['carShift']])){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt.= '<li><span>'.$lang['TXT_21'].'</span> '.$lang['V_SHIFT'][$car['carShift']].'</li>';
+}
+//Add carWeight
+if (isset($car['carWeight']) && ($car['carWeight'] > 0)){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_57'].'</span> '.$str2NumFilter -> filter(array(	'val' => $car['carWeight'],
+																			'dec_place' => 0
+																		)
+																).'&nbsp;'.$lang['TXT_67'].'</li>';
+}
+//Add carCyl
+if (isset($car['carCyl']) && ($car['carCyl'] > 0)){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_58'].'</span> '. $str2NumFilter -> filter(array(	'val' => $car['carCyl'],
+																			'dec_place' => 0
+																		)
+																).'</li>';
+}
+//Add carDoor
+if (isset($lang['CAR_DOOR'][$car['carDoor']])){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_23'].'</span> '.$lang['CAR_DOOR'][$car['carDoor']].'/'.($lang['CAR_DOOR'][$car['carDoor']]+1).'&nbsp;'.$lang['TXT_24'].'</li>';
+}
+//Add carState
+if (isset($lang['V_STATE'][$car['carState']])){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_17'].'</span> '.$lang['V_STATE'][$car['carState']].'</li>';
+}
+
+//Add carEEK
+$carEEKPicUri = null;
+if (isset($lang['V_EEK'][$car['carEEK']])){
+	if ($carOpt == ''){
+		$carOpt = '<ul id="oth_detail">';
+	}
+	
+	$carOpt .= '<li><span>'.$lang['TXT_260'].'</span>&nbsp;'.$lang['V_EEK'][$car['carEEK']].'</li>';
+	
+	if(file_exists('./sysPic/eek/'.strtolower($car['carEEK']).'.jpg')){
+		$carEEKPicUri = '/sysPic/eek/'.strtolower($car['carEEK']).'.jpg';
+	}	
+}
+
+if ($carOpt != null){
+	$carOpt = '<label for="oth_detail"><strong>'.$lang['TXT_84'].'</strong></label>
+				'.$carOpt.'
+				</ul>';
+}
+
+$tmpl -> setValue('CAR_OPTIONAL_SPEC', $carOpt);
+
+//Add carDesc
+$carDesc = '';
+if (isset($car['carDesc']) && ($strIsEmptyFilter -> filter($car['carDesc']) == false)){
+	$carDesc = '<label for="carDesc"><strong>'.$lang['TXT_68'].'</strong></label>
+				<div id="carDesc" class="justify">'.nl2br($car['carDesc']).'</div>';
+}
+$tmpl -> setValue('CAR_DESC', $carDesc);
+
+//Add carExt
+$carExtStr = '';
+if (isset($car['carExt']) && is_array($car['carExt']) && (count($car['carExt'])>0)){
+	//$carExtStr .= '<li>'.$lang['TXT_83'].'<br/>';
+	$carExtStr = '<label for="carExtra"><strong>'.$lang['TXT_83'].'</strong></label>
+				<div id="carExtra" class="justify">';
+	foreach ($car['carExt'] as $carExt){
+		if (isset($lang['V_EXTRA'][$carExt['vextID']])){
+			$carExtStr .= $lang['V_EXTRA'][$carExt['vextID']].', ';
+		}
+	}
+	$carExtStr .= '</div>';
+}
+$tmpl -> setValue('CAR_EXTRA', $carExtStr);
+
+//Set USER_ADS
+$userAds = '';
+if (isset($car['userAds'])){
+	switch ($car['userAds']){
+		case 1: $userAds = '&nbsp;('.$lang['TXT_33'][1].')';
+				break;
+		case 2: $userAds = '&nbsp;('.$lang['TXT_33'][2].')';
+				break;
+	}
+}
+$tmpl -> setValue('USER_ADS', $userAds);
+
+//Set userFirm
+$userFirm = '';
+if (isset($car['userFirm']) && ($car['userFirm'] != null)){
+	$userFirm .= '<li><span>'.$lang['TXT_53'].'</span>'.$car['userFirm'].'</li>';
+}
+$tmpl -> setValue('USER_FIRM', $userFirm);
+
+//Set userName
+$userName = $car['userNName'].' '.$car['userVName'];
+$tmpl -> setValue('USER_NAME', $userName);
+
+//Set userAdress
+$userAddress = '';
+if (isset($car['userAdress']) || isset($car['userPLZ']) || isset($car['userOrt'])){
+	if (isset($car['userAdress']) && ($strIsEmptyFilter -> filter($car['userAdress']) == false)){
+		$userAddress .= '<li>'.$car['userAdress'].'</li>';
+	}
+	if (isset($car['userPLZ']) && isset($car['userOrt'])
+		 && ($strIsEmptyFilter -> filter($car['userPLZ']) == false)
+		  && ($strIsEmptyFilter -> filter($car['userOrt']) == false)){
+		$userAddress .= '<li>'.$car['userPLZ'].' '.$car['userOrt'].'</li>';
+	}
+	else if (isset($car['userPLZ']) && ($strIsEmptyFilter -> filter($car['userPLZ']) == false)){
+		$userAddress .= '<li>'.$car['userPLZ'].'</li>';
+	}
+	else if (isset($car['userOrt']) && ($strIsEmptyFilter -> filter($car['userOrt']) == false)){
+		$userAddress .= '<li>'.$car['userOrt'].'</li>';
+	}
+}
+if ($userAddress != ''){
+	$userAddress = '	<li><span>'.$lang['TXT_54'].'</span>
+						<ul>'.$userAddress.'</ul></li>';
+}
+else{
+	$userAddress = '';
+}
+$tmpl -> setValue('USER_ADDRESS', $userAddress);
+
+
+$carLoc = '';	
+if (isset($car['carLocPLZ']) && ($car['carLocPLZ'] != null)){
+	$carLoc = $car['carLocPLZ'];
+	if (isset($car['carLocOrt'])){
+		$carLoc .= ' '.$car['carLocOrt'];
+	}
+	$carLocc = '	<li><strong>'.$lang['TXT_114'].'</strong></li>
+				<li><div id="map"></div></li>';
+	$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').
+									'	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+										<script type="text/javascript" src="'.System_Properties::JS_PATH.'/map.js"></script>'
+										);															
+	$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+								.'	var $gl_mapLocPLZ = \''.$car['carLocPLZ'].'\';
+									var $gl_mapLocCountry = \'DE\';
+									'
+					);
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/map.css" />');
+	
+}
+$tmpl -> setValue('CAR_LOC', $carLoc);
+
+//Set userTel
+$userTel = '';
+if (isset($car['userTel1']) && ($strIsEmptyFilter -> filter($car['userTel1']) == false)){
+	$userTel .= '<li><span>'.$lang['TXT_80'].'</span>'.$car['userTel1'].'</li>';
+}
+if (isset($car['userTel2']) && ($strIsEmptyFilter -> filter($car['userTel2']) == false)){
+	$userTel .= '<li><span>'.$lang['TXT_80'].'</span>'.$car['userTel2'].'</li>';
+}
+$tmpl -> setValue('USER_TEL', $userTel);
+
+
+$photoGallery = '';
+if ( (isset($car['carPics']) && is_array($car['carPics']) && (count($car['carPics']) > 0))
+	|| ($carEEKPicUri != null) ){	
+		$photoGallery .= '
+					<a id="prev" href="#">&lt;</a>
+					<a id="next" href="#">&gt;</a>
+					<label><strong>{-TXT_98-}</strong></label> &nbsp;
+					<div id="photoGallery">';
+		
+		//Set photo gallery
+		$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES')
+										.'
+										<script type="text/javascript" src="'.System_Properties::JS_PATH.'/carouFredSel_4_4_1.js"></script>
+										<script type="text/javascript" src="'.System_Properties::JS_PATH.'/prettyPhoto.js"></script>
+										<script type="text/javascript" src="'.System_Properties::JS_PATH.'/photoGallery.js"></script>'
+										);
+		$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+										.'
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/photo_gallery.css" />
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/prettyPhoto.css" />');
+	
+		//Set javascript gallery image pattern																
+		$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+									.'var $gl_sysPicPath = \''.System_Properties::SYS_PIC_PATH.'\';
+									var $gl_view = 4;'
+						);		
+		
+		if($carEEKPicUri != null){
+			$photoGallery .= '	<div><a rel="prettyPhoto[pp_gal]" href="'.$carEEKPicUri.'"><img src="'.$carEEKPicUri.'"/></a></div>';///pic/'.System_Properties::CAR_ABRV.'_'.$carPic['vID'].'_'.$carPic['vPicID'].'.jpeg
+		}
+						
+		foreach($car['carPics'] AS $carPic){
+			//$photoGallery .= '	<a rel="prettyPhoto[pp_gal]" href="/pic/'.System_Properties::CAR_ABRV.'_'.$carPic['vID'].'_'.$carPic['vPicID'].'.jpeg">ss</a>';
+			$photoGallery .= '	<div><a rel="prettyPhoto[pp_gal]" href="/pic/'.System_Properties::CAR_ABRV.'_'.$carPic['vID'].'_'.$carPic['vPicID'].'.jpeg"><img src="/pic/'.System_Properties::CAR_ABRV.'_'.$carPic['vID'].'_'.$carPic['vPicID'].'.jpeg"/></a></div>';
+			//<a href="/car/'.$car['carID'].'/'.$car['page'].'/vp/'.$carPic['vPicID'].'" target="_blank"><img src="/pic/'.$carPic['vID'].'_'.$carPic['vPicID'].'.jpeg"/></a>
+		}
+		$photoGallery .= '
+						</div>';		
+}
+$tmpl -> setValue('PHOTO_GALLERY', $photoGallery);
+
+
+$tmpl -> setValue('CAR_ID', $car['carID']);
+
+//EXT_LINK
+$extLink = '';
+if (is_array($car) && isset($car['extLink']) && ($strIsEmptyFilter -> filter($car['extLink']) == false)){
+	$extLink .= '<a href="/index/redirect/vt/'.System_Properties::CAR_ABRV.'/vi/'.$car['carID'].'" target="_blank">'.$lang['TXT_257'].'</a>';
+}
+$tmpl -> setValue('EXT_LINK', $extLink);
+
+//BACK_BTN
+$backBtn = '';
+if(isset($car['carID'])){
+	$backBtn = '<a href="/car/'.$car['carID'].'">&laquo;'.$lang['TXT_259'].'</a>';
+}
+$tmpl -> setValue('BACK_BTN',$backBtn);
+
+
+$infoVal = '';
+if (isset($this -> error)){
+	$infoVal .= $this -> error;
+}
+if (isset($this -> info)){
+	$infoVal .= $this -> info;
+}
+$tmpl -> setValue('INFO', $infoVal);
+
+echo $this -> tmpl -> render();
+
+//<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+?>

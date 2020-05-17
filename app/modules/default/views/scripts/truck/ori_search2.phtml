@@ -1,0 +1,115 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100825
+ * Desc:		This view render the form for truck search results
+ *********************************************************************************/
+include_once('default/views/helpers/func_pageCounter.phtml');
+
+
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/truck_search.css" />'
+				);	
+$tmpl -> readTmplFile('CONTENT', 'default/truck/search2.html');
+
+$searchResEntryTMPL = $tmpl -> readFile('default/searchResEntry.html');
+
+//Preparing search results and add this to the content
+$truckAds = '';
+if (isset($this -> truckAds) && is_array($this -> truckAds)){
+	if (isset($this -> truckAds['truckAds'])){
+		$truckAds = '<div class="search_res">';
+		foreach ($this -> truckAds['truckAds'] AS $truckAd){
+			//Determine truck pic
+			$picURI = System_Properties::SYS_PIC_PATH.'/noImg.png';
+			if (isset($truckAd['truckPics']) && is_array($truckAd['truckPics'])){
+				foreach ($truckAd['truckPics'] AS $truckPic){
+					$pic = System_Properties::PIC_PATH.'/'.System_Properties::TRUCK_ABRV.'_'.$truckAd['truckID'].'_'.$truckPic['vPicID'].'.jpeg';
+					if(file_exists('.'.$pic)){
+						$picURI = $pic;
+						break;
+					}
+				}
+			}
+			
+			//Determine truck brand
+			$truckBrand = $truckAd['truckBrandName'];
+			if (isset($truckAd['truckModelName'])){
+				$truckBrand .= ' '.$truckAd['truckModelName'];
+			}
+			
+			$searchResEntry = $tmpl -> replace(	'PIC_URI',
+												$picURI,
+												$searchResEntryTMPL
+												);
+			$searchResEntry = $tmpl -> replace(	'BRAND_URL',
+												'/truck/'.$truckAd['truckID'].'/'.$this -> truckAds['actPage'],
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'BRAND_NAME',
+												$truckBrand,
+												$searchResEntry
+												);
+			$truckAds .= $searchResEntry;	
+		}
+		$truckAds .= '</div>';
+		
+		//Check if javascript is activated
+		// if it is so then use javascript page counter
+		// else use standard page counter
+		/*
+		if(isset($this -> truckAds['jsActive']) && isset($this -> truckAds['totalAds'])){//Javascript activated
+			if($this -> truckAds['totalAds'] > System_Properties::NUM_ADS){
+				//Prepare the search result entry template
+				$gl_sret = $tmpl -> replace('PIC_URI',
+											'p1',
+											$searchResEntryTMPL
+											);
+				$gl_sret = $tmpl -> replace('BRAND_URL',
+											'p2',
+											$gl_sret
+											);	
+				$gl_sret = $tmpl -> replace('BRAND_NAME',
+											'p3',
+											$gl_sret
+											);		
+				
+				//CSS Files
+				$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+												.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/next_search_res.css" />'
+								);
+				//Set JS Code																
+				$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+											.'
+											var gl_param = new Array();
+											gl_param["actSearchHits"] = '.count($this -> truckAds['truckAds']).';
+											gl_param["sret"] = \''.$gl_sret.'\';
+											gl_param["noPicURL"] = \''.System_Properties::SYS_PIC_PATH.'/noImg.png\';
+											gl_param["picPath"] = \''.System_Properties::PIC_PATH.'\';'									
+								);
+				//Set JS File
+				$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::JS_PATH.'/jq_141_min.js"></script>
+												<script type="text/javascript" src="'.System_Properties::JS_PATH.'/cs.js"></script>');
+				
+				$nextSearchResultTMPL = $tmpl -> readFile('default/nextSearchResult.html');
+				$nextSearchResult = $tmpl -> replace(	'SEARCH_HITS',
+														$this -> truckAds['numAds'],
+														$nextSearchResultTMPL
+													);		
+				$truckAds .= $nextSearchResult;
+			}
+		}else{//Javascript deactivated
+			*/
+			$truckAds .= pageCounter($this -> truckAds['totalAds'], '/truck/search/', $this -> truckAds['actPage'], $this -> truckAds['numAds']);
+		//}
+	}
+	else{
+		$truckAds .= $lang['TXT_115'];
+	}
+}
+
+$tmpl -> setValue('TRUCK_ADS', $truckAds);
+echo $tmpl -> render();
+?>

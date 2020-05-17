@@ -1,0 +1,21 @@
+@CHARSET "UTF-8";
+
+.grey{
+	color: #FFFFFF;
+	background: url(/sysPic/bg_subm.png);/*#515151;107bad;*/
+}
+
+.orange{
+	color: #ff7800;
+	color: #10de00;
+	font-weight: bold;
+}
+
+.red{
+	color: #ff1200;
+}
+
+.green{
+	color: #00c700;
+}
+	

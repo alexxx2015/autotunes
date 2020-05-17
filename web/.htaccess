@@ -1,0 +1,32 @@
+RewriteEngine On
+
+
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+
+
+RewriteCond %{HTTPS} !on
+#RewriteCond %{REQUEST_URI} ^.*member.*$ [OR]
+#RewriteCond %{REQUEST_URI} ^.*mycardetail.*$ [OR]
+#RewriteCond %{REQUEST_URI} ^.*mybikedetail.*$ [OR]
+#RewriteCond %{REQUEST_URI} ^.*mytruckdetail.*$ [OR]
+#RewriteCond %{REQUEST_URI} ^.*insert.*$ [OR]
+RewriteCond %{REQUEST_URI} ^.*admin.*$ 
+RewriteRule ^.*$ https://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+
+
+RewriteCond %{HTTPS} on
+#RewriteCond %{REQUEST_URI} !^.*member.*$
+#RewriteCond %{REQUEST_URI} !^.*mycardetail.*$ 
+#RewriteCond %{REQUEST_URI} !^.*mybikedetail.*$ 
+#RewriteCond %{REQUEST_URI} !^.*mytruckdetail.*$
+#RewriteCond %{REQUEST_URI} !^.*insert.*$
+RewriteCond %{REQUEST_URI} !^.*admin.*$
+RewriteCond %{REQUEST_URI} !^.*/aja.*$
+RewriteRule ^.*$ http://%{HTTP_HOST}%{REQUEST_URI} [R,L]
+
+RewriteRule ^.*$ index.php [NC,L]
+
+php_value session.auto_start 0

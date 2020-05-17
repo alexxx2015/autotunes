@@ -1,0 +1,132 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI for changing system properties
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$sysSystem = $this -> sysSystem;
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/system.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+								
+$jsCode = '';
+if (is_array($sysSystem)){
+	$jsCode .= '$(document).ready(function(){';
+
+	//sysOnline
+	if (isset($sysSystem['sysOnline'])){
+		$jsCode .= '$("select[name=\'sysOnline\']").val("'.$sysSystem['sysOnline'].'");';
+	}
+	
+	//sysRegister
+	if (isset($sysSystem['sysRegister'])){
+		$jsCode .= '$("select[name=\'sysRegister\']").val("'.$sysSystem['sysRegister'].'");';
+	}
+	
+	//sysStdGroup
+	if (isset($sysSystem['sysStdGroup'])){
+		$jsCode .= '$("select[name=\'sysStdGroup\']").val("'.$sysSystem['sysStdGroup'].'");';
+	}
+	
+	//sysLogin
+	if (isset($sysSystem['sysLogin'])){
+		$jsCode .= '$("select[name=\'sysLogin\']").val("'.$sysSystem['sysLogin'].'");';
+	}
+	
+	//sysCarMarket
+	if (isset($sysSystem['sysCarMarket'])){
+		$jsCode .= '$("select[name=\'sysCarMarket\']").val("'.$sysSystem['sysCarMarket'].'");';
+	}
+	
+	//sysBikeMarket
+	if (isset($sysSystem['sysBikeMarket'])){
+		$jsCode .= '$("select[name=\'sysBikeMarket\']").val("'.$sysSystem['sysBikeMarket'].'");';
+	}
+	
+	//sysTruckMarket
+	if (isset($sysSystem['sysTruckMarket'])){
+		$jsCode .= '$("select[name=\'sysTruckMarket\']").val("'.$sysSystem['sysTruckMarket'].'");';
+	}
+	
+	//sysDataImp
+	if (isset($sysSystem['sysDataImp'])){
+		$jsCode .= '$("select[name=\'sysDataImp\']").val("'.$sysSystem['sysDataImp'].'");';
+	}
+	
+	//sysDataExp
+	if (isset($sysSystem['sysDataExp'])){
+		$jsCode .= '$("select[name=\'sysDataExp\']").val("'.$sysSystem['sysDataExp'].'");';
+	}
+	
+	//sysDisc
+	if (isset($sysSystem['sysDisc'])){
+		$jsCode .= '$("select[name=\'sysDisc\']").val("'.$sysSystem['sysDisc'].'");';
+	}
+	$jsCode .= '});';
+}
+	
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["INFO_5"] = "'.$lang['INFO_5'].'";
+								'.$jsCode
+				);						
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/system.js"></script>');		
+//SYS_STDGROUP_VAL
+$sysStdGroupVal = '';
+if (is_array($this -> group)){
+	$sysStdGroupVal .= '<select name="sysStdGroup" id="sysStdGroup">';
+	foreach($this -> group as $group){
+		$sysStdGroupVal .= '<option value="'.$group['groupID'].'">'.$group['groupName'].'</option>';
+	}
+	$sysStdGroupVal .= '</select>';
+}
+$tmpl -> setValue('SYS_STDGROUP_VAL', $sysStdGroupVal);
+
+//SYS_SITENAME_VAL
+$sysSitenameVal = '';
+if (isset($sysSystem['sysSiteName'])){
+	$sysSitenameVal = $sysSystem['sysSiteName'];
+}
+$tmpl -> setValue('SYS_SITENAME_VAL', $sysSitenameVal);
+
+//SYS_TELNR_VAL
+$sysTelNrVal = '';
+if (isset($sysSystem['sysTelNr'])){
+	$sysTelNrVal = $sysSystem['sysTelNr'];
+}
+$tmpl -> setValue('SYS_TELNR_VAL', $sysTelNrVal);
+
+//SYS_EMAIL_VAL
+$sysEMailVal = '';
+if (isset($sysSystem['sysEMail'])){
+	$sysEMailVal = $sysSystem['sysEMail'];
+}
+$tmpl -> setValue('SYS_EMAIL_VAL', $sysEMailVal);
+
+//SYS_IMP
+$sysImp = '';
+if (isset($sysSystem['sysImp'])){
+	$sysImp = $sysSystem['sysImp'];
+}
+$tmpl -> setValue('SYS_IMP', $sysImp);
+
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+?>

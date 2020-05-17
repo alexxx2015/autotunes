@@ -1,0 +1,13 @@
+@CHARSET "UTF-8";
+
+.dealerMenu{
+	margin: -0.5em;
+}
+
+.dealerMenu li{
+	float: left;
+	padding: 0.5em;
+}
+.dealerMenu li.nf{
+	float: none;
+}

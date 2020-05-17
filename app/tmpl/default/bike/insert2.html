@@ -1,0 +1,63 @@
+{-INFO-}
+<form action="/bike/insert" method="POST">
+	<div id="vdetail">
+		<h1>{-BIKE_BRAND-} {-BIKE_MODEL-}</h1>	
+		<br/><br/>
+		<div class="box box2">
+			<label for="b1"><strong>{-TXT_84-}</strong></label>
+			<ul id="b1">
+				<li><span>{-TXT_244-}</span>{-BIKE_MODEL_VAR-}</li>
+				<li><span>{-TXT_13-}{-BIKE_PRICE_TYPE-}</span>{-BIKE_PRICE-}</li>
+				<li><span>{-TXT_14-}</span>{-BIKE_KM-} {-BIKE_KM_TYPE-}</li>
+				<li><span>{-TXT_10-}</span>{-BIKE_POWER-}</li>
+				<li><span>{-TXT_7-}</span>{-BIKE_EZ-}</li>
+				<li><span>{-TXT_114-}</span>{-BIKE_LOC-}</li>
+				<li><span>{-TXT_234-}</span>{-BIKE_HSN-}</li>
+				<li><span>{-TXT_235-}</span>{-BIKE_TSN-}</li>
+				<li><span>{-TXT_236-}</span>{-BIKE_FIN-}</li>
+				<li><span>{-TXT_76-}</span>{-BIKE_TUV-}</li>
+				<li><span>{-TXT_77-}</span>{-BIKE_AU-}</li>
+				<li><span>{-TXT_21-}</span> {-BIKE_SHIFT-}</li>
+				<li><span>{-TXT_57-}</span> {-BIKE_WEIGHT-}</li>
+				<li><span>{-TXT_58-}</span> {-BIKE_CYL-}</li>
+				<li><span>{-TXT_59-}</span> {-BIKE_CUB-}</li>
+				<li><span>{-TXT_62-}</span> {-BIKE_USE_IN-}</li>
+				<li><span>{-TXT_63-}</span> {-BIKE_USE_OUT-}</li>
+				<li><span>{-TXT_65-}</span> {-BIKE_CO2-}</li>
+				<li><span>{-TXT_17-}</span> {-BIKE_STATE-}</li>
+				<li><span>{-TXT_18-}</span> {-BIKE_CAT-}</li>
+				<li><span>{-TXT_15-}</span> {-BIKE_FUEL-}</li>
+				<li><span>{-TXT_19-}</span> {-BIKE_CLR-}</li>
+				<li><span>{-TXT_22-}</span> {-BIKE_EMISSION_NORM-}</li>
+				<li><span>{-TXT_85-}</span> {-BIKE_ECOLOGIC_TAG-}</li>
+			</ul>		
+		</div>
+		
+		<div class="box box2">
+			<label for="b2"><strong>{-TXT_86-} {-USER_ADS-}</strong></label>
+			<ul id="b2">
+				<li><span>{-TXT_53-}</span> {-USER_FIRM-}</li>
+				<li><span>{-TXT_88-}</span> {-USER_NAME-}</li>
+				<li><span>{-TXT_54-}</span> {-USER_ADDRESS-}</li>
+				<li><span>{-TXT_48-}</span> {-USER_EMAIL-}</li>
+				<li><span>{-TXT_49-}</span> {-USER_TEL1-}</li>
+				<li><span>{-TXT_50-}</span> {-USER_TEL2-}</li>
+			</ul>
+		</div>
+		
+		<div class="box box2">
+			<label for="bikeExtra"><strong class="heading">{-TXT_83-}</strong></label>
+			<div id="bikeExtra" class="justify">
+				{-BIKE_EXTRA-}
+			</div>
+		</div>
+		
+		<div class="box box2">
+			<label for="bikeDesc"><strong class="heading">{-TXT_68-}</strong></label>
+			<div id="bikeDesc" class="justify">
+				{-BIKE_DESC-}
+			</div>
+		</div>
+	</div>
+	<input type="submit" value="{-TXT_44-}" name="ins3" class="nl"/>
+</form>

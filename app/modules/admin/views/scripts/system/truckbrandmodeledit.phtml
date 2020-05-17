@@ -1,0 +1,114 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$brand = $this -> brand;
+$truckModelParent = $this -> truckModelParent;
+$truckBrand = $this -> truckBrand;
+$truckModel = $this -> truckModel;
+$allTruckModel = $this -> allTruckModel;
+$delTruckAds = $this -> delTruckAds;
+$delModelChild = $this -> delModelChild;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/truckbrandmodeledit.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');															
+
+//TRUCK_BRAND_MODEL_VAL
+$tmpl -> setValue('TRUCK_BRAND_MODEL_VAL', $truckModel['truckModelName']);
+
+//BRAND_NAME_VAL
+$brandNameVal = '';
+if (isset($truckBrand) && is_array($truckBrand)){
+	$brandNameVal .= $truckBrand['brandName'];
+}
+//MODEL_ID_VAL
+$modelIDVal = '';
+if (isset($truckModel) && is_array($truckModel)){
+	$modelIDVal = $truckModel['truckModelID'];
+}
+$tmpl -> setValue('BRAND_NAME_VAL', $brandNameVal);
+$tmpl -> setValue('MODEL_ID_VAL', $modelIDVal);
+
+//TRUCK_BRAND_MODEL
+$truckBrandModel = '<select name="brandModelParent">
+					<option value="-1">'.$lang['ATXT_63'].'</option>';
+
+//TRUCK_MODEL_NAME_VAL
+$truckModelNameVal = '<select name="mid">';
+if (isset($allTruckModel) && is_array($allTruckModel)){	
+	foreach ($allTruckModel as $cm){
+		//TRUCK_BRAND_MODEL
+		$truckBrandModel .= '<option value="'.$cm['truckModelID'].'"  style="padding-left:'.($cm['level'] * 5).'px;" class="'.$cm['level'].'"';
+		if (is_array($truckModelParent) 
+			&& isset($truckModelParent['truckModelID']) 
+			&& ($truckModelParent['truckModelID'] == $cm['truckModelID'])){
+			$truckBrandModel .= ' selected ';
+		}
+		$truckBrandModel .= '>'.$cm['truckModelName'].'</option>';
+		
+		//TRUCK_MODEL_NAME_VAL
+		$truckModelNameVal .= '<option value="'.$cm['truckModelID'].'" style="padding-left:'.($cm['level'] * 5).'px;"  ';
+		if ($cm['truckModelID'] == $truckModel['truckModelID']){
+			$truckModelNameVal .= ' selected ';
+		}
+		$truckModelNameVal .= '>'.$cm['truckModelName'].'</option>';
+	}
+}
+//TRUCK_BRAND_MODEL
+$truckBrandModel .= '</select>';
+$tmpl -> setValue('TRUCK_BRAND_MODEL', $truckBrandModel);
+
+//TRUCK_MODEL_NAME_VAL
+$truckModelNameVal .= '</select>';
+$tmpl -> setValue('TRUCK_MODEL_NAME_VAL', $truckModelNameVal);
+
+//DEL_TRUCK_ADS_VAL
+if (is_array($delTruckAds) || is_array($delModelChild)){
+	if(!isset($delTruckAds['totalRows'])){
+		$delTruckAds['totalRows'] = count($delTruckAds);
+	}
+	
+	$delTruckAdsVal = '<br/><br/>'.$lang['ATXT_67'].'<br/><input type="submit" name="modelDel2" value="'.$lang['ATXT_56'].'"/>';
+	
+	//MODEL_CHILD
+	$delModelChildVal = '';
+	if (is_array($delModelChild) && (count($delModelChild) > 0)){
+		$delModelChildVal = '<ul>';
+		foreach ($delModelChild as $modChild){
+			$delModelChildVal .= '<li>'.$modChild['truckModelName'].'</li>';
+		}
+		$delModelChildVal .= '</ul>';		
+	}else{
+		$delModelChildVal = '---';
+	}
+	
+	$tmpl -> setValue('MODEL_NAME', $truckModel['truckModelName']);
+	$tmpl -> setValue('MODEL_ADS_NUM', $delTruckAds['totalRows']);
+	$tmpl -> setValue('MODEL_CHILD', $delModelChildVal);
+}else{
+	$delTruckAdsVal = '<input type="submit" name="modelDel" value="'.$lang['ATXT_56'].'"/>';
+}
+$tmpl -> setValue('DEL_TRUCK_ADS_VAL' ,$delTruckAdsVal);
+								
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+?>

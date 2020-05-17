@@ -1,0 +1,84 @@
+
+{-INFO-}
+<h3>{-ATXT_117-}</h3>
+<form action="{-ADMIN_MOD_PATH-}/user/showuser{-FORM_ACTION_PARAM-}" method="POST">
+<fieldset class="userEditBox">
+	<legend>{-HEADING-}</legend>
+	
+	<label for="userGroup">{-ATXT_20-}</label>
+	{-USER_GROUP_VAL-}
+	
+	<br class="nl"/>
+	
+	<label for="userStat">{-ATXT_17-}</label>
+	{-USER_STAT_VAL-}
+	
+	<br class="nl"/>
+	
+	<label for="userMode">{-ATXT_16-}</label>
+	{-USER_MODE_VAL-}
+	
+	<br class="nl"/>
+	
+	<label for="userFirm">{-TXT_53-}</label>
+	<input type="text" name="userFirm" maxlength="50" value="{-USER_FIRM_VAL-}" id="userFirm"/>
+		
+	<br class="nl"/>
+	
+	<label for="userNName">{-TXT_46-}*</label>
+	<input type="text" name="userNName" maxlength="50" value="{-USER_NNAME_VAL-}" id="userNName"/>
+	
+	<br class="nl"/>
+
+	<label for="userVName">{-TXT_47-}*</label>
+	<input type="text" name="userVName" maxlength="50" value="{-USER_VNAME_VAL-}" id="userVName="/>
+	
+	<br class="nl"/>
+	          
+	<label for="userEMail">{-TXT_48-}*</label>
+	<input type="text" name="userEMail" maxlength="50" value="{-USER_EMAIL_VAL-}" id="userEMail"/>
+	
+	<br class="nl"/>
+	          
+	<label for="userPW">{-TXT_82-}</label>
+	<input type="password" name="userPW" maxlength="50" id="userPW"/>
+	
+	<br class="nl"/>
+	
+	<label for="userTel1">{-TXT_49-}</label>
+	<input type="text" name="userTel1" maxlength="50" value="{-USER_TEL1_VAL-}" id="userTel1"/>
+	
+	<br class="nl"/>
+	
+	<label for="userTel2">{-TXT_50-}</label>
+	<input type="text" name="userTel2" maxlength="50" value="{-USER_TEL2_VAL-}" id="userTel2"/>
+	          	
+	<br class="nl"/>
+	
+	<label for="userPLZ">{-TXT_51-}</label>
+	<input type="text" name="userPLZ" maxlength="20" value="{-USER_PLZ_VAL-}" id="userPLZ"/>
+	
+	<br class="nl"/>
+	
+	<label for="userOrt">{-TXT_52-}</label>
+	<input type="text" name="userOrt" maxlength="50" value="{-USER_ORT_VAL-}"  id="userOrt"/>
+	
+	<br class="nl"/>
+      
+	<label for="userAdress">{-TXT_54-} <span><span id="userAdressChars">0</span>100</span>{-TXT_69-}</label>
+	<textarea name="userAdress" id="userAdress">{-USER_ADRESS_VAL-}</textarea>
+	<br class="nl"/>
+	
+	<label for="userNews">{-TXT_116-}</label>
+	{-USER_NEWS_VAL-}
+	
+	<br class="nl"/>
+	
+	<label for="userAGB">{-TXT_117-}</label>
+	{-USER_AGB_VAL-}
+	
+	<br class="nl"/>
+	<input type="submit" name="userSafe" value="{-TXT_156-}"/>
+	<input type="submit" name="userDelete" value="{-ATXT_12-}"/>
+</fieldset>
+</form>

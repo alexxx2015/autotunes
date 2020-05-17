@@ -1,0 +1,58 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$searchParam = $this -> searchParam;
+
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/user/usersearchbox.phtml');
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/user/usersearch_res.html');	
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/user.css" />');
+								
+//$tmpl -> readTmplFile('USER_SEARCH_BOX', System_Properties::ADMIN_MOD_PATH.'/user/usersearch_box.html');		
+
+$userSearchRes = '';
+if (isset($this -> user) && (count($this -> user) > 0)){
+	$userSearchRes .= '<table>';
+	
+	foreach ($this->user AS $user){
+		$userText = '';
+		if(isset($user['userFirm']) && ($user['userFirm'] != '')){
+			$userText = $user['userFirm'];
+		}
+		elseif (isset($user['userNName']) && isset($user['userVName'])
+				&& ($user['userNName'] != '') && ($user['userVName'] != '')){
+			$userText = $user['userNName'].' '.$user['userVName'];			
+		}
+		
+		$userSearchRes .= '	<tr>
+								<td><a href="{-ADMIN_MOD_PATH-}/user/showuser/id/'.$user['userID'].'">'.$userText.'</a></td>
+								<td><a class="erase">{-ATXT_12-}</a></td>
+								<td><a class="edit">{-ATXT_13-}</a></td>
+							</tr>';
+	}
+	$userSearchRes .= '</table>';
+}			
+
+$tmpl -> setValue('USER_SEARCH_RES', $userSearchRes);
+/*
+$userGroupVal = '';
+if (isset($this -> userGroup) && is_array($this -> userGroup)){
+	$userGroupVal .= '<select name="userGroup">
+						<option value="-1">'.$lang['TXT_16'].'</option>';
+	foreach($this -> userGroup as $userGroup){
+		$userGroupVal .= '<option value="'.$userGroup['groupID'].'">'.$userGroup['groupName'].'</option>';
+	}
+	$userGroupVal .= '</select>';
+}
+$tmpl -> setValue('USER_GROUP_VAL', $userGroupVal);
+*/
+
+echo $tmpl -> render();
+?>

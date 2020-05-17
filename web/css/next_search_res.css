@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+.nextSearchResult{
+	background: lightgreen;
+	padding: 5px;
+	font-weight: bold;
+	cursor: pointer;
+	display: inline;
+	border: 1px solid transparent;
+}
+.nextSearchResult input{
+	background: transparent;
+	border: 1px solid green;
+	text-align: center;
+}
+.nextSearchResult:hover{
+	border: 1px solid green;
+}

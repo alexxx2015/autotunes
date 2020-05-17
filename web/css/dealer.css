@@ -1,0 +1,8 @@
+@CHARSET "UTF-8";
+
+.box{
+	padding: 0.5em;
+	margin-top: 1em;
+	float: none;
+	width: 25em;
+}

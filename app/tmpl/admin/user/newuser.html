@@ -1,0 +1,92 @@
+
+{-INFO-}
+<h3>{-ATXT_117-}</h3>
+<form action="{-ACTION_VAL-}" method="POST">
+<fieldset class="userEditBox">
+		<legend>{-HEADING-}</legend>
+	<!-- <legend>{-ATXT_15-}</legend>-->
+	<div>
+	<label for="userGroup">{-ATXT_20-}</label>
+	{-USER_GROUP_VAL-}
+	</div>
+	
+	<div>
+	<label for="userStat">{-ATXT_17-}</label>
+	{-USER_STAT_VAL-}
+	</div>
+	
+	<div>
+	<label for="userMode">{-ATXT_16-}</label>
+	{-USER_MODE_VAL-}
+	</div>
+	
+	<div class="userAddInfo">
+	<label for="userFirm">{-TXT_53-}</label>
+	<input type="text" name="userFirm" maxlength="50" value="{-USER_FIRM_VAL-}" id="userFirm"/>
+		</div>
+	
+	<div class="userInfo">
+	<label for="userNName" class="orange bold"><span class="star">*</span> {-TXT_46-}</label>
+	<input type="text" name="userNName" maxlength="50" value="{-USER_NNAME_VAL-}" id="userNName"/>
+	</div>
+	
+	<div class="userInfo">
+	<label for="userVName" class="orange bold"><span class="star">*</span> {-TXT_47-}</label>
+	<input type="text" name="userVName" maxlength="50" value="{-USER_VNAME_VAL-}" id="userVName="/>
+	</div>
+
+	<div>	          
+	<label for="userEMail" class="orange bold"><span class="star">*</span> {-TXT_48-}</label>
+	<input type="text" name="userEMail" maxlength="50" value="{-USER_EMAIL_VAL-}" id="userEMail"/>
+	</div>
+
+	<div>          
+	<label for="userPW" class="orange bold"><span class="star">*</span> {-TXT_82-}</label>
+	<input type="password" name="userPW" maxlength="50" id="userPW" value=" "/>
+	</div>
+	
+	<div class="userAddInfo">
+	<label for="userTel1">{-TXT_49-}</label>
+	<input type="text" name="userTel1" maxlength="50" value="{-USER_TEL1_VAL-}" id="userTel1"/>
+	</div>
+	
+	<div>
+	<label for="userTel2">{-TXT_50-}</label>
+	<input type="text" name="userTel2" maxlength="50" value="{-USER_TEL2_VAL-}" id="userTel2"/>
+	     </div>
+
+	<div class="userAddInfo">	
+	<label for="userPLZ">{-TXT_51-}</label>
+	<input type="text" name="userPLZ" maxlength="20" value="{-USER_PLZ_VAL-}" id="userPLZ"/>
+	</div>
+	
+	<div class="userAddInfo">
+	<label for="userOrt">{-TXT_52-}</label>
+	<input type="text" name="userOrt" maxlength="50" value="{-USER_ORT_VAL-}"  id="userOrt"/>
+	</div>
+      
+    <div>
+	<label for="userAdress">{-TXT_54-} <span><span id="userAdressChars">0</span> / 100</span> {-TXT_69-}</label>
+	<textarea name="userAdress" id="userAdress">{-USER_ADRESS_VAL-}</textarea>
+	</div>
+		<br/>
+	<ul>
+		<li><label for="fileImpFormat" class="nl">{-TXT_179-}: </label>{-FORMAT-}</li>
+		<li><input type="checkbox" name="datexImp" {-DATEX_IMP_CONF_CHECKED-}/>{-TXT_186-}</li>
+		<li style="padding-left: 1em;" title="{-TXT_250-}"><input type="checkbox" name="datexFTPImp" {-DATEX_FTP_IMP_CONF_CKECKED-}/>{-TXT_184-}, {-TXT_248-} {-V_TYPE-}</li>
+		<li><input type="checkbox" name="datexExp" {-DATEX_EXP_CONF_CHECKED-}/>{-TXT_185-}</li>
+	</ul>
+	<br/>
+	<ul>
+		<li>{-USER_NEWS_VAL-} {-TXT_116-}</li>
+		<li class="orange bold">{-USER_AGB_VAL-} <span class="star">*</span> {-TXT_117-}</li>
+	</ul>
+	
+	<br class="nl"/>
+	
+	<span class="orange bold">*{-TXT_192-}</span>
+	<br class="nl"/>
+	{-SUBMIT_BTN-}
+	
+</fieldset>
+</form>

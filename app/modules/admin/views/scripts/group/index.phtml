@@ -1,0 +1,43 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/group.css" />');
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/group/index.html');		
+
+$userGroupVal = '';
+if (isset($this -> userGroup)
+	&& is_array($this -> userGroup)){
+	$userGroupVal .= '<table>';
+	foreach ($this -> userGroup as $userGroup){
+		$userGroupVal .= '	<tr>
+								<td><a href="{-ADMIN_MOD_PATH-}/group/showgroup/id/'.$userGroup['groupID'].'">'.$userGroup['groupName'].'</a></td>
+							</tr>';
+	}		
+	$userGroupVal .= '</table>';
+}
+$tmpl -> setValue('USER_GROUP_VAL', $userGroupVal);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

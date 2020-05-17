@@ -1,0 +1,107 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/system/brandnewform.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$carCat = $this -> carCat;
+$bikeCat = $this -> bikeCat;
+$truckCat = $this -> truckCat;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/brandidx.html');
+//$tmpl -> readTmplFile('BRAND_NEW_FORM', System_Properties::ADMIN_MOD_PATH.'/system/brandnewform.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+								
+//BRAND_VAL
+$brandVal = '';
+if(isset($this -> brand) && is_array($this -> brand)){
+	$brandVal .= '<table>
+					<tr>
+						<th>'.$lang['ATXT_49'].'</th>
+						<th>'.$lang['ATXT_50'].'</th>
+						<th>'.$lang['ATXT_51'].'</th>
+						<th>'.$lang['ATXT_52'].'</th>
+						<th></th>
+						<th></th>
+						<th></th>
+						<th></th>
+					</tr>';
+	foreach ($this -> brand as $brand){
+		$brandVal .= '	<tr>
+						<td><a href="{-ADMIN_MOD_PATH-}/system/brandedit/bid/'.$brand['brandID'].'">'.$brand['brandName'].'</a></td>
+						<td><input type="checkbox" name="carBrand[]" value="'.$brand['brandID'].'" '.($brand['carBrand'] == 1?'checked':'').' disabled/></td>
+						<td><input type="checkbox" name="bikeBrand[]" value="'.$brand['brandID'].'" '.($brand['bikeBrand'] == 1?'checked':'').' disabled/></td>
+						<td><input type="checkbox" name="truckBrand[]" value="'.$brand['brandID'].'" '.($brand['truckBrand'] == 1?'checked':'').' disabled/></td>
+						<td><a href="{-ADMIN_MOD_PATH-}/system/brandedit/bid/'.$brand['brandID'].'">'.$lang['TXT_144'].'</a></td>
+						<td><a href="{-ADMIN_MOD_PATH-}/system/carbrandmodel/bid/'.$brand['brandID'].'">'.$lang['ATXT_58'].'</a></td>
+						<td><a href="{-ADMIN_MOD_PATH-}/system/bikebrandmodel/bid/'.$brand['brandID'].'">'.$lang['ATXT_59'].'</a></td>
+						<td><a href="{-ADMIN_MOD_PATH-}/system/truckbrandmodel/bid/'.$brand['brandID'].'">'.$lang['ATXT_60'].'</a></td>
+						</tr>';
+	}
+	$brandVal .= '</table>';
+}
+$tmpl -> setValue('BRAND_VAL', $brandVal);
+
+//CAR_CAT
+$carCatVal = '';
+if (is_array($carCat)){
+	$carCatVal .= '<select name="carCat[]" multiple>
+					<option value="-1" selected>'.$lang['ATXT_116'].'</option>';
+	foreach($carCat as $key => $kVal){
+		if (isset($lang['V_CAT'][$kVal['vcatID']])){
+			$carCatVal .= '<option value="'.$kVal['carCatID'].'">'.$lang['V_CAT'][$kVal['vcatID']].'</option>';
+		}
+	}
+	$carCatVal .= '</select>';
+}
+$tmpl -> setValue('CAR_CAT', $carCatVal);
+
+//BIKE_CAT
+$bikeCatVal = '';
+if (is_array($bikeCat)){
+	$bikeCatVal .= '<select name="bikeCat[]" multiple>
+					<option value="-1" selected>'.$lang['ATXT_116'].'</option>';
+	foreach($bikeCat as $key => $kVal){
+		if (isset($lang['V_CAT'][$kVal['vcatID']])){
+			$bikeCatVal .= '<option value="'.$kVal['bikeCatID'].'">'.$lang['V_CAT'][$kVal['vcatID']].'</option>';
+		}
+	}
+	$bikeCatVal .= '</select>';
+}
+$tmpl -> setValue('BIKE_CAT', $bikeCatVal);
+
+//TRUCK_CAT
+$truckCatVal = '';
+if (is_array($truckCat)){
+	$truckCatVal .= '<select name="truckCat[]" multiple>
+					<option value="-1" selected>'.$lang['ATXT_116'].'</option>';
+	foreach($truckCat as $key => $kVal){
+		if (isset($lang['V_CAT'][$kVal['vcatID']])){
+			$truckCatVal .= '<option value="'.$kVal['truckCatID'].'">'.$lang['V_CAT'][$kVal['vcatID']].'</option>';
+		}
+	}
+	$truckCatVal .= '</select>';
+}
+$tmpl -> setValue('TRUCK_CAT', $truckCatVal);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+?>

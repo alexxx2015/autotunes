@@ -1,0 +1,41 @@
+{-INFO-}
+<form action="/member/register" method="post" class="regForm">
+	<h1>{-TXT_134-}</h1>
+	<div class="regBox">
+		<label>{-TXT_48-}</label>
+		<input type="text" name="userEMail" value="{-USER_EMAIL_VAL-}"/>
+	</div>
+	
+	<div class="regBox">
+		<label>{-TXT_46-}</label>
+		<input type="text" name="userNName" value="{-USER_NNAME_VAL-}"/>
+	</div>
+	
+	<div class="regBox">
+		<label>{-TXT_47-}</label>
+		<input type="text" name="userVName" value="{-USER_VNAME_VAL-}"/>
+	</div>
+	
+	<div class="regBox">
+		<label title="{-INFO_14-}" for="captcha_code">{-TXT_220-}</label>
+		<input type="text" name="captcha_code" maxlength="6" id="captcha_code"/>		
+	</div>
+	
+	<div class="regBox captcha">
+		<img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" />
+		<a href="#" onclick="document.getElementById('captcha').src = '/securimage/securimage_show.php?' + Math.random(); return false"><img src="/securimage/images/refresh.gif"/></a>	
+	</div>
+	
+	<div class="regBox">
+		<input type="checkbox" name="userAGB" {-USER_AGB_VAL-}/> {-TXT_136-} <a href="/index/rules">{-TXT_117-}</a>
+	</div>	
+	
+	
+	<div class="regBox">
+		<input type="checkbox" name="userNews" {-USER_NEWS_VAL-}/>{-TXT_137-}
+	</div>
+	
+	<div class="regBox">
+		<input type="submit" name="memReg" value="{-TXT_131-}"/>
+	</div>
+</form>

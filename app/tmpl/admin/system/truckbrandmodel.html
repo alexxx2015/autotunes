@@ -1,0 +1,34 @@
+<h2>{-ATXT_49-}: {-BRAND_NAME_VAL-}</h2>
+<form action="{-ADMIN_MOD_PATH-}/system/truckbrandmodel" method="POST">
+	<input type="submit" name="truckBrandChange" value="{-ATXT_65-}"/>
+	{-TRUCK_BRAND_NAME_VAL-}
+</form>
+
+<fieldset class="brandBox">
+	<legend><strong>{-ATXT_57-}</strong></legend>
+	<form action="{-ADMIN_MOD_PATH-}/system/truckbrandmodel/bid/{-BRAND_ID_VAL-}" method="POST" id="brandForm">	
+		<table>
+		<tr>
+			<th>{-ATXT_61-}</th>
+			<th>{-ATXT_62-}</th>
+		</tr>
+		<tr>
+			<td><input type="text" name="brandModelName"/></td>
+			<td>
+				{-TRUCK_BRAND_MODEL-}
+			</td>
+			<td><input type="submit" name="truckBrandModelNew" value="{-TXT_156-}"/></td>
+		</tr>
+		</table>
+	</form>
+</fieldset>
+{-INFO-}
+<br/>
+<br/>
+<table border="1">
+	<tr>
+		<th></th>
+		<th>{-ATXT_61-}</th>
+	</tr>
+	{-TRUCK_BRAND_MODEL_VAL-}
+</table>

@@ -1,0 +1,102 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI for managing vehicle extras
+ *********************************************************************************/
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/system/vcatformnew.phtml');
+$tmpl = $this -> tmpl;
+$posLang = $this -> posLang;
+$lang = $this -> lang;
+$sysSystem = $this -> sysSystem;
+$vcat = $this -> vcat;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/vcat.html');
+
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/vcat.js"></script>');	
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+								
+$vcatVal = '<table border=1>';
+if (is_array($posLang)){
+	//Print table header
+	$vcatVal .= '<tr><th></th>';
+	foreach ($posLang as $key => $value){
+		$tmpl -> setValue('V_CAT_'.strtoupper($value['langAbrv']), '');
+		$vcatVal .= '<th>'.$value['langAbrv'].'</th>';
+	}
+	$vcatVal .= '</tr>';
+	//print complete table content
+	if (is_array($vcat)){
+		foreach ($vcat as $key => $val){
+			$vcatVal .= '<tr>
+							<td><a href="/'.System_Properties::ADMIN_MOD_PATH.'/system/vcatedit/vid/'.$val['vcatID'].'">'.$lang['TXT_144'].'</a></td>';
+			if (isset($val['vcatID'])){
+				foreach ($posLang as $lKey => $lVal){
+					$vcatVal .= '<td>';
+					if (isset($lang['V_CAT_'.strtoupper($lVal['langAbrv'])][$val['vcatID']])){
+						$vcatVal .= $lang['V_CAT_'.strtoupper($lVal['langAbrv'])][$val['vcatID']];
+					}
+					$vcatVal .= '</td>';
+				}	
+			}
+			$vcatVal .= '</tr>';
+		}
+	}
+}
+$vcatVal .= '</table>';
+$tmpl -> setValue('VCAT_VAL', $vcatVal);
+
+/*
+if (is_array($vcat)){
+	$vcatVal = '<table>
+				<tr>
+					<th>'.$lang['TXT_83'].'</th>
+					<th>'.$lang['ATXT_50'].'</th>
+					<th>'.$lang['ATXT_51'].'</th>
+					<th>'.$lang['ATXT_52'].'</th>
+				</tr>';
+	foreach ($vcat as $v){
+		if (isset($lang['V_CAT'][$v['vcatID']])){
+			$vcatVal .= '<tr>
+							<td>'.$lang['V_CAT'][$v['vcatID']].'</td>
+							<td><input type="checkbox" disabled ';
+			if (isset($v['carExtExist']) && ($v['carExtExist'] == 1)){
+				$vcatVal .= ' checked ';
+			}
+			$vcatVal .= '/></td>
+							<td><input type="checkbox" disabled ';
+			if (isset($v['bikeExtExist']) && ($v['bikeExtExist'] == 1)){
+				$vcatVal .= ' checked ';
+			}
+			$vcatVal .= '/></td>
+							<td><input type="checkbox" disabled ';
+			if (isset($v['truckExtExist']) && ($v['truckExtExist'] == 1)){
+				$vcatVal .= ' checked ';
+			}
+			$vcatVal .= '/></td>
+						</tr>';
+			/*
+						<td>
+							<a href="{-ADMIN_MOD_PATH-}/system/vcatedit/vid/'.$v['vcatID'].'">'.$lang['TXT_144'].'</a>
+						</td>*
+		}
+	}
+	$vcatVal .= '</table>';
+}
+*/
+								
+//INFO
+$info = '';
+if (isset($this -> error)){
+	$info = $this -> error;
+}
+if (isset($this -> info)){
+	$info = $this -> info;
+}
+$tmpl -> setValue('INFO', $info);
+
+echo $this -> tmpl -> render();
+?>

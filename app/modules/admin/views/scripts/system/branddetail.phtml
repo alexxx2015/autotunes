@@ -1,0 +1,79 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/system/brandmodelform.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$brand = $this -> brand;
+$carBrand = $this -> carBrand;
+$carModel = $this -> carModel;
+$bikeBrand = $this -> bikeBrand;
+$bikeModel = $this -> bikeModel;
+$truckBrand = $this -> truckBrand;
+$truckModel = $this -> truckModel;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/branddetail.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');															
+
+
+//BRAND_NAME_VAL, BRAND_ID_VAL
+$brandNameVal = '';
+$brandIDVal = '';
+if (isset($brand) && is_array($brand)){
+	$brandNameVal .= $brand['brandName'];
+	$brandIDVal = $brand['brandID'];
+}
+$tmpl -> setValue('BRAND_NAME_VAL', $brandNameVal);
+$tmpl -> setValue('BRAND_ID_VAL', $brandIDVal);
+
+//CAR_BRAND_MODEL_VAL
+$carBrandModelVal = '';
+if (isset($carModel) && is_array($carModel)){
+	$carBrandModelVal .= '<table>';
+	foreach ($carModel as $cm){
+		$carBrandModelVal .= '<tr><td><a href="{-ADMIN_MOD_PATH-}/system/brandmodeledit/mid/'.$cm['carModelID'].'">'.$cm['carModelName'].'</a></td></tr>';		
+	}
+	$carBrandModelVal .= '</table>';
+}
+$tmpl -> setValue('CAR_BRAND_MODEL_VAL', $carBrandModelVal);
+
+//BIKE_BRAND_MODEL_VAL
+$bikeBrandModelVal = '';
+if (isset($bikeModel) && is_array($bikeModel)){
+	$bikeBrandModelVal .= '<table>';
+	foreach ($bikeModel as $bm){
+		$bikeBrandModelVal .= '<tr><td><a href="{-ADMIN_MOD_PATH-}/system/brandmodeledit/mid/'.$bm['bikeModelID'].'">'.$bm['bikeModelName'].'</a></td></tr>';		
+	}
+	$bikeBrandModelVal .= '</table>';
+}
+$tmpl -> setValue('BIKE_BRAND_MODEL_VAL', $bikeBrandModelVal);
+
+//TRUCK_BRAND_MODEL_VAL
+$truckBrandModelVal = '';
+if (isset($truckModel) && is_array($truckModel)){
+	$truckBrandModelVal .= '<table>';
+	foreach ($truckModel as $bm){
+		$truckBrandModelVal .= '<tr><td><a href="{-ADMIN_MOD_PATH-}/system/brandmodeledit/mid/'.$bm['truckModelID'].'">'.$bm['truckModelName'].'</a></td></tr>';		
+	}
+	$truckBrandModelVal .= '</table>';
+}
+$tmpl -> setValue('TRUCK_BRAND_MODEL_VAL', $truckBrandModelVal);
+
+//INFO
+$info = '';
+if (isset($this -> error)){
+	$info = $this -> error;
+}
+if (isset($this -> info)){
+	$info = $this -> info;
+}
+$tmpl -> setValue('INFO', $info);
+
+echo $this -> tmpl -> render();
+?>

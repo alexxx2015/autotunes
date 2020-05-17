@@ -1,0 +1,73 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for car maintenance
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+//include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/car/carQuickSearch.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$carExt = $this -> carExt;
+$cntCar2Ext = $this -> cntCar2Ext;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/car/carextraerase.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/car.css" />
+								<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+	/*							
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["ADMIN_MOD_PATH"] = "'.System_Properties::ADMIN_MOD_PATH.'";'
+				);
+				
+$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/cs.js"></script>');	
+
+*/
+
+$tmpl -> setValue('CAR_EXTRA_CONFIRM_TEXT', $lang['ATXT_80']);
+
+//CAR_EXTRA_ID
+$tmpl -> setValue('CAR_EXTRA_ID', $carExt['carExtID']);
+
+//NUM_SUB_EXT
+$numCarExt = 0;
+if (is_array($carExt) && isset($carExt['children'])){
+	$numCarExt = $carExt['children'];
+}
+$tmpl -> setValue('NUM_SUB_EXT', $numCarExt);
+
+//NUM_CAR_ADS
+$numCar2Ext = 0;
+if (is_array($cntCar2Ext) && isset($cntCar2Ext['count_num'])){
+	$numCar2Ext = $cntCar2Ext['count_num'];
+}
+$tmpl -> setValue('NUM_CAR_ADS', $numCar2Ext);
+
+
+//CAR_EXT_NAME
+$carExtName = '';
+if (isset($carExt['vextID']) && isset($lang['V_EXTRA'][$carExt['vextID']])){
+	$carExtName = $lang['V_EXTRA'][$carExt['vextID']];
+}
+$tmpl -> setValue('CAR_EXT_NAME', $carExtName);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

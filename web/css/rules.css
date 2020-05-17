@@ -1,0 +1,20 @@
+@CHARSET "ISO-8859-1";
+
+.rules{
+	margin-bottom: 1em;
+}
+.rules .title{
+	background: #353535;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 0.3em 0.3em 0.3em 0.5em ;
+}
+
+.rules li{
+	padding: 1em 0 1em 1em ;
+	text-align: justify;
+}
+
+.rules ul{
+	margin-left: 1em;
+}

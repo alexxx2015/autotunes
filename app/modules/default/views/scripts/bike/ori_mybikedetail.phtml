@@ -1,0 +1,579 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$bike = $this -> bike;
+$bikeCat = $this -> bikeCat;
+$lang = $this -> lang;
+
+$tmpl -> readTmplFile('CONTENT', 'default/bike/mybikedetail.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'	<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/mybikeadsdetail.css" />
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/bike_insert.css" />'
+								);
+							
+
+//Set BIKE_BRAND
+$bikeBrands = '';
+if(isset($this -> bikeBrand) && is_array($this -> bikeBrand)){
+	$bikeBrands .= '	<select name="bikeBrand">';
+	foreach ($this -> bikeBrand as $bikeBrand){
+		$bikeBrands .= '<option value="'.$bikeBrand['bikeBrandID'].'" ';
+		if (isset($bike['bikeBrandID']) && ($bike['bikeBrandID'] == $bikeBrand['bikeBrandID'])){
+			$bikeBrands .= 'selected';
+		}
+		$bikeBrands .= ' >'.$bikeBrand['brandName'].'</option>';
+	}
+	$bikeBrands .= '</select>';
+}
+$tmpl -> setValue('BIKE_BRAND_VAL', $bikeBrands);
+
+//Set BIKE_MODEL
+$bikeModels = '';
+if(isset($this -> bikeModel) && is_array($this -> bikeModel)){
+	$bikeModels .= '	<select name="bikeModel">
+					<option value="-1">'.$lang['TXT_40'].'</option>';
+	foreach ($this -> bikeModel as $bikeModel){
+		$bikeModels .= '<option value="'.$bikeModel['bikeModelID'].'" ';
+		if (isset($bike['bikeModelID']) && ($bike['bikeModelID'] == $bikeModel['bikeModelID'])){			
+			$bikeModels .= 'selected';
+		}
+		$bikeModels .= '>'.$bikeModel['bikeModelName'].'</option>';
+	}
+	$bikeModels .= '	</select>';
+}
+$tmpl -> setValue('BIKE_MODEL_VAL', $bikeModels);													
+$tmpl -> setValue('JS_CODEE', $tmpl -> getValue('JS_CODE')
+							.'	g_arr["TXT40"] = \''.$lang['TXT_40'].'\';'
+				);
+
+//Set BIKE_EZ_M and CAT_EZ_Y
+$bikeEZM = '	<select name="bikeEZM">
+				<option value="-1">{-TXT_38-}</option>';
+for($i = 1; $i <= 12; $i++){
+	$bikeEZM .= '<option value="'.$i.'" ';
+	if ($i == $bike['bikeEZM']){
+		$bikeEZM .= 'selected';
+	}
+	$bikeEZM .= '>'.$i.'</option>';
+  }            
+$bikeEZM .= '</select>';
+$tmpl -> setValue('BIKE_EZ_M_VAL', $bikeEZM);
+
+$bikeEZY = '	<select name="bikeEZY">
+				<option value="-1">{-TXT_39-}</option>';
+for($i = date('Y'); $i >= 1900; $i--){
+	$bikeEZY .= '<option value="'.$i.'" ';
+	if ($i == $bike['bikeEZY']){
+		$bikeEZY .= 'selected';
+	}
+	$bikeEZY .= '>'.$i.'</option>';	
+}            
+$bikeEZY .= '</select>';
+$tmpl -> setValue('BIKE_EZ_Y_VAL', $bikeEZY);
+
+//Set BIKE_KM_VAL
+$bikeKMVal = '';
+if (isset($bike['bikeKM'])){
+	$bikeKMVal = $bike['bikeKM'];
+}
+$tmpl -> setValue('BIKE_KM_VAL', $bikeKMVal);
+
+//Set BIKE_KM_TYPE_VAL
+$bikeKMType = '<select name="bikeKMType">';
+foreach ($lang['TXT_75'] as $key => $val){
+	$bikeKMType .= '<option value="'.$key.'" ';
+	if ($key == $bike['bikeKMType']){
+		$bikeKMType .= 'selected';
+	}
+	$bikeKMType .= '>'.$val.'</option>';
+}
+$bikeKMType .= '</select>';
+$tmpl -> setValue('BIKE_KM_TYPE', $bikeKMType);
+
+//Set BIKE_PRICE_VAL
+$bikePriceVal = '';
+if (isset($bike['bikePrice'])){
+	$bikePriceVal = $bike['bikePrice'];
+}
+$tmpl -> setValue('BIKE_PRICE_VAL', $bikePriceVal);
+
+$bikePriceCurr = '';
+if (isset($lang['TXT_74'][$bike['bikePriceCurr']])){
+	$bikePriceCurr .= $lang['TXT_128'].' '.$lang['TXT_74'][$bike['bikePriceCurr']];
+}
+$tmpl -> setValue('BIKE_PRICE_CURR', $bikePriceCurr);
+
+//Set BIKE_PRICE_TYPE
+$bikePriceType = '<select name="bikePriceType">';
+foreach ($lang['TXT_70'] as $key => $val){
+	$bikePriceType .= '<option value="'.$key.'" ';
+	if ($key == $bike['bikePriceType']){
+		$bikePriceType .= 'selected';
+	}
+	$bikePriceType .= '>'.$val.'</value>';
+}
+$bikePriceType .= '</select>';
+$tmpl -> setValue('BIKE_PRICE_TYPE_VAL', $bikePriceType);
+
+//Set BIKE_POWER_VAL
+$bikePowerVal = '';
+if (isset($bike['bikePower'])){
+	$bikePowerVal = $bike['bikePower'];
+}
+$tmpl -> setValue('BIKE_POWER_VAL', $bikePowerVal);
+
+//Set BIKE_POWER_TYPE
+$bikePowerType = '<select name="bikePowerType">';
+foreach ($lang['TXT_72'] as $key => $val){
+	$bikePowerType .= '<option value="'.$key.'" ';
+	if ($key == $bike['bikePowerType']){
+		$bikePowerType .= 'selected';
+	}
+	$bikePowerType .= '>'.$val.'</option>';
+}
+$bikePowerType .= '</select>';
+$tmpl -> setValue('BIKE_POWER_TYPE_VAL', $bikePowerType);
+
+//Set BIKE_SHIFT
+$bikeShift = '<select name="bikeShift">
+              	<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_SHIFT'] as $key => $val) {
+	$bikeShift .= '<option value="'.$key.'" ';
+	if(isset($bike['bikeShift']) && ($key == $bike['bikeShift'])){
+		$bikeShift .= 'selected';
+	}
+	$bikeShift .= '>'.$val.'</option>';
+}
+$bikeShift .= '</select>';
+$tmpl -> setValue('BIKE_SHIFT_VAL', $bikeShift);
+//Set BIKE_TUV_X
+$bikeTUVM = '<select name="bikeTUVM">
+				<option value="-1">{-TXT_38-}</option>';
+for($i = 1; $i <= 12; $i++){
+	$bikeTUVM .= '<option value="'.$i.'" ';
+	if ($i == $bike['bikeTUVM']){
+		$bikeTUVM .= 'selected';
+	}
+	$bikeTUVM .= '>'.$i.'</option>';
+}            
+$bikeTUVM .= '</select>';
+$tmpl -> setValue('BIKE_TUV_M_VAL', $bikeTUVM);
+
+$bikeTUVY = '<select name="bikeTUVY">
+				<option value="-1">{-TXT_39-}</option>'; 
+for($i = date('Y'); $i <= date('Y')+4; $i++){
+	$bikeTUVY .= '<option value="'.$i.'" ';
+	if($i == $bike['bikeTUVY']){
+		$bikeTUVY .= 'selected';
+	}	
+	$bikeTUVY .= '>'.$i.'</option>';
+}                        
+$bikeTUVY .= '</select>';
+$tmpl -> setValue('BIKE_TUV_Y_VAL', $bikeTUVY);
+
+//Set BIKE_AU_X
+$bikeAUM = '	<select name="bikeAUM">
+				<option value="-1">{-TXT_38-}</option>';
+for($i = 1; $i <= 12; $i++){
+	$bikeAUM .= '<option value="'.$i.'" ';
+	if($i == $bike['bikeAUM']){
+		$bikeAUM .= 'selected';
+	}
+	$bikeAUM .= '>'.$i.'</option>';
+}            
+$bikeAUM .= '</select>';
+$tmpl -> setValue('BIKE_AU_M_VAL', $bikeAUM);
+
+$bikeAUY = '	<select name="bikeAUY">
+				<option value="-1">{-TXT_39-}</option>'; 
+for($i = date('Y'); $i <= date('Y')+4; $i++){
+	$bikeAUY .= '<option value="'.$i.'" ';
+	if($i == $bike['bikeAUY']){
+		$bikeAUY .= 'selected';
+	}
+	$bikeAUY .= '>'.$i.'</option>';
+}                        
+$bikeAUY .= '</select>';
+$tmpl -> setValue('BIKE_AU_Y_VAL', $bikeAUY);
+
+//Set BIKE_CAT
+$bikeCatVal = '	<select name="bikeCat">
+				<option value="-1">{-TXT_40-}</option>';
+if(is_array($bikeCat)){
+	foreach ($bikeCat as $key => $val){
+		if(isset($lang['V_CAT'][$val['vcatID']])){
+			$bikeCatVal .= '<option value="'.$val['bikeCatID'].'" ';
+			if(isset($bike['bikeCat']) && ($val['bikeCatID'] == $bike['bikeCat'])){
+				$bikeCatVal .= 'selected';
+			}
+			$bikeCatVal .= '>'.$lang['V_CAT'][$val['vcatID']].'</option>';
+		}
+	}
+}         
+$bikeCatVal .= '</select>';
+$tmpl -> setValue('BIKE_CAT_VAL', $bikeCatVal);
+
+/*
+$bikeCat = '	<select name="bikeCat">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['BIKE_CAT'] as $key => $val){
+	$bikeCat .= '<option value="'.$key.'" ';
+	if(isset($bike['bikeCat']) && ($key == $bike['bikeCat'])){
+		$bikeCat .= 'selected';
+	}
+	$bikeCat .= '>'.$val.'</option>';
+}         
+$bikeCat .= '</select>';
+$tmpl -> setValue('BIKE_CAT_VAL', $bikeCat);
+*/
+
+//Set BIKE_STATE
+$bikeState = '<select name="bikeState">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_STATE'] as $key => $val){
+	$bikeState .= '<option value="'.$key.'" ';
+	if(isset($bike['bikeState']) && ($key == $bike['bikeState'])){
+		$bikeState .= 'selected';
+	}
+	$bikeState .= '>'.$val.'</option>';
+}
+$bikeState .= '</select>';
+$tmpl -> setValue('BIKE_STATE_VAL', $bikeState);
+
+//Set BIKE_FUEL
+$bikeFuel = '<select name="bikeFuel">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_FUEL'] as $key => $val){
+	$bikeFuel .= '<option value="'.$key.'" ';
+	if (isset($bike['bikeFuel']) && ($key == $bike['bikeFuel'])){
+		$bikeFuel .= 'selected';
+	}
+	$bikeFuel .= '>'.$val.'</option>';
+}
+$bikeFuel .= '</select>';
+$tmpl -> setValue('BIKE_FUEL_VAL', $bikeFuel);
+
+//Set BIKE_EMISSION_NORM
+$bikeEmissionNorm = '<select name="bikeEmissionNorm">
+              <option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_EMISSION_NORM'] as $key => $val){
+	$bikeEmissionNorm .= '<option value="'.$key.'" ';
+	if (isset($bike['bikeEmissionNorm']) && ($key == $bike['bikeEmissionNorm'])){
+		$bikeEmissionNorm .= 'selected';
+	}
+	$bikeEmissionNorm .= '>'.$val.'</option>';
+}
+$bikeEmissionNorm .= '</select>';
+$tmpl -> setValue('BIKE_EMISSION_NORM_VAL', $bikeEmissionNorm);
+
+//Set BIKE_CLR
+$bikeClr = '	<select name="bikeClr">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_CLR'] as $key => $val){
+	$bikeClr .= '<option value="'.$key.'" ';
+	if (isset($bike['bikeClr']) && ($key == $bike['bikeClr'])){
+		$bikeClr .= 'selected';
+	}
+	$bikeClr .= '>'.$val.'</option>';
+}
+$bikeClr .= '</select>&nbsp;{-TXT_20-}&nbsp;<input type="checkbox" name="bikeClrMet" ';
+if (isset($bike['bikeClrMet']) && ($bike['bikeClrMet'] == 1)){
+	$bikeClr .= 'checked';
+}
+$bikeClr .= '>';
+$tmpl -> setValue('BIKE_CLR_VAL', $bikeClr);
+
+//Set BIKE_ECOLOGIC_TAG
+$bikeEcologicTag = '<select name="bikeEcologicTag">
+			          <option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_ECOLOGIC_TAG'] AS $key => $val){
+	$bikeEcologicTag .= '<option value="'.$key.'" ';
+	if (isset($bike['bikeEcologicTag']) && ($key == $bike['bikeEcologicTag'])){
+		$bikeEcologicTag .= 'selected';
+	}
+	$bikeEcologicTag .= '>'.$val.'</option>';
+}/*
+			          <option value="0">'.$lang['V_ECOLOGIC_TAG'][0].'</option>
+			          <option value="1">'.$lang['V_ECOLOGIC_TAG'][1].'</option>
+			          <option value="2">'.$lang['V_ECOLOGIC_TAG'][2].'</option>
+			          <option value="3">'.$lang['V_ECOLOGIC_TAG'][3].'</option>
+			          */
+$bikeEcologicTag .= '</select>';
+$tmpl -> setValue('BIKE_ECOLOGIC_TAG_VAL', $bikeEcologicTag);
+
+//Set BIKE_WEIGHT_VAL
+$bikeWeightVal = '';
+if (isset($bike['bikeWeight']) && ($bike['bikeWeight'] != 0)){
+	$bikeWeightVal = $bike['bikeWeight'];
+}
+$tmpl -> setValue('BIKE_WEIGHT_VAL', $bikeWeightVal);
+
+//Set BIKE_CYL_VAL
+$bikeCylVal = '';
+if (isset($bike['bikeCyl']) && ($bike['bikeCyl'] != 0)){
+	$bikeCylVal = $bike['bikeCyl'];
+}
+$tmpl -> setValue('BIKE_CYL_VAL', $bikeCylVal);
+
+//Set BIKE_CUB_VAL
+$bikeCubVal = '';
+if (isset($bike['bikeCub']) && ($bike['bikeCub'] != 0)){
+	$bikeCubVal = $bike['bikeCub'];
+}
+$tmpl -> setValue('BIKE_CUB_VAL', $bikeCubVal);
+
+//Set BIKE_USEIN_VAL
+$bikeUseinVal = '';
+if (isset($bike['bikeUseIn'])){
+	$bikeUseinVal = $bike['bikeUseIn'];
+}
+$tmpl -> setValue('BIKE_USEIN_VAL', $bikeUseinVal);
+
+//Set BIKE_USEOUT_VAL
+$bikeUseoutVal = '';
+if (isset($bike['bikeUseOut'])){
+	$bikeUseoutVal = $bike['bikeUseOut'];
+}
+$tmpl -> setValue('BIKE_USEOUT_VAL', $bikeUseoutVal);
+
+//Set BIKE_CO2_VAL
+$bikeCO2Val = '';
+if (isset($bike['bikeCO2'])){
+	$bikeCO2Val = $bike['bikeCO2'];
+}
+$tmpl -> setValue('BIKE_CO2_VAL', $bikeCO2Val);
+
+//Set BIKE_DESC_VAL
+$bikeDescVal = '';
+if (isset($bike['bikeDesc'])){
+	$bikeDescVal = $bike['bikeDesc'];
+}
+$tmpl -> setValue('BIKE_DESC_VAL', $bikeDescVal);
+
+//Set BIKE_EXTRA
+$bikeExtra = '<ul>';
+$i = 1; 
+if (is_array($this -> bikeExt)){
+	foreach ($this -> bikeExt as $val){
+		if (isset($lang['V_EXTRA'][$val['vextID']])){
+			$bikeExtra .= '<li';
+			if ($val['children'] > 0){
+				$bikeExtra .= ' class="extHeading" >';
+				$lastHeading = $val;
+			}else{			
+				$bikeExtra .= ' ><input type="checkbox" name="bikeExt[]" value="'.$val['vextID'].'" ';
+				if (isset($bike['bikeExt']) && (in_array($val['vextID'], $bike['bikeExt']) == true)){
+					$bikeExtra .= 'checked';
+				}
+				$bikeExtra .= '/>';
+			}
+			$bikeExtra .= $lang['V_EXTRA'][$val['vextID']].'</li>';
+		}
+	}
+}
+/*
+if (isset($this -> bikeExt) && is_array($this -> bikeExt)){
+	foreach ($this -> bikeExt as $val){
+		if (isset($lang['V_EXTRA'][$val['vextID']])){
+			$bikeExtra .= '<li';
+			if ($i % 4 == 0){
+				$bikeExtra .= ' class="nl" u="'.$i.'"';
+				$i = 1;
+			}
+			$i++;
+			
+			$bikeExtra .= '><input type="checkbox" name="bikeExt[]" value="'.$val['vextID'].'" ';
+			if (isset($bike['bikeExt']) && (in_array($val['vextID'], $bike['bikeExt']) == true)){
+				$bikeExtra .= 'checked';
+			}
+			$bikeExtra .= '/>'.$lang['V_EXTRA'][$val['vextID']].'</li>';
+		}
+	}
+}*/
+$bikeExtra .= '</ul>';
+$tmpl -> setValue('BIKE_EXTRA_VAL', $bikeExtra);
+
+//Set BIKE_LOCPLZ_VAL
+$bikeLocplzVal = '';
+if (isset($bike['bikeLocPLZ'])){
+	$bikeLocplzVal = $bike['bikeLocPLZ'];
+}
+$tmpl -> setValue('BIKE_LOCPLZ_VAL', $bikeLocplzVal);
+
+//Set BIKE_LOCORT_VAL
+$bikeLocortVal = '';
+if (isset($bike['bikeLocOrt'])){
+	$bikeLocortVal = $bike['bikeLocOrt'];
+}
+$tmpl -> setValue('BIKE_LOCORT_VAL', $bikeLocortVal);
+
+//Set USER_ADS_VAL
+$userAdsVal = '	<select name="userAds" id="userAds">					
+				  <option value="-1">'.$lang['TXT_40'].'</option>
+				  <option value="1"'.($bike['userAds']==1 ? 'selected':'').'>'.$lang['TXT_33'][1].'</option>
+				  <option value="2"'.($bike['userAds']==2 ? 'selected':'').'>'.$lang['TXT_33'][2].'</option>
+				  <option value="3"'.($bike['userAds']==3 ? 'selected':'').'>'.$lang['TXT_33'][3].'</option>
+				</select> ';
+$tmpl -> setValue('USER_ADS_VAL', $userAdsVal);
+
+//Set USER_FIRM_VAL
+$userFirmVal = '';
+if (isset($bike['userFirm'])){
+	$userFirmVal = $bike['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirmVal);
+
+//Set USER_NNAME_VAL
+$userNNameVal = '';
+if (isset($bike['userNName'])){
+	$userNNameVal = $bike['userNName'];
+}
+$tmpl -> setValue('USER_NNAME_VAL', $userNNameVal);
+
+//Set USER_VNAME_VAL
+$userVNameVal = '';
+if (isset($bike['userVName'])){
+	$userVNameVal = $bike['userVName'];
+}
+$tmpl -> setValue('USER_VNAME_VAL', $userVNameVal);
+
+//Set USER_EMAIL_VAL
+$userEmailVal = '';
+if (isset($bike['userEMail'])){
+	$userEmailVal = $bike['userEMail'];
+}
+$tmpl -> setValue('USER_EMAIL_VAL', $userEmailVal);
+
+//Set USER_TEL1_VAL
+$userTel1Val = '';
+if (isset($bike['userTel1'])){
+	$userTel1Val = $bike['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1_VAL', $userTel1Val);
+
+//Set USER_TEL2_VAL
+$userTel2Val = '';
+if (isset($bike['userTel2'])){
+	$userTel2Val = $bike['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2_VAL', $userTel2Val);
+
+//Set USER_PLZ_VAL
+$userPLZVal = '';
+if (isset($bike['userPLZ'])){
+	$userPLZVal = $bike['userPLZ'];
+}
+$tmpl -> setValue('USER_PLZ_VAL', $userPLZVal);
+
+//Set USER_ORT_VAL
+$userOrtVal = '';
+if (isset($bike['userOrt'])){
+	$userOrtVal = $bike['userOrt'];
+}
+$tmpl -> setValue('USER_ORT_VAL', $userOrtVal);
+
+//Set USER_ADRESS_VAL
+$userAdressVal = '';
+if (isset($bike['userAdress'])){
+	$userAdressVal = $bike['userAdress'];
+}
+$tmpl -> setValue('USER_ADRESS_VAL', $userAdressVal);
+
+//Set USER_ADS_LENGTH_VAL
+$userAdsLengthVal = '';
+if (isset($lang['USER_ADS_LENGTH']) && is_array($lang['USER_ADS_LENGTH'])){
+	$userAdsLengthVal = '
+						<select name="userAdsLength">';
+	foreach ($lang['USER_ADS_LENGTH'] as $key => $kVal){
+		$userAdsLengthVal .= '<option value="'.$kVal.'"'.($bike['userAdsLength']==$kVal ? 'selected':'').'>'.$kVal.' '.$lang['TXT_45'].'</option>';
+	}
+	$userAdsLengthVal .= '</select>';
+}
+$tmpl -> setValue('USER_ADS_LENGTH_VAL', $userAdsLengthVal);
+
+//BIKE_ID
+$tmpl -> setValue('BIKE_ID', $bike['bikeID']);
+
+
+
+
+
+//**** Foto Gallery
+$tmpl -> readTMPLFile('BIKE_PHOTO_GALLERY','default/photoGalleryJSON.html');
+//	Set javascript file for photo upload
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/ajaxupload.js"></script>
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/bi.js"></script>');
+	
+//Read gallery image pattern
+$photoUploadEntryTMPL = $tmpl -> readFile('default/photoUploadEntry.html');
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_SRC_VAL',
+										'p1',
+										$photoUploadEntryTMPL
+									);
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_ID_VAL',
+										'p2',
+										$gl_galIMGPattern
+									);		
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_HREF',
+										'',
+										$gl_galIMGPattern
+									);		
+	
+//Set javascript gallery image pattern											
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["BIKE_ID"] = '.$bike['bikeID'].';
+								g_arr["GAL_IMG_PAT"] = \''.$gl_galIMGPattern.'\';'
+					);
+$bikePhotos = '';
+if (isset($bike['bikePhoto']) && is_array($bike['bikePhoto'])){
+	
+	foreach ($bike['bikePhoto'] as $key => $bikePhoto){
+		$showPic = true;
+		if (isset($bikePhoto['del']) && ($bikePhoto['del'] == true)){
+			$showPic = false;
+		}
+		
+		if ($showPic == true){
+			$imgSrc = System_Properties::PIC_PATH.'/'.System_Properties::BIKE_ABRV.'_'.$bikePhoto['vID'].'_'.$bikePhoto['vPicID'].'.jpeg';
+			if (file_exists('.'.$imgSrc)){
+				$photoUploadEntry = $tmpl -> replace(	'IMG_SRC_VAL',
+														$imgSrc,
+														$photoUploadEntryTMPL
+													);
+				$photoUploadEntry = $tmpl -> replace(	'IMG_ID_VAL',
+														$bikePhoto['vPicID'],
+														$photoUploadEntry
+													);
+				$photoUploadEntry = $tmpl -> replace(	'IMG_HREF',
+														'',
+														$photoUploadEntry
+													);
+				$bikePhotos .= $photoUploadEntry;//'<div><a>X</a><img src="'.$bikePhoto.'" id="'.$key.'"/></div>';						
+			}
+		}
+	}
+}
+$tmpl -> setValue('PHOTO_GALLERY_ENTRIES', $bikePhotos);
+
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$infoVal .= $this -> error;
+}
+if (isset($this -> info)){
+	$infoVal .= $this -> info;
+}
+$tmpl -> setValue('INFO', $infoVal);
+echo $this -> tmpl -> render();
+
+
+?>

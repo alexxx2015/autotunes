@@ -1,0 +1,115 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100825
+ * Desc:		This view render the form for bike search results
+ *********************************************************************************/
+include_once('default/views/helpers/func_pageCounter.phtml');
+
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/bike_search.css" />'
+				);	
+$tmpl -> readTmplFile('CONTENT', 'default/bike/search2.html');
+
+$searchResEntryTMPL = $tmpl -> readFile('default/searchResEntry.html');
+
+//Preparing search results and add this to the content
+$bikeAds = '';
+if (isset($this -> bikeAds) && is_array($this -> bikeAds)){
+	if (isset($this -> bikeAds['bikeAds'])){
+		$bikeAds = '<div class="search_res">';
+		foreach ($this -> bikeAds['bikeAds'] AS $bikeAd){
+			//Determine bike pic
+			$picURI = System_Properties::SYS_PIC_PATH.'/noImg.png';
+			if (isset($bikeAd['bikePics']) && is_array($bikeAd['bikePics'])){
+				foreach ($bikeAd['bikePics'] AS $bikePic){
+					$pic = System_Properties::PIC_PATH.'/'.System_Properties::BIKE_ABRV.'_'.$bikeAd['bikeID'].'_'.$bikePic['vPicID'].'.jpeg';
+					if(file_exists('.'.$pic)){
+						$picURI = $pic;
+						break;
+					}
+				}
+			}
+			
+			//Determine bike brand
+			$bikeBrand = $bikeAd['bikeBrandName'];
+			if (isset($bikeAd['bikeModelName'])){
+				$bikeBrand .= ' '.$bikeAd['bikeModelName'];
+			}
+			
+			$searchResEntry = $tmpl -> replace(	'PIC_URI',
+												$picURI,
+												$searchResEntryTMPL
+												);
+			$searchResEntry = $tmpl -> replace(	'BRAND_URL',
+												'/bike/'.$bikeAd['bikeID'].'/'.$this -> bikeAds['actPage'],
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'BRAND_NAME',
+												$bikeBrand,
+												$searchResEntry
+												);
+			$bikeAds .= $searchResEntry;	
+		}
+		$bikeAds .= '</div>';
+		
+		//Check if javascript is activated
+		// if it is so then use javascript page counter
+		// else use standard page counter
+		/*
+		if(isset($this -> bikeAds['jsActive']) && isset($this -> bikeAds['totalAds'])){//Javascript activated
+			if($this -> bikeAds['totalAds'] > System_Properties::NUM_ADS){
+				//Prepare the search result entry template
+				$gl_sret = $tmpl -> replace('PIC_URI',
+											'p1',
+											$searchResEntryTMPL
+											);
+				$gl_sret = $tmpl -> replace('BRAND_URL',
+											'p2',
+											$gl_sret
+											);	
+				$gl_sret = $tmpl -> replace('BRAND_NAME',
+											'p3',
+											$gl_sret
+											);		
+				
+				//CSS Files
+				$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+												.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/next_search_res.css" />'
+								);
+				//Set JS Code																
+				$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+											.'
+											var gl_param = new Array();
+											gl_param["actSearchHits"] = '.count($this -> bikeAds['bikeAds']).';
+											gl_param["sret"] = \''.$gl_sret.'\';
+											gl_param["noPicURL"] = \''.System_Properties::SYS_PIC_PATH.'/noImg.png\';
+											gl_param["picPath"] = \''.System_Properties::PIC_PATH.'\';'									
+								);
+				//Set JS File
+				$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::JS_PATH.'/jq_141_min.js"></script>
+												<script type="text/javascript" src="'.System_Properties::JS_PATH.'/cs.js"></script>');
+				
+				$nextSearchResultTMPL = $tmpl -> readFile('default/nextSearchResult.html');
+				$nextSearchResult = $tmpl -> replace(	'SEARCH_HITS',
+														$this -> bikeAds['numAds'],
+														$nextSearchResultTMPL
+													);		
+				$bikeAds .= $nextSearchResult;
+			}
+		}else{//Javascript deactivated
+			*/
+			$bikeAds .= pageCounter($this -> bikeAds['totalAds'], '/bike/search/', $this -> bikeAds['actPage'], $this -> bikeAds['numAds']);
+		//}
+	}
+	else{
+		$bikeAds .= $lang['TXT_115'];
+	}
+}
+
+$tmpl -> setValue('BIKE_ADS', $bikeAds);
+echo $tmpl -> render();
+?>

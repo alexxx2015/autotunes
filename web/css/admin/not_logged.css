@@ -1,0 +1,18 @@
+@CHARSET "ISO-8859-1";
+@import 'main.css';
+
+.loginForm{
+	width: 300px;
+	margin-left: 50%;
+	left: -150px;
+	position: relative;
+	border: 0;
+	border-top: 1px solid black;
+}
+
+.loginForm div label{
+	width: 10%;
+	min-width: 100px;
+	display: block;
+	float: left;
+}

@@ -1,0 +1,80 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$brand = $this -> brand;
+$carAds = $this -> carAds;
+$bikeAds = $this -> bikeAds;
+$truckAds = $this -> truckAds;
+$carModel = $this -> carModel;
+$bikeModel = $this -> bikeModel;
+$truckModel = $this -> truckModel;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/branderase.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');								
+
+//BRAND_NAME
+$brandName = '';
+if (isset($brand['brandName'])){
+	$brandName = $brand['brandName'];
+}
+$tmpl -> setValue('BRAND_NAME', $brandName);
+
+//NUM_CAR_ADS
+$numCarAds = 0;
+if (is_array($carAds) && isset($carAds['totalRows'])){
+	$numCarAds = $carAds['totalRows'];
+}
+$tmpl -> setValue('NUM_CAR_ADS', $numCarAds);
+
+//NUM_CAR_MODELS
+$numCarModel = 0;
+if (isset($carModel)){
+	$numCarModel = count($carModel);
+}
+$tmpl -> setValue('NUM_CAR_MODELS', $numCarModel);
+
+//NUM_BIKE_ADS
+$numBikeAds = 0;
+$tmpl -> setValue('NUM_BIKE_ADS', $numBikeAds);
+
+//NUM_BIKE_MODELS
+$numBikeModel = 0;
+if (isset($bikeModel)){
+	$numBikeModel = count($bikeModel);
+}
+$tmpl -> setValue('NUM_BIKE_MODELS', $numBikeModel);
+
+//NUM_TRUCK_ADS
+$numTruckAds = 0;
+$tmpl -> setValue('NUM_TRUCK_ADS', $numTruckAds);
+
+//NUM_TRUCK_MODELS
+$numTruckModel = 0;
+if (isset($truckModel)){
+	$numTruckModel = count($truckModel);
+}
+$tmpl -> setValue('NUM_TRUCK_MODELS', $numTruckModel);
+								
+//DEL_BRAND_CONFIRM_TEXT
+$delBrandConfirm = $lang['ATXT_55'];
+$tmpl -> setValue('ERASE_BRAND_CONFIRM_TEXT', $delBrandConfirm);
+								
+//INFO
+$info = '';
+if (isset($this -> error)){
+	$info = $this -> error;
+}
+if (isset($this -> info)){
+	$info = $this -> info;
+}
+$tmpl -> setValue('INFO', $info);
+
+echo $this -> tmpl -> render();
+?>

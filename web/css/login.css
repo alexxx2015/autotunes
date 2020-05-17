@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+@import "member.css";
+
+.loginForm{
+	margin: 1em 0 2em 0;
+	padding: 0.5em;
+	margin-left: 50%;
+	left: -12.5em;
+	position: relative;
+	width: 25em;
+	background: #474646;
+	color: #FFFFFF;
+	-moz-box-shadow: 1px 1px 5px #353535;
+	-webkit-box-shadow: 1px 1px 5px #353535;
+	box-shadow: 1px 1px 5px #353535;
+}
+
+.loginForm label{
+	display: block;
+	float: left;
+	min-width:9em;
+	margin: 0.5em 0 0.5em 0;
+}
+
+.loginForm label{
+	min-width: 12em;
+}
+
+.loginForm div{
+	float: left;
+}
+
+.loginForm a{
+	color: #10cc02;
+}
+
+.loginForm input[type = "submit"]{
+	border: 0.1em solid #e0dfdf;
+}
+
+.captcha{
+	text-align: center;
+	width: 100%;
+	margin: 0.5em 0 0.5em 0;
+}

@@ -1,0 +1,199 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+include_once('default/views/helpers/func_pageCounter.phtml');
+include_once('default/views/filters/FormatStr2Num.php');
+include_once('default/views/filters/FilterIsEmptyString.php');
+
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$lang = $this -> lang;
+$truckAds = $this -> truckAds;
+$formatStr2Num = new FormatSt2Num();
+$isEmptyString = new FilterIsEmptyString();
+
+$tmpl -> readTmplFile('CONTENT', 'default/member/mytruckads.html');
+
+include_once('default/views/scripts/truck/myTruckQS.phtml');
+$tmpl -> setValue('QS_FORM_ACTION', '/member/mytruckads');
+$tmpl -> setValue('QS_HEADING', $lang['TXT_197']);
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/mytruckadsdetail.css" />');
+
+$searchResEntryTMPL = $tmpl -> readFile('default/myads.html');
+$searchResEntryTMPL = $tmpl -> replace(	'MY_ADS_MENU',
+										'<a href="{-BRAND_URL-}">{-TXT_144-}</a> | <a href="{-BRAND_URL-}{-JUMP-}">{-TXT_143-}</a>',
+										$searchResEntryTMPL
+										);
+$tmpl -> setValue('JUMP', '#truckDel');
+
+$myTruckAds = '';
+if (is_array($truckAds) && isset($truckAds['truckAds'])){
+	foreach($truckAds['truckAds'] AS $key => $kValue){
+		if (is_array($kValue) && isset($kValue['truckID'])){
+			
+			//Determine truck pic
+			$picURI = System_Properties::SYS_PIC_PATH.'/noImg.png';
+			if (isset($kValue['truckPics']) && is_array($kValue['truckPics'])){
+				foreach ($kValue['truckPics'] AS $truckPic){
+					$pic = System_Properties::PIC_PATH.'/'.System_Properties::TRUCK_ABRV.'_'.$kValue['truckID'].'_'.$truckPic['vPicID'].'.jpeg';
+					if(file_exists('.'.$pic)){
+						$picURI = $pic;
+						break;
+					}
+				}
+			}
+			
+			//Determine truck brand
+			$truckBrand = $kValue['truckBrandName'];
+			if (isset($kValue['truckModelName'])){
+				$truckBrand .= ' '.$kValue['truckModelName'];
+			}
+			
+			$adDetail = '';
+			
+			//truckPrice
+			if (isset($kValue['truckPrice'])){
+				if(isset($kValue['mwst']) && ($kValue['mwst'] == 1)
+					&& isset($kValue['mwstSatz']) && ($kValue['mwstSatz'] > 0)){
+					$kValue['truckPrice'] = $kValue['truckPrice'] * ($kValue['mwstSatz'] / 100 + 1);
+				}
+				$adDetail .= $formatStr2Num -> filter($kValue['truckPrice']);
+				//truckPriceCurr
+				if (isset($kValue['truckPriceCurr']) && isset($lang['TXT_74'][$kValue['truckPriceCurr']])){
+					$adDetail .= ' '.$lang['TXT_74'][$kValue['truckPriceCurr']];
+				}
+				
+				//truckPriceType
+				if (isset($kValue['truckPriceType']) && isset($lang['TXT_70'][$kValue['truckPriceType']])){
+					$adDetail .= ' '.$lang['TXT_70'][$kValue['truckPriceType']];
+				}
+				
+				$adDetail .= ', ';
+			}
+			
+			//truckKM
+			if (isset($kValue['truckKM'])){
+				$adDetail .= $formatStr2Num -> filter($kValue['truckKM']).' ';
+				if (isset($lang['TXT_75'][$kValue['truckKMType']])){
+					$adDetail .= $lang['TXT_75'][$kValue['truckKMType']];
+				}
+				$adDetail .= ', ';
+			}
+			
+			//truckPower
+			if (isset($kValue['truckPower'])){
+				//0 = kW
+				if(isset($kValue['truckPowerType']) && ($kValue['truckPowerType'] == 0)){
+					$adDetail .= $formatStr2Num -> filter($kValue['truckPower']).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($kValue['truckPower']*90/66).' '.$lang['TXT_72'][0].')';
+				}
+				//1 = PS
+				elseif(isset($kValue['truckPowerType']) && ($kValue['truckPowerType'] == 1)){
+					$adDetail .= $formatStr2Num -> filter($kValue['truckPower']*66/90).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($kValue['truckPower']).' '.$lang['TXT_72'][1].')';
+				}
+				$adDetail .= ', ';				
+			}
+			
+			//Set TRUCK_EZ
+			if($kValue['truckEZY'] == 9999){
+				$adDetail .= $lang['V_STATE'][0];
+			}
+			elseif (($kValue['truckEZM'] > 0) && ($kValue['truckEZY'] > 0)){
+				$adDetail .= $kValue['truckEZM'].'/'.$kValue['truckEZY'];
+			}
+			
+			if ($adDetail != ''){
+				$truckLoc = '';
+				//truckLocPLZ, truckLocOrt
+				if (isset($kValue['truckUserPLZ']) || isset($kValue['truckLocOrt'])){
+					$truckLoc .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($kValue['truckLocPLZ']) == false){
+						$truckLoc .= ' '.$kValue['truckLocPLZ'];
+					}
+					if ($isEmptyString -> filter($kValue['truckLocOrt']) == false){
+						$truckLoc .= ' '.$kValue['truckLocOrt'];
+					}
+				}elseif (isset($kValue['userPLZ']) || isset($kValue['userOrt'])){
+					$truckLoc .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($kValue['userPLZ']) == false){
+						$truckLoc .= ' '.$kValue['userPLZ'];
+					}
+					if ($isEmptyString -> filter($kValue['userOrt']) == false){
+						$truckLoc .= ' '.$kValue['userOrt'];
+					}
+				}
+				
+				//truck
+				$adDetail .= '<br/>';				
+				if (isset($kValue['userFirm'])){
+					$adDetail .= $kValue['userFirm'];
+				}else{
+					$adDetail .= substr($truckLoc,2);
+				}/*
+				elseif (isset($kValue['userNName']) && isset($kValue['userVName'])){
+					$adDetail .= $kValue['userNName'].' '.$kValue['userVName'];
+				}*/
+			}
+			
+			
+			$searchResEntry = $tmpl -> replace(	'PIC_URI',
+												$picURI,
+												$searchResEntryTMPL
+												);
+			$searchResEntry = $tmpl -> replace(	'BRAND_URL',
+												'/truck/mytruckdetail/id/'.$kValue['truckID'],
+												//'/truck/'.$kValue['truckID'].'/'.$this -> truckAds['actPage'],
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'BRAND_NAME',
+												$truckBrand,
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'AD_DETAIL',
+												$adDetail,
+												$searchResEntry
+												);
+			$myTruckAds .= $searchResEntry;
+
+		
+			//$myTruckAds .= '<a href="/truck/mytruckdetail/id/'.$kValue['truckID'].'">'.$kValue['truckBrandName'].'</a><br/>';
+		}
+	}
+	$myTruckAds .= pageCounter($truckAds['totalAds'], '/member/mytruckads/', $truckAds['actPage'], $truckAds['numAds']);
+}
+$tmpl -> setValue('MY_TRUCK_ADS', $myTruckAds);
+
+//INFO
+/*
+$infoVal = '';
+if (isset($this -> error)){
+	$infoVal .= $this -> error;
+}
+if (isset($this -> info)){
+	$infoVal .= $this -> info;
+}
+$tmpl -> setValue('INFO', $infoVal);
+*/
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+
+
+?>

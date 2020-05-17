@@ -1,0 +1,37 @@
+
+<form action="{-ADMIN_MOD_PATH-}/user/usersearch" method="POST" class="userSearchBox">
+	<fieldset>
+		<legend>{-ATXT_9-} | <a href="{-ADMIN_MOD_PATH-}/user/newuser">{-ATXT_14-}</a></legend>
+		<div>
+			<label for="userNName">{-TXT_46-}</label>
+			<input type="text" name="userNName" id="userNName" value="{-USER_NNAME-}"/>
+		</div>	
+		<div>	
+			<label for="userVName">{-TXT_47-}</label>
+			<input type="text" name="userVName" id="userVName" value="{-USER_VNAME-}"/>
+		</div>
+		<div>
+			<label for="userEMail">{-TXT_48-}</label>
+			<input type="text" name="userEMail" id="userEMail"  value="{-USER_EMAIL-}"/>
+		</div>
+		<div>
+			<label for="userPLZ">{-TXT_51-}</label>
+			<input type="text" name="userPLZ" id="userPLZ"  value="{-USER_PLZ-}"/>
+		</div>
+		<div>
+			<label for="userOrt">{-TXT_52-}</label>
+			<input type="text" name="userOrt" id="userOrt" value="{-USER_ORT-}"/>
+		</div>
+		<div>
+			<label for="userGroup">{-ATXT_33-}</label>
+			{-USER_GROUP_VAL-}
+		</div>
+		<div class="twoCol">
+			<label for="userSort">{-ATXT_25-}</label>
+			{-USER_SORT-}
+		</div>
+		
+			<input type="submit" name="userSearch" value="{-ATXT_10-}"/>
+		
+	</fieldset>
+</form>

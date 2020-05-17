@@ -1,0 +1,9 @@
+<label for="photoGallery">
+	<form action="/car/insert/id/{-CAR_ID-}" method="POST" enctype="multipart/form-data">
+		<input type="submit" name="photoUpload" value="{-TXT_111-}"/>
+		<input type="file" name="photoFile" size="20"/>
+	</form>
+</label>
+<div id="photoGallery">
+	{-PHOTO_GALLERY_ENTRIES-}
+</div>

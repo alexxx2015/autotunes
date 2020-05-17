@@ -1,0 +1,21 @@
+<ul class="subMenu">
+	<li><a href="{-ADMIN_MOD_PATH-}/car/insert" >{-TXT_37-}</a></li>
+	<li><a href="{-ADMIN_MOD_PATH-}/system/carbrandmodel" >{-ATXT_58-} {-ATXT_64-}</a></li>
+	<li><a href="{-ADMIN_MOD_PATH-}/car/carextra">{-ATXT_75-}</a></li>
+	<li><a href="{-ADMIN_MOD_PATH-}/car/carcat">{-ATXT_97-}</a></li>
+</ul>
+
+<br clas="nl"/>
+{-INFO-}
+<fieldset class="qs">
+	<legend><strong>{-TXT_123-}</strong></legend>
+	<form action="{-ADMIN_MOD_PATH-}/car/search" method="POST">
+		{-CAR_QUICK_SEARCH_BOX-}
+		<input type="submit" name="search1" value="{-TXT_31-}"/>	
+	</form>
+</fieldset>
+
+<fieldset class="searchRes">
+	<legend><strong>{-ATXT_11-}</strong></legend>
+	{-CAR_SEARCH_RES_VAL-}
+</fieldset>

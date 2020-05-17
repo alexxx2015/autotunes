@@ -1,0 +1,69 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for bike maintenance
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$bikeVext = $this -> bikeVext;
+$bikeVextParent = $this -> bikeVextParent;
+$bikeVextAll = $this -> bikeVextAll;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/bike/bikeextraedit.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/bike.css" />
+								<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+	/*							
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["ADMIN_MOD_PATH"] = "'.System_Properties::ADMIN_MOD_PATH.'";'
+				);
+				
+$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/cs.js"></script>');	
+
+*/
+//set V_EXTRA new
+if (isset($lang['V_EXTRA'][$bikeVext['vextID']])){
+	$tmpl -> setValue('V_EXTRA_NEW', $lang['V_EXTRA'][$bikeVext['vextID']]);
+	$tmpl -> setValue('BIKE_EXTRA_ID', $bikeVext['bikeExtID']);
+}
+
+//set V_EXTRA_PARENT
+//process vextra parent list and bike extra list
+$vextraParent = '<select name="vextraParent">
+					<option value="-1">'.$lang['ATXT_63'].'</option>';
+if (is_array($bikeVextAll)){
+	foreach($bikeVextAll as $key => $vpValue){
+		if (isset($lang['V_EXTRA'][$vpValue['vextID']])){
+			$vextraParent .= '<option value="'.$vpValue['bikeExtID'].'" class="level'.$vpValue['level'].'"';
+			if(isset($bikeVextParent['bikeExtID']) && ($bikeVextParent['bikeExtID'] == $vpValue['bikeExtID'])){
+				$vextraParent .= ' selected ';
+			}
+			$vextraParent .= '>'.$lang['V_EXTRA'][$vpValue['vextID']].'</option>';
+		}
+	}
+}
+$vextraParent .= '</select>';
+$tmpl -> setValue('V_EXTRA_PARENT', $vextraParent);
+
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

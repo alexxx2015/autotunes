@@ -1,0 +1,50 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$carExt = $this -> carExt;
+$bikeExt = $this -> bikeExt;
+$truckExt = $this -> truckExt;
+
+$vext = $this -> vext;		
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/vexterase.html');
+
+$tmpl -> setValue('VEXT_ID', $vext['vextID']);
+
+//set confirmation text
+$tmpl -> setValue('ERASE_VEXTRA_CONFIRM_TEXT', $lang['ATXT_73']);
+if (isset($lang['V_EXTRA'][$vext['vextID']])){
+	$tmpl -> setValue('VEXT_NAME', $lang['V_EXTRA'][$vext['vextID']]);
+}
+
+//set number of car vehicle extras
+$numCarExt = 0;
+if (($carExt != false) && is_array($carExt)){
+	$numCarExt = count($carExt);
+}
+$tmpl -> setValue('NUM_CAR_EXT', $numCarExt);
+
+//set number of bike vehicle extras
+$numBikeExt = 0;
+if (($bikeExt != false) && is_array($bikeExt)){
+	$numBikeExt = count($bikeExt);
+}
+$tmpl -> setValue('NUM_BIKE_EXT', $numBikeExt);
+
+
+//set number of truck vehicle extras
+$numTruckExt = 0;
+if (($truckExt != false) && is_array($truckExt)){
+	$numTruckExt = count($truckExt);
+}
+$tmpl -> setValue('NUM_TRUCK_EXT', $numTruckExt);
+
+
+echo $this -> tmpl -> render();
+?>

@@ -1,0 +1,46 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$brand = $this -> brand;
+
+$tmpl -> readTmplFile('BRAND_EDIT_FORM', System_Properties::ADMIN_MOD_PATH.'/system/brandform.html');
+
+//BRAND_NAME_VAL
+$brandNameVal = '';
+if (is_array($brand) && isset($brand['brandName'])){
+	$brandNameVal .= $brand['brandName'];
+}
+$tmpl -> setValue('BRAND_NAME_VAL', $brandNameVal);
+
+//CAR_BRAND_ACTIVE_CHECKED
+$carBrandActiveChecked = '';
+if (is_array($brand) && isset($brand['carBrand']) && ($brand['carBrand'] == 1)){
+	$carBrandActiveChecked .= 'checked';
+}
+$tmpl -> setValue('CAR_BRAND_ACTIVE_CHECKED', $carBrandActiveChecked);
+
+//BIKE_BRAND_ACTIVE_CHECKED
+$bikeBrandActiveChecked = '';
+if (is_array($brand) && isset($brand['bikeBrand']) && ($brand['bikeBrand'] == 1)){
+	$bikeBrandActiveChecked .= 'checked';
+}
+$tmpl -> setValue('BIKE_BRAND_ACTIVE_CHECKED', $bikeBrandActiveChecked);
+
+//TRUCK_BRAND_ACTIVE_CHECKED
+$truckBrandActiveChecked = '';
+if (is_array($brand) && isset($brand['truckBrand']) && ($brand['truckBrand'] == 1)){
+	$truckBrandActiveChecked .= 'checked';
+}
+$tmpl -> setValue('TRUCK_BRAND_ACTIVE_CHECKED', $truckBrandActiveChecked);
+
+//SUBMIT_BTN
+$tmpl -> setValue('SUBMIT_BTN', '<input type="submit" name="brandEdit" value="'.$lang['TXT_156'].'"/>');
+
+//BRAND_FORM_PARAM
+$tmpl -> setValue('BRAND_FORM_PARAM','/bid/'.$brand['brandID']);
+?>

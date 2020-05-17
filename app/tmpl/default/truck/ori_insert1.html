@@ -1,0 +1,235 @@
+<form action="/truck/insert" method="POST">
+<div class="box">
+	<label for="truckBrand">{-TXT_6-}</label>
+	<div id="truckBrand"> 
+	{-TRUCK_BRAND_VAL-}
+	</div>
+</div>
+
+<div class="box">
+	<label>{-TXT_13-} {-TRUCK_PRICE_CURR-}</label>
+	<div id="truckPrice">
+		<input type="text" name="truckPrice" maxlength="10" value="{-TRUCK_PRICE_VAL-}"/>
+		{-TRUCK_PRICE_TYPE_VAL-}
+	</div>
+</div>
+
+<div class="box"> 
+	<label for="truckEZ">{-TXT_7-}</label>
+	<div id="truckEZ" class="twocol">
+	{-TRUCK_EZ_M_VAL-}{-TRUCK_EZ_Y_VAL-}
+	</div>
+</div>
+
+<br class="nl"/>
+
+
+<div class="box">
+	<label for="truckModel">{-TXT_42-}</label>
+	<div id="truckModel">{-TRUCK_MODEL_VAL-}</div>
+</div>
+
+<div class="box">
+	<label for="truckPower">{-TXT_10-}</label>
+	<div id="truckPower">
+		<input type="text" name="truckPower" maxlength="7" value="{-TRUCK_POWER_VAL-}"/>
+		{-TRUCK_POWER_TYPE_VAL-}
+	</div>
+</div>
+
+<div class="box">
+	<label for="truckKM">{-TXT_14-}</label>
+	<div id="truckKM">
+		<input type="text" name="truckKM" maxlength="7" value="{-TRUCK_KM_VAL-}"/>
+		{-TRUCK_KM_TYPE-}
+	</div>
+</div>
+
+<br class="nl"/>
+
+<div class="box">
+	<label for="truckTUV">{-TXT_76-}</label>
+	<div id="truckTUV" class="twocol">
+		{-TRUCK_TUV_M_VAL-}
+		{-TRUCK_TUV_Y_VAL-}
+	</div>
+</div>
+
+<div class="box">
+	<label for="truckAU">{-TXT_77-}</label>
+	<div id="truckAU" class="twocol">
+		{-TRUCK_AU_M_VAL-}
+		{-TRUCK_AU_Y_VAL-}
+	</div>
+</div>
+
+<br class="nl"/>
+
+<div class="box">
+	<label for="truckKlima">{-TXT_109-}</label>
+	<div id="truckKlima">{-TRUCK_KLIMA-}</div>
+</div>
+
+<div class="box">
+	<label for="truckCat">{-TXT_18-}</label>
+	<div id="truckKlima">{-TRUCK_CAT_VAL-}</div>
+</div>
+
+<div class="box">
+	<label for="truckClr">{-TXT_19-}</label>
+	<div id="truckClr">{-TRUCK_CLR_VAL-}</div>
+</div>
+
+<br class="nl"/>
+
+<div class="box">
+	<label for="truckFuel">{-TXT_15-}</label>
+	<div id="truckFuel">{-TRUCK_FUEL_VAL-}</div>
+</div>
+
+<div class="box">
+	<label for="truckEmissionNorm">{-TXT_22-}</label>
+	<div id="truckEmissionNorm">{-TRUCK_EMISSION_NORM_VAL-}</div>
+</div>
+
+<div class="box">
+	<label for="truckEcologicTag">{-TXT_85-}</label>
+	<div id="truckEcologicTag">{-TRUCK_ECOLOGIC_TAG_VAL-}</div>
+</div>
+
+<br class="nl"/>
+
+<div class="box">
+	<label for="truckState">{-TXT_17-}</label>
+	<div id="truckState">{-TRUCK_STATE_VAL-}</div>
+</div>
+
+<div class="box">
+	<label for="truckShift">{-TXT_21-}</label>
+	<div id="truckShift">{-TRUCK_SHIFT_VAL-}</div>
+</div>
+<br class="nl"/>
+
+
+
+<div class="box">
+	<label for="truckWeight">{-TXT_57-}&nbsp;{-TXT_110-}&nbsp;{-TXT_67-}</label>
+	<div id="truckWeight"><input type="text" name="truckWeight"  maxlength="7" value="{-TRUCK_WEIGHT_VAL-}"/></div>
+</div>
+
+<div class="box">
+	<label for="truckCyl">{-TXT_58-}</label>  
+	<div id="truckCyl"><input type="text" name="truckCyl" maxlength="3" value="{-TRUCK_CYL_VAL-}"/></div>
+</div>
+
+<div class="box">
+	<label for="truckCub">{-TXT_59-}&nbsp;{-TXT_110-}&nbsp;{-TXT_60-}</label>  
+	<div id="truckCub"><input type="text" name="truckCub" maxlength="5" value="{-TRUCK_CUB_VAL-}"/></div>
+</div>
+<br class="nl"/>
+
+<div class="box">
+	<label for="truckUseIn">{-TXT_62-}&nbsp;{-TXT_110-}&nbsp;{-TXT_64-}</label>
+	<div id="truckUseIn"><input type="text" name="truckUseIn"  maxlength="20" value="{-TRUCK_USEIN_VAL-}"/></div>
+</div>
+
+<div class="box">
+	<label for="truckUseOut">{-TXT_63-}&nbsp;{-TXT_110-}&nbsp;{-TXT_64-}</label>  
+	<div id="truckUseOut"><input type="text" name="truckUseOut" maxlength="20" value="{-TRUCK_USEOUT_VAL-}"/></div>
+</div>
+
+<div class="box">
+	<label for="truckCO2">{-TXT_65-}&nbsp;{-TXT_110-}&nbsp;{-TXT_66-}</label>  
+	<div id="truckCO2"><input type="text" name="truckCO2" maxlength="20" value="{-TRUCK_CO2_VAL-}"/></div>
+</div>
+
+<br class="nl"/>
+
+<div class="box threeColumnBox">
+	<label for="truckDesc">{-TXT_68-}<span><span id="truckDescChars">0</span>/1000</span> {-TXT_69-}</label>
+	<div id="truckDesc"><textarea name="truckDesc">{-TRUCK_DESC_VAL-}</textarea></div>
+</div>
+
+<br class="nl"/>
+
+<div class="extraBox">
+	<label for="truckExtra">{-TXT_83-}</label>
+	<div id="truckExtra">{-TRUCK_EXTRA_VAL-}</div>
+</div>
+<br class="nl"/>
+<div class="box">
+	<label for="truckLocPLZ">{-TXT_114-}-{-TXT_51-}</label>
+	<div id="truckLocPLZ"><input type="text" name="truckLocPLZ" maxLength="20" value="{-TRUCK_LOCPLZ_VAL-}"/></div>
+</div>
+
+<div class="box">
+	<label for="truckLocOrt">{-TXT_114-}-{-TXT_52-}</label>
+	<div id="truckLocOrt"><input type="text" name="truckLocOrt" maxLength="50" value="{-TRUCK_LOCORT_VAL-}"/></div>
+</div>
+<br class="nl"/>
+
+<div class="box">
+	<label for="userAds">{-TXT_32-}</label>
+	<div id="userAds">
+		{-USER_ADS_VAL-}
+	</div>	
+</div>
+    
+<div class="box">    
+	<label for="userFirm">{-TXT_53-}</label>
+	<div id="userFirm"><input type="text" name="userFirm" maxlength="50" value="{-USER_FIRM_VAL-}"/></div>
+</div>
+    
+<div class="box">    
+	<label for="userAdsLength">{-TXT_43-}</label>
+	<div id="userAdsLength">
+		{-USER_ADS_LENGTH_VAL-}
+	</div>
+</div>
+
+<br class="nl"/>
+
+<div class="box">
+	<label for="userNName">{-TXT_46-}</label>
+	<div id="userNName"><input type="text" name="userNName" maxlength="50" value="{-USER_NNAME_VAL-}"/></div>
+</div>
+
+<div class="box">
+	<label for="userVName">{-TXT_47-}</label>
+	<div id="userVName="><input type="text" name="userVName" maxlength="50" value="{-USER_VNAME_VAL-}"/></div>
+</div>
+      
+<div class="box">      
+	<label for="userEMail">{-TXT_48-}</label>
+	<div id="userEMail"><input type="text" name="userEMail" maxlength="50" value="{-USER_EMAIL_VAL-}"/></div>
+</div>
+
+<br class="nl"/>
+
+<div class="box">
+	<label for="userTel1">{-TXT_49-}</label>
+	<div id="userTel1"><input type="text" name="userTel1" maxlength="50" value="{-USER_TEL1_VAL-}"/></div>
+
+	<label for="userTel2">{-TXT_50-}</label>
+	<div id="userTel2"><input type="text" name="userTel2" maxlength="50" value="{-USER_TEL2_VAL-}"/></div>
+</div>
+      
+<div class="box">      
+	<label for="userPLZ">{-TXT_51-}</label>
+	<div id="userPLZ"><input type="text" name="userPLZ" maxlength="20" value="{-USER_PLZ_VAL-}"/></div>
+  
+	<label for="userOrt">{-TXT_52-}</label>
+	<div id="userOrt"><input type="text" name="userOrt" maxlength="50" value="{-USER_ORT_VAL-}"/></div>
+</div>
+      
+<div class="box">      
+	<label for="userAdress">{-TXT_54-} <span><span id="userAdressChars">0</span>100</span>{-TXT_69-}</label>
+	<div id="userAdress">
+		<textarea name="userAdress">{-USER_ADRESS_VAL-}</textarea>
+	</div>
+</div>
+<br class="nl"/>
+
+<input type="submit" name="ins2" value="{-TXT_41-}"/> 
+</form>
+{-ERROR-}

@@ -1,0 +1,53 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI for creating a group 
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/group.css" />');
+									
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/group/editgroup.html');	
+
+//USER_NEWGROUP_BOX
+$tmpl -> readTmplFile('USER_NEWGROUP_BOX', System_Properties::ADMIN_MOD_PATH.'/group/group_box.html');
+
+//FORM_ACTION
+$tmpl -> setValue('FORM_ACTION', '{-ADMIN_MOD_PATH-}/group/newgroup');
+
+//GROUP_NAME_VAL
+$tmpl -> setValue('GROUP_NAME_VAL', '');
+
+//SUBMIT_BTN
+$tmpl -> setValue('SUBMIT_BTN', '<input type="submit" value="'.$lang['ATXT_19'].'" name="groupNew"/>');
+
+$groupAuthorityVal = '';
+if(isset($this ->groupAuthority)
+	&& is_array($this -> groupAuthority)){
+	$groupAuthorityVal .= '<ul>';
+	foreach ($this -> groupAuthority as $groupAuthority){
+		$groupAuthorityVal .= '<li><input type="checkbox" value="'.$groupAuthority['authorityID'].'" name="groupAuthority[]"/>'.$groupAuthority['authorityName'].'</li>';
+	}
+	$groupAuthorityVal .= '</ul>';
+}
+
+$tmpl -> setValue('GROUP_AUTHORITY_VAL', $groupAuthorityVal);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

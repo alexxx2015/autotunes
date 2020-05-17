@@ -1,0 +1,43 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI for managing vehicle extras
+ *********************************************************************************/
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/system/vextformedit.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$posLang = $this -> posLang;
+$sysSystem = $this -> sysSystem;
+$vext = $this -> vext;
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/vextedit.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+
+$tmpl -> setValue('VEXT_ID', $vext['vextID']);
+								
+foreach ($posLang as $key => $value){
+	$vextName = '';
+	if (isset($lang['V_EXTRA_'.strtoupper($value['langAbrv'])][$vext['vextID']])){
+		$vextName = $lang['V_EXTRA_'.strtoupper($value['langAbrv'])][$vext['vextID']];
+	}
+	$tmpl -> setValue('V_EXTRA_'.strtoupper($value['langAbrv']), $vextName);
+}
+								
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+
+echo $this -> tmpl -> render();
+?>

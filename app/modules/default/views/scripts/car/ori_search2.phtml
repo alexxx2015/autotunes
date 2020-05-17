@@ -1,0 +1,203 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100825
+ * Desc:		This view render the form for car search results
+ *********************************************************************************/
+include_once('default/views/helpers/func_pageCounter.phtml');
+include_once('default/views/filters/FormatStr2Num.php');
+include_once('default/views/filters/FilterIsEmptyString.php');
+
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$formatStr2Num = new FormatSt2Num();
+$isEmptyString = new FilterIsEmptyString();
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/car_search.css" />'
+				);	
+
+include_once('default/views/scripts/default/quick_search.phtml');
+$tmpl -> setValue('QS_FORM_ACTION', '/car/search');
+$tmpl -> setValue('QS_HEADING', $lang['TXT_196']);
+$tmpl -> readTmplFile('CONTENT', 'default/car/search2.html');
+
+$searchResEntryTMPL = $tmpl -> readFile('default/searchResEntry.html');
+
+//Preparing search results and add this to the content
+$carAds = '';
+if (isset($this -> carAds) && is_array($this -> carAds)){
+	if (isset($this -> carAds['carAds'])){
+		$carAds = '<div class="search_res">';
+		foreach ($this -> carAds['carAds'] AS $carAd){
+			//Determine car pic
+			$picURI = System_Properties::SYS_PIC_PATH.'/noImg.png';
+			if (isset($carAd['carPics']) && is_array($carAd['carPics'])){
+				foreach ($carAd['carPics'] AS $carPic){
+					$pic = System_Properties::PIC_PATH.'/'.System_Properties::CAR_ABRV.'_'.$carAd['carID'].'_'.$carPic['vPicID'].'.jpeg';
+					if(file_exists('.'.$pic)){
+						$picURI = $pic;
+						break;
+					}
+				}
+			}
+			
+			//Determine car brand
+			$carBrand = $carAd['carBrandName'];
+			if (isset($carAd['carModelName'])){
+				$carBrand .= ' '.$carAd['carModelName'];
+			}
+			
+			$adDetail = '';
+			
+			//carPrice
+			if (isset($carAd['carPrice'])){
+				$adDetail .= $formatStr2Num -> filter($carAd['carPrice']);
+				//carPriceCurr
+				if (isset($carAd['carPriceCurr']) && isset($lang['TXT_74'][$carAd['carPriceCurr']])){
+					$adDetail .= ' '.$lang['TXT_74'][$carAd['carPriceCurr']];
+				}
+				
+				//carPriceType
+				if (isset($carAd['carPriceType']) && isset($lang['TXT_70'][$carAd['carPriceType']])){
+					$adDetail .= ' '.$lang['TXT_70'][$carAd['carPriceType']];
+				}
+				
+				$adDetail .= ', ';
+			}
+			
+			//carKM
+			if (isset($carAd['carKM'])){
+				$adDetail .= $formatStr2Num -> filter($carAd['carKM']).' ';
+				if (isset($lang['TXT_75'][$carAd['carKMType']])){
+					$adDetail .= $lang['TXT_75'][$carAd['carKMType']];
+				}
+				$adDetail .= ', ';
+			}
+			
+			//carPower
+			if (isset($carAd['carPower'])){
+				//0 = kW
+				if(isset($carAd['carPowerType']) && ($carAd['carPowerType'] == 0)){
+					$adDetail .= $formatStr2Num -> filter($carAd['carPower']).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($carAd['carPower']*90/66).' '.$lang['TXT_72'][0].')';
+				}
+				//1 = PS
+				elseif(isset($carAd['carPowerType']) && ($carAd['carPowerType'] == 1)){
+					$adDetail .= $formatStr2Num -> filter($carAd['carPower']*66/90).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($carAd['carPower']).' '.$lang['TXT_72'][1].')';
+				}
+				$adDetail .= ', ';				
+			}
+			
+			//carEZ
+			if (isset($carAd['carEZM']) && isset($carAd['carEZY'])){
+				$adDetail .= $carAd['carEZM'].'/'.$carAd['carEZY'];
+			}
+			
+			if ($adDetail != ''){
+				//car
+				$adDetail .= '<br/>';
+				if (isset($carAd['userNName']) && isset($carAd['userVName'])){
+					$adDetail .= $carAd['userNName'].' '.$carAd['userVName'];
+				}
+				
+				//carLocPLZ, carLocOrt
+				if (isset($carAd['carUserPLZ']) || isset($carAd['carLocOrt'])){
+					$adDetail .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($carAd['carLocPLZ']) == false){
+						$adDetail .= ' '.$carAd['carLocPLZ'];
+					}
+					if ($isEmptyString -> filter($carAd['carLocOrt']) == false){
+						$adDetail .= ' '.$carAd['carLocOrt'];
+					}
+				}elseif (isset($carAd['userPLZ']) || isset($carAd['userOrt'])){
+					$adDetail .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($carAd['userPLZ']) == false){
+						$adDetail .= ' '.$carAd['userPLZ'];
+					}
+					if ($isEmptyString -> filter($carAd['userOrt']) == false){
+						$adDetail .= ' '.$carAd['userOrt'];
+					}
+				}
+			}
+			
+			
+			$searchResEntry = $tmpl -> replace(	'PIC_URI',
+												$picURI,
+												$searchResEntryTMPL
+												);
+			$searchResEntry = $tmpl -> replace(	'BRAND_URL',
+												'/car/'.$carAd['carID'].'/'.$this -> carAds['actPage'],
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'BRAND_NAME',
+												$carBrand,
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'AD_DETAIL',
+												$adDetail,
+												$searchResEntry
+												);
+			$carAds .= $searchResEntry;	
+		}
+		$carAds .= '</div>';
+		
+		//Check if javascript is activated
+		// if it is so then use javascript page counter
+		// else use standard page counter
+		/*
+		if(isset($this -> carAds['jsActive']) && isset($this -> carAds['totalAds'])){//Javascript activated
+			if($this -> carAds['totalAds'] > System_Properties::NUM_ADS){
+				//Prepare the search result entry template
+				$gl_sret = $tmpl -> replace('PIC_URI',
+											'p1',
+											$searchResEntryTMPL
+											);
+				$gl_sret = $tmpl -> replace('BRAND_URL',
+											'p2',
+											$gl_sret
+											);	
+				$gl_sret = $tmpl -> replace('BRAND_NAME',
+											'p3',
+											$gl_sret
+											);		
+				
+				//CSS Files
+				$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+												.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/next_search_res.css" />'
+								);
+				//Set JS Code																
+				$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+											.'
+											var gl_param = new Array();
+											gl_param["actSearchHits"] = '.count($this -> carAds['carAds']).';
+											gl_param["sret"] = \''.$gl_sret.'\';
+											gl_param["noPicURL"] = \''.System_Properties::SYS_PIC_PATH.'/noImg.png\';
+											gl_param["picPath"] = \''.System_Properties::PIC_PATH.'\';'									
+								);
+				//Set JS File
+				$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::JS_PATH.'/jq_141_min.js"></script>
+												<script type="text/javascript" src="'.System_Properties::JS_PATH.'/cs.js"></script>');
+				
+				$nextSearchResultTMPL = $tmpl -> readFile('default/nextSearchResult.html');
+				$nextSearchResult = $tmpl -> replace(	'SEARCH_HITS',
+														$this -> carAds['numAds'],
+														$nextSearchResultTMPL
+													);		
+				$carAds .= $nextSearchResult;
+			}
+		}else{//Javascript deactivated
+			*/
+			$carAds .= pageCounter($this -> carAds['totalAds'], '/car/search/', $this -> carAds['actPage'], $this -> carAds['numAds']);
+		//}
+	}
+	else{
+		$carAds .= $lang['TXT_115'];
+	}
+}
+
+$tmpl -> setValue('CAR_ADS', $carAds);
+
+echo $tmpl -> render();
+?>

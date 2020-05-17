@@ -1,0 +1,100 @@
+@CHARSET "UTF-8";
+
+#map{
+	height: 350px;
+}
+
+#vdetail{
+	margin: 0;
+	padding: 0.5em 0 0 0;
+}
+
+#vdetail h1{
+	margin-bottom: 0.1em;
+}
+
+#vdetail a[name="showMap"]{
+	cursor: pointer;
+} 
+
+.box{
+	padding: 0;
+	float: left;
+	width: 32.3333%;
+	margin: 0em 1% 1.5em 0%;
+}
+.box ul{
+	margin: 0;
+	padding: 0;
+}
+.box ul li{
+	margin: 0;
+	padding: 0 0 0.2em 0;
+}
+.box ul li span{
+	width: 40%;
+	display: block;
+	float: left;
+}
+
+.box form{
+	padding: 0;
+	margin: 0;
+}
+.box ul.contact input,
+.box ul.contact textarea{
+	width: 50%;
+	max-width: 50%;
+	min-width: 50%;
+	margin: 0;
+	padding: 0;
+}
+.box ul.contact textarea{
+	height: 5em;
+	min-height: 5em;
+	max-height: 5em;
+}
+
+.box2{
+	width: 49%;
+}
+
+.captcha{
+	text-align: center;
+}
+
+.captcha img{
+	border: 0;
+}
+
+/*COMMENTBOX*/
+.commentBox{
+	border-top: 1px solid black;
+	text-align: center;
+	padding-top: 1em;
+	margin-top: -1em;
+}
+.commentBox div{
+	width: 100%;
+}
+.commentBox label{
+	text-align: left;
+}
+
+.extAd{
+	background: black;
+	padding: 0.5em 0.3em 0.5em 0.3em;
+	border: 0;	
+	color: #e0dfdf;
+	text-decoration: none;
+	padding: 0.5em;
+	margin: 0;
+	font-weight: bold;
+	cursor: pointer;
+	font-size: 1.2em;
+}
+
+.extAd:hover{
+	color: #10cc02;
+	text-decoration: none;
+}

@@ -1,0 +1,35 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of admin INDEX
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+
+$extLink = $this -> extLink;
+$system = $this -> system;
+
+$tmpl -> readTmplFile('CONTENT','default/index/redirect.html');
+
+$tmpl -> setValue('JS_CODE', '$(document).ready(function(){
+									var interval = window.setInterval(runTicker, 1000);
+									
+									function runTicker () {
+										tickVal = $(".ticker").text();
+										tickVal--;
+										$(".ticker").text(tickVal);
+										if(tickVal <= 0){
+											window.clearInterval(interval);
+											window.location.href = $(".extLink").attr("href");
+										}
+									}
+								});');
+
+if (is_array($system) && isset($system['sysSiteName'])){
+	$tmpl -> setValue('SYS_SITE_NAME', $system['sysSiteName']);
+}
+
+$tmpl -> setValue('EXT_LINK', $extLink);
+
+echo $this -> tmpl -> render();
+?>

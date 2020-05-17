@@ -1,0 +1,29 @@
+
+{-INFO-}
+<h3>{-TXT_190-}{-USER_FIRM_VAL-}</h3>
+{-DEALER_MENU-}
+<div class="box">
+	<label for="b2"><strong>{-TXT_86-} {-USER_ADS-}</strong></label>
+	<ul id="b2">
+		<li><span>{-TXT_53-}</span> {-USER_FIRM-}</li>
+		<li><span>{-TXT_88-}</span> {-USER_NAME-}</li>
+		<li><span>{-TXT_54-}</span> {-USER_ADDRESS-}</li>
+		<li><span>{-TXT_49-}</span> {-USER_TEL1-}</li>
+		<li><span>{-TXT_50-}</span> {-USER_TEL2-}</li>
+	</ul>
+</div>
+
+<div class="box">
+	<label for="b3"><strong>{-TXT_87-}</strong></label>
+	<form action="/dealer/{-DEALER_ID-}" method="POST"  id="b3">
+	<ul class="contact">
+		<li><span>{-TXT_88-}</span><input type="text" name="emailName" value="{-EMAIL_NAME-}"/></li>
+		<li><span>{-TXT_48-}</span><input type="text" name="emailAddress" value="{-EMAIL_ADDRESS-}"/></li>
+		<li><span>{-TXT_90-}</span><textarea name="emailText">{-EMAIL_TEXT-}</textarea></li>			
+		<li><span title="{-INFO_14-}">{-TXT_220-}</span><input type="text" name="captcha_code" value="{-CAPTCHA_CODE-}"/>
+		<li class="captcha"><img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" /><a href="#" onclick="document.getElementById('captcha').src = '/securimage/securimage_show.php?' + Math.random(); return false"><img src="/securimage/images/refresh.gif"/></a>					
+		</li>
+		<li><span>&nbsp;</span><input type="submit" name="sendEMail" value="{-TXT_91-}"/></li>
+	</ul>
+</form>
+</div>

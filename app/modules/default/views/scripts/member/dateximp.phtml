@@ -1,0 +1,73 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$lang = $this -> lang;
+
+$tmpl -> readTmplFile('CONTENT', 'default/member/dateximp.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/member_datex.css" />');
+
+
+
+//IMP_PROT
+$impProt = '';
+if (isset($this -> prot) && is_array($this -> prot)){
+	$impProt = '<label for="prot">{-TXT_206-}</label><ul class="impProt" id="prot">';
+	$prot = $this -> prot;
+	if (isset($prot['ERROR']) && is_array($prot['ERROR'])){
+		foreach ($prot['ERROR'] as $key => $kVal){
+			$impProt .= '<li class="prot_err">'.$kVal.'</li>';
+		}
+	}
+	if (isset($prot['INFO']) && is_array($prot['INFO'])){
+		foreach ($prot['INFO'] as $key => $kVal){
+			$impProt .= '<li class="prot_info">'.$kVal.'</li>';
+		}
+	}
+	$impProt .= '</ul>';
+}
+$tmpl -> setValue('IMP_PROT', $impProt);
+
+
+//V_TYPE
+// $vType = '<select name="vType">
+// 			<option value="-1">'.$lang['TXT_216'].'</option>
+// 			<option value="c">'.$lang['TXT_2'].'</option>
+// 			<option value="b">'.$lang['TXT_3'].'</option>
+// 			<option value="t">'.$lang['TXT_4'].'</option>
+// 		</select>';
+// $tmpl -> setValue('V_TYPE', $vType);
+// <label for="vType" class="nl">{-TXT_215-}</label>
+// <div id="vType" >{-V_TYPE-}</div>
+
+//FORMAT
+$dataIntfFile = System_Properties::$DATA_INTF_FILE;
+$format  = $lang['TXT_40'];
+if (isset($dataIntfFile[$user['datexFormat']]) && isset($lang['TXT_181'][$user['datexFormat']])){
+	$format = $lang['TXT_181'][$user['datexFormat']];
+}
+$tmpl -> setValue('FORMAT', $format);
+
+//INFO
+$infoVal = '';
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+
+echo $this -> tmpl -> render();
+
+
+?>

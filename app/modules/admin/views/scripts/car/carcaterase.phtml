@@ -1,0 +1,71 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for car maintenance
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$carCat = $this -> carCat;
+$cntCarCat = $this -> cntCarCat;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/car/carcaterase.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="tcat/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+	/*							
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["ADMIN_MOD_PATH"] = "'.System_Properties::ADMIN_MOD_PATH.'";'
+				);
+				
+$tmpl -> setValue('JS_FILES', '	<script type="tcat/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="tcat/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/cs.js"></script>');	
+
+*/
+
+$tmpl -> setValue('CAR_CAT_CONFIRM_TCAT', $lang['ATXT_96']);
+
+//CAR_CAT_ID
+$tmpl -> setValue('CAR_CAT_ID', $carCat['carCatID']);
+
+//NUM_SUB_CAT
+$numCarCat = 0;
+if (is_array($carCat) && isset($carCat['children'])){
+	$numCarCat = $carCat['children'];
+}
+$tmpl -> setValue('NUM_SUB_CAT', $numCarCat);
+
+//NUM_CAR_ADS
+$numCar2Cat = 0;
+if (is_array($cntCarCat) && isset($cntCarCat['count_num'])){
+	$numCar2Cat = $cntCarCat['count_num'];
+}
+$tmpl -> setValue('NUM_CAR_ADS', $numCar2Cat);
+
+
+//CAR_CAT_NAME
+$carCatName = '';
+if (isset($carCat['vcatID']) && isset($lang['V_CAT'][$carCat['vcatID']])){
+	$carCatName = $lang['V_CAT'][$carCat['vcatID']];
+}
+$tmpl -> setValue('CAR_CAT_NAME', $carCatName);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

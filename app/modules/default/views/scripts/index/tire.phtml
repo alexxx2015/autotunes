@@ -1,0 +1,24 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of INDEX
+ *********************************************************************************/
+include_once('default/views/filters/FormatStr2Num.php');
+include_once('default/views/filters/FilterIsEmptyString.php');
+
+$tmpl = $this -> tmpl;
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'	<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/index.css" />'
+				);
+
+$tmpl -> readTmplFile('CONTENT','default/index/tire.html');
+
+echo $this -> tmpl -> render();
+
+?>
+
+
+
+

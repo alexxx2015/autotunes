@@ -1,0 +1,243 @@
+{-ERROR-}
+<form action="/bike/insert" method="POST">
+	<h3>{-TXT_55-}</h3>
+	<div class="box">
+		<label for="bikeBrand" class="orange bold">* {-TXT_6-}</label>
+		<div id="bikeBrand">{-BIKE_BRAND_VAL-}</div>
+	</div>
+
+	<div class="box">
+		<label for="bikeModel">{-TXT_42-}</label>
+		<div id="bikeModel">{-BIKE_MODEL_VAL-}</div>
+	</div>
+
+	<div class="box">
+		<label for="bikeModelVar">{-TXT_244-}</label>
+		<div id="bikeModelVar"><input type="text" name="bikeModelVar" value="{-BIKE_MODEL_VAR_VAL-}"/></div>
+	</div>
+	<br class="nl" />
+	<div class="box"> 
+		<label for="bikeEZ" class="orange bold">* {-TXT_7-}</label>
+		<div id="bikeEZ" class="split">{-BIKE_EZ_M_VAL-}{-BIKE_EZ_Y_VAL-}</div>
+	</div>		
+	<div class="box">
+		<label for="bikePrice" class="orange bold">* {-TXT_13-} {-BIKE_PRICE_CURR-}</label>
+		<div id="bikePrice">
+			<input type="text" name="bikePrice" maxlength="10" value="{-BIKE_PRICE_VAL-}"/>
+			{-BIKE_PRICE_TYPE_VAL-}
+		</div>
+	</div>
+	
+	<div class="box">
+		<label for="bikeMwst"><input type="checkbox" name="mwst" id="mwst"/> {-TXT_270-}</label>
+		<div id="bikeMwst">
+			{-BIKE_MWST-}
+		</div>
+	</div>
+
+	<div class="box nl">
+		<label for="bikeKM" class="orange bold">* {-TXT_14-}</label>
+		<div id="bikeKM">
+			<input type="text" name="bikeKM" maxlength="7" value="{-BIKE_KM_VAL-}"/>
+			{-BIKE_KM_TYPE-}
+		</div>
+	</div>
+
+	<div class="box">
+		<label for="bikePower" class="orange bold">* {-TXT_10-}</label>
+		<div id="bikePower">
+			<input type="text" name="bikePower" maxlength="7" value="{-BIKE_POWER_VAL-}"/>
+			{-BIKE_POWER_TYPE_VAL-}
+		</div>
+	</div>
+	
+	<div class="box nl">
+		<label for="bikeHSN">{-TXT_234-}</label>
+		<div id="bikeHSN"><input type="text" name="bikeHSN" value="{-BIKE_HSN_VAL-}"/></div>
+	</div>
+	
+	<div class="box">
+		<label for="bikeTSN">{-TXT_235-}</label>
+		<div id="bikeTSN"><input type="text" name="bikeTSN" value="{-BIKE_TSN_VAL-}"/></div>
+	</div>
+	
+	<div class="box">
+		<label for="bikeFIN">{-TXT_236-}</label>
+		<div id="bikeFIN"><input type="text" name="bikeFIN" value="{-BIKE_FIN_VAL-}"/></div>
+	</div>
+
+	<div class="box nl">
+		<label for="bikeTUV">{-TXT_76-}</label>
+		<div id="bikeTUV" class="split">{-BIKE_TUV_M_VAL-}{-BIKE_TUV_Y_VAL-}</div>
+	</div>
+
+	<div class="box">
+		<label for="bikeAU">{-TXT_77-}</label>
+		<div id="bikeAU" class="split">{-BIKE_AU_M_VAL-} {-BIKE_AU_Y_VAL-}</div>
+	</div>
+	
+	<div class="box">
+		<label for="bikeShift">{-TXT_21-}</label>
+		<div id="bikeShift">{-BIKE_SHIFT_VAL-}</div>
+	</div>
+
+	<br class="nl" />
+	<div class="box">
+		<label for="bikeCat">{-TXT_18-}</label>
+		<div id="bikeCat">{-BIKE_CAT_VAL-}</div>
+	</div>
+
+	<div class="box">
+		<label for="bikeFuel">{-TXT_15-}</label>
+		<div id="bikeFuel">{-BIKE_FUEL_VAL-}</div>
+	</div>
+
+	<div class="box">
+		<label for="bikeClr">{-TXT_19-}</label>
+		<div id="bikeClr">{-BIKE_CLR_VAL-}</div>
+	</div>
+	<br class="nl" />
+	<div class="box">
+		<label for="bikeEmissionNorm">{-TXT_22-}</label>
+		<div id="bikeEmissionNorm">{-BIKE_EMISSION_NORM_VAL-}</div>
+	</div>
+
+	<div class="box">
+		<label for="bikeEcologicTag">{-TXT_85-}</label>
+		<div id="bikeEcologicTag">{-BIKE_ECOLOGIC_TAG_VAL-}</div>
+	</div>
+
+	<div class="box">
+		<label for="bikeState">{-TXT_17-}</label>
+		<div id="bikeState">{-BIKE_STATE_VAL-}</div>
+	</div>
+	<br class="nl" />
+	
+	<div class="box nl">
+		<label for="bikeUseIn">{-TXT_62-}&nbsp;{-TXT_110-}&nbsp;{-TXT_64-}</label>
+		<div id="bikeUseIn"><input type="text" name="bikeUseIn"  maxlength="20" value="{-BIKE_USEIN_VAL-}"/></div>
+	</div>
+
+	<div class="box">
+		<label for="bikeUseOut">{-TXT_63-}&nbsp;{-TXT_110-}&nbsp;{-TXT_64-}</label>  
+		<div id="bikeUseOut"><input type="text" name="bikeUseOut" maxlength="20" value="{-BIKE_USEOUT_VAL-}"/></div>
+	</div>
+
+	<div class="box">
+		<label for="bikeCO2">{-TXT_65-}&nbsp;{-TXT_110-}&nbsp;{-TXT_66-}</label>  
+		<div id="bikeCO2"><input type="text" name="bikeCO2" maxlength="20" value="{-BIKE_CO2_VAL-}"/></div>
+	</div>
+
+	<div class="box nl">
+		<label for="bikeCyl">{-TXT_58-}</label>  
+		<div id="bikeCyl"><input type="text" name="bikeCyl" maxlength="3" value="{-BIKE_CYL_VAL-}"/></div>
+	</div>
+
+	<div class="box">
+		<label for="bikeCub">{-TXT_59-}&nbsp;{-TXT_110-}&nbsp;{-TXT_60-}</label>  
+		<div id="bikeCub"><input type="text" name="bikeCub" maxlength="5" value="{-BIKE_CUB_VAL-}"/></div>
+	</div>
+	
+	<div class="box">
+		<label for="bikeWeight">{-TXT_57-}&nbsp;{-TXT_110-}&nbsp;{-TXT_67-}</label>
+		<div id="bikeWeight"><input type="text" name="bikeWeight"  maxlength="7" value="{-BIKE_WEIGHT_VAL-}"/></div>
+	</div>
+	<br class="nl" />
+	<div class="box twoBox">
+		<label for="bikeDesc">{-TXT_68-}<span> <span id="bikeDescChars">0</span>/1000</span> {-TXT_69-}</label>
+		<div id="bikeDesc"><textarea name="bikeDesc">{-BIKE_DESC_VAL-}</textarea></div>
+	</div>
+	
+	<div class="box">
+		<div>
+			<label for="bikeLocPLZ">{-TXT_114-}-{-TXT_51-}</label>
+			<div id="bikeLocPLZ"><input type="text" name="bikeLocPLZ" maxLength="20" value="{-BIKE_LOCPLZ_VAL-}"/></div>
+		</div>
+	
+		<div>
+			<label for="bikeLocOrt">{-TXT_114-}-{-TXT_52-}</label>
+			<div id="bikeLocOrt"><input type="text" name="bikeLocOrt" maxLength="50" value="{-BIKE_LOCORT_VAL-}"/></div>
+		</div>
+	
+		<div>
+			<label for="bikeLocCountry">{-TXT_114-}-{-TXT_245-}</label>
+			<div id="bikeLocCountry">{-BIKE_LOCCOUNTRY_VAL-}</div>
+		</div>
+	</div>
+	<br class="nl" />
+	
+
+	<div class="boxExtra box">
+		<label for="extras"><strong>{-TXT_83-}</strong></label>
+		<div id="extras">{-BIKE_EXTRA_VAL-}</div>
+	</div>
+	
+	<br class="nl"/>
+	<h3>{-TXT_79-}</h3>
+	<div class="box">
+		<label for="userAds">{-TXT_32-}</label>
+		<div id="userAds">
+			{-USER_ADS_VAL-}
+		</div>	
+	</div>
+    
+	<div class="box userAddInfo">    
+		<label for="userFirm">{-TXT_53-}</label>
+		<div id="userFirm"><input type="text" name="userFirm" maxlength="50" value="{-USER_FIRM_VAL-}"/></div>
+	</div>
+    
+	<div class="box">    
+		<label for="userAdsLength">{-TXT_43-}</label>
+		<div id="userAdsLength">
+			{-USER_ADS_LENGTH_VAL-}
+		</div>
+	</div>
+	<br class="nl" />
+	<div class="box userInfo">
+		<label for="userNName" class="orange bold"><span class="star">* </span>{-TXT_46-}</label>
+		<div id="userNName"><input type="text" name="userNName" maxlength="50" value="{-USER_NNAME_VAL-}"/></div>
+	</div>
+
+	<div class="box userInfo">
+		<label for="userVName" class="orange bold"><span class="star">* </span>{-TXT_47-}</label>
+		<div id="userVName="><input type="text" name="userVName" maxlength="50" value="{-USER_VNAME_VAL-}"/></div>
+	</div>
+      
+	<div class="box">      
+		<label for="userEMail" class="orange bold">* {-TXT_48-}</label>
+		<div id="userEMail"><input type="text" name="userEMail" maxlength="50" value="{-USER_EMAIL_VAL-}"/></div>
+	</div>
+	
+	<br class="nl" />
+
+	<div class="box">
+		<div class="userAddInfo">
+		<label for="userTel1">{-TXT_49-}</label>
+		<div id="userTel1"><input type="text" name="userTel1" maxlength="50" value="{-USER_TEL1_VAL-}"/></div>
+		</div>
+		
+		<label for="userTel2">{-TXT_50-}</label>
+		<div id="userTel2"><input type="text" name="userTel2" maxlength="50" value="{-USER_TEL2_VAL-}"/></div>
+	</div>
+      
+	<div class="box userAddInfo">      
+		<label for="userPLZ">{-TXT_51-}</label>
+		<div id="userPLZ"><input type="text" name="userPLZ" maxlength="20" value="{-USER_PLZ_VAL-}"/></div>
+	  
+		<label for="userOrt">{-TXT_52-}</label>
+		<div id="userOrt"><input type="text" name="userOrt" maxlength="50" value="{-USER_ORT_VAL-}"/></div>
+	</div>
+	      
+	<div class="box userAddInfo">      
+		<label for="userAdress">{-TXT_54-} <span><span id="userAdressChars">0</span>/100</span> {-TXT_69-}</label>
+		<div id="userAdress">
+			<textarea name="userAdress">{-USER_ADRESS_VAL-}</textarea>
+		</div>
+	</div>
+	<br class="nl" />
+	<div class="box">
+		<input type="submit" name="ins2" value="{-TXT_41-}"/>
+	</div>
+	<br class="nl" />
+	<span class="orange bold">* {-TXT_192-}</span>
+</form>

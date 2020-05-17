@@ -1,0 +1,430 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100812
+ * Desc:		This is the view of Car insert confirmation section
+ *********************************************************************************/
+include_once('default/views/filters/FilterIsEmptyString.php');
+include_once('default/views/filters/FormatStr2Num.php');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$this -> carCat = $this -> carCat;
+$str2NumFilter = new FormatSt2Num();
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/car.css" />
+								<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/car_insert.css" />
+								<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/detail.css" />
+								'
+				);
+	/*			
+$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/js_active.js"></script>');
+*/
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/car/insert2.html');
+
+$fCheckSpace = new FilterIsEmptyString();
+
+
+//Set CAR_BRAND
+$tmpl -> setValue('CAR_BRAND', $this -> car['carBrandTxt']);
+
+//Set CAR_MODEL
+$this -> carModel = '';
+if(isset($this -> car['carModelTxt']) && ($this -> car['carModelTxt'] != null)){
+	$this -> carModel = $this -> car['carModelTxt'];
+}
+$tmpl -> setValue('CAR_MODEL', $this -> carModel);
+
+//SET CAR_MODEL_VAR
+$carModelVar = $lang['TXT_40'];
+if (isset($this -> car['carModelVar']) && ($this->car['carModelVar'] != null)){
+	$carModelVar = $this -> car['carModelVar'];
+}
+$tmpl -> setValue('CAR_MODEL_VAR', $carModelVar);
+
+//Set CAR_PRICE
+$carPriceVal = '<table>';
+
+if(isset($this->car['mwst']) && ($this->car['mwst'] == '1') && isset($this->car['mwstSatz']) && in_array($this->car['mwstSatz'],$lang['V_MWST'])){
+	$carPriceVal .= '<tr><td>'.$str2NumFilter -> filter(array('val' => $this->car['carPrice']*($this->car['mwstSatz']/100+1),
+												'dec_place' => 0
+												)
+										). '{-CAR_PRICE_CURR-} ('.$lang['TXT_273'].')</td></tr>
+					<tr><td>'.$str2NumFilter -> filter(array('val' => $this->car['carPrice'],
+												'dec_place' => 0
+												)
+										).'{-CAR_PRICE_CURR-} ('.$lang['TXT_274'].')</td></tr>
+					<tr><td>'.$this->car['mwstSatz'].'% '.$lang['TXT_270'].'</td></tr>';
+}
+elseif(isset($this->car['mwst']) && ($this->car['mwst'] == '1')){
+	$carPriceVal .= '<tr><td>'.$str2NumFilter -> filter(array('val' => $this->car['carPrice'],
+												'dec_place' => 0
+												)
+										).'{-CAR_PRICE_CURR-}</td></tr>
+					<tr><td>'.$lang['TXT_270'].'</td></tr>';
+}else{
+	$carPriceVal .= '<tr><td>'.$str2NumFilter -> filter(array('val' => $this->car['carPrice'],
+												'dec_place' => 0
+												)
+										).'{-CAR_PRICE_CURR-}</td></tr>
+					<tr><td>'.$lang['TXT_275'].'</td></tr>';
+}
+$carPriceVal .= '</table>';
+$tmpl -> setValue('CAR_PRICE', $carPriceVal);
+
+$carPriceCurr = '';
+if (isset($lang['TXT_74'][$this->car['carPriceCurr']])){
+	$carPriceCurr = $lang['TXT_74'][$this->car['carPriceCurr']];
+}
+$tmpl -> setValue('CAR_PRICE_CURR', $carPriceCurr);
+
+
+$carPriceType = '';
+if (isset($this->car['carPriceType']) && isset($lang['TXT_70'][$this->car['carPriceType']])){
+	$carPriceType = ', '.$lang['TXT_70'][$this->car['carPriceType']];
+}
+$tmpl -> setValue('CAR_PRICE_TYPE', $carPriceType);
+
+//Set CAR_KM
+$tmpl -> setValue('CAR_KM', $str2NumFilter -> filter(array('val' => $this -> car['carKM'],
+												'dec_place' => 0
+												)
+										));
+$this -> carKMType = $lang['TXT_40'];
+if (isset($this -> car['carKMType']) && isset($lang['TXT_75'][$this -> car['carKMType']])){
+	$this -> carKMType = $lang['TXT_75'][$this -> car['carKMType']];
+}
+$tmpl -> setValue('CAR_KM_TYPE', $this -> carKMType);										
+
+//Set CAR_POWER
+$this -> carPower = '';
+if (isset($this -> car['carPowerType']) && isset($lang['TXT_72'][$this -> car['carPowerType']])){
+	if ($this -> car['carPowerType'] == 0){
+		$this -> carPower = $str2NumFilter -> filter(array('val' => $this -> car['carPower'],
+												'dec_place' => 0
+												)
+										).' '.$lang['TXT_72'][0]
+					.' ('.$str2NumFilter -> filter(array('val' => ($this -> car['carPower']*90/66),
+												'dec_place' => 0
+												)
+										).' '.$lang['TXT_72'][1].')';
+	}
+	elseif ($this -> car['carPowerType'] == 1){
+		$this -> carPower = ($this -> car['carPower']*66/90).' '.$lang['TXT_72'][0]
+					.' ('.$this -> car['carPower'].' '.$lang['TXT_72'][1].')';
+	}
+}
+$tmpl -> setValue('CAR_POWER', $this -> carPower);
+
+//Set CAR_EZ
+$tmpl -> setValue('CAR_EZ', $this -> car['carEZM'].'/'.$this -> car['carEZY']);
+
+//HSN
+$this -> carHSN = $lang['TXT_40'];
+if (isset($this -> car['carHSN']) && ($this -> car['carHSN'] != false)){
+	$this -> carHSN = $this -> car['carHSN'];
+}
+$tmpl -> setValue('CAR_HSN', $this -> carHSN);
+
+//TSN
+$this -> carTSN = $lang['TXT_40'];
+if (isset($this -> car['carTSN']) && ($this -> car['carTSN'] != false)){
+	$this -> carTSN = $this -> car['carTSN'];
+}
+$tmpl -> setValue('CAR_TSN', $this -> carTSN);
+
+//FIN
+$this -> carFIN = $lang['TXT_40'];
+if (isset($this -> car['carFIN']) && ($this -> car['carFIN'] != false)){
+	$this -> carFIN = $this -> car['carFIN'];
+}
+$tmpl -> setValue('CAR_FIN', $this -> carFIN);
+
+//Set CAR_TUV
+$this -> carTUV = $lang['TXT_40'];
+if (isset($this -> car['carTUVY']) && ($this -> car['carTUVY'] != false) && ($this -> car['carTUVY'] != -1)){	
+	$this -> carTUV = $this -> car['carTUVY'];
+	if (isset($this -> car['carTUVM']) && ($this -> car['carTUVM'] != false) && ($this -> car['carTUVM'] != -1)){
+		$this -> carTUV = $this -> car['carTUVM'].'/'.$this -> car['carTUVY'];
+	}
+}
+$tmpl -> setValue('CAR_TUV', $this -> carTUV);
+
+//Set CAR_AU
+$this -> carAU = $lang['TXT_40'];
+if (isset($this -> car['carAUY']) && ($this -> car['carAUY'] != false) && ($this -> car['carAUY'] != -1)){
+	$this -> carAU = $this -> car['carAUY'];
+	if (isset($this -> car['carAUM']) && ($this -> car['carAUM'] != false) && ($this -> car['carAUM'] != -1)){
+		$this -> carAU = $this -> car['carAUM'].'/'.$this -> car['carAUY'];
+	}
+}
+$tmpl -> setValue('CAR_AU', $this -> carAU);
+
+//Set CAR_SHIFT
+$this -> carShift = $lang['TXT_40']; 
+if (isset($this -> car['carShift']) && isset($lang['V_SHIFT'][$this -> car['carShift']]) ){
+	$this -> carShift = $lang['V_SHIFT'][$this -> car['carShift']];
+}
+$tmpl -> setValue('CAR_SHIFT', $this -> carShift);
+
+//Set CAR_WEIGHT
+$this -> carWeight = $lang['TXT_40'];
+if (isset($this -> car['carWeight']) && ($this -> car['carWeight'] > 0)){
+	$this -> carWeight = $str2NumFilter -> filter(array('val' => $this -> car['carWeight']
+												, 'dec_place' => 0
+											)
+										).'&nbsp;'.$lang['TXT_67'];
+}
+$tmpl -> setValue('CAR_WEIGHT', $this -> carWeight);
+
+//Set CAR_CYL
+$this -> carCyl = $lang['TXT_40'];
+if (isset($this -> car['carCyl']) && ($this -> car['carCyl'] != false)){
+	$this -> carCyl = $this -> car['carCyl'];
+}
+$tmpl -> setValue('CAR_CYL', $this -> carCyl);
+
+//Set CAR_CUB
+$this -> carCub = $lang['TXT_40'];
+if (isset($this -> car['carCub']) && ($this -> car['carCub'] != false)){
+	$this -> carCub = $this -> car['carCub'];
+}
+$tmpl -> setValue('CAR_CUB', $this -> carCub);
+
+//Set CAR_DOOR
+$this -> carDoor = $lang['TXT_40'];
+if (isset($this -> car['carDoor']) && isset($lang['CAR_DOOR'][$this -> car['carDoor']]) ){
+	$this -> carDoor = $lang['CAR_DOOR'][$this -> car['carDoor']];
+}
+$tmpl -> setValue('CAR_DOOR', $this -> carDoor);
+
+//Set CAR_USE_IN
+$this -> carUseIn = $lang['TXT_40'];
+if (isset($this -> car['carUseIn']) && ($fCheckSpace -> filter($this -> car['carUseIn']) == false)){
+	$this -> carUseIn = $this -> car['carUseIn'].' '.$lang['TXT_64'];
+}
+$tmpl -> setValue('CAR_USE_IN', $this -> carUseIn);
+
+//Set CAR_USE_OUT
+$this -> carUseOut = $lang['TXT_40'];
+if (isset($this -> car['carUseOut']) && ($fCheckSpace -> filter($this -> car['carUseOut']) == false)){
+	$this -> carUseOut = $this -> car['carUseOut'].' '.$lang['TXT_64'];
+}
+$tmpl -> setValue('CAR_USE_OUT', $this -> carUseOut);
+
+//Set CAR_CO2
+$this -> carCO2 = $lang['TXT_40'];
+if (isset($this -> car['carCO2']) && ($fCheckSpace -> filter($this -> car['carCO2']) == false)){
+	$this -> carCO2 = $this -> car['carCO2'].' '.$lang['TXT_66'];
+}
+$tmpl -> setValue('CAR_CO2', $this -> carCO2);
+
+//Set CAR_STATE
+$this -> carState = $lang['TXT_40'];
+if (isset($this -> car['carState']) && isset($lang['V_STATE'][$this -> car['carState']]) ){
+	$this -> carState = $lang['V_STATE'][$this -> car['carState']];
+}
+$tmpl -> setValue('CAR_STATE', $this -> carState);
+
+//Set CAR_EEK
+$carEEK = $lang['TXT_40'];
+if (isset($this->car['carEEK']) && isset($lang['V_EEK'][$this->car['carEEK']]) ){
+	$carEEK = $lang['V_EEK'][$this->car['carEEK']];
+}
+$tmpl -> setValue('CAR_EEK', $carEEK);
+
+//Set CAR_CAT
+$this -> carCatVal = $lang['TXT_40'];	
+if (isset($this -> car['carCat']) && is_array($this -> carCat)){
+	foreach($this -> carCat as $key => $kVal){
+		if (($kVal['carCatID'] == $this -> car['carCat']) && isset($lang['V_CAT'][$kVal['vcatID']])){
+			$this -> carCatVal = $lang['V_CAT'][$kVal['vcatID']];
+			break;
+		}
+	}
+}
+$tmpl -> setValue('CAR_CAT', $this -> carCatVal);
+
+//Set CAR_FUEL
+$this -> carFuel = $lang['TXT_40'];
+if (isset($this -> car['carFuel']) && isset($lang['V_FUEL'][$this -> car['carFuel']]) ){
+	$this -> carFuel = $lang['V_FUEL'][$this -> car['carFuel']];
+}
+$tmpl -> setValue('CAR_FUEL', $this -> carFuel);
+
+//Set CAR_CLR
+$this -> carClr = $lang['TXT_40'];
+if (isset($this -> car['carClr']) && isset($lang['V_CLR'][$this -> car['carClr']]) ){
+	$this -> carClr = $lang['V_CLR'][$this -> car['carClr']];
+	if (isset($this -> car['carClrMet'])){
+		$this -> carClr .= ' '.$lang['TXT_20'];
+	}
+}
+$tmpl -> setValue('CAR_CLR', $this -> carClr);
+
+//Set CAR_EMISSION_NORM
+$this -> carEmissionNorm = $lang['TXT_40'];
+if (isset($this -> car['carEmissionNorm']) && isset($lang['V_EMISSION_NORM'][$this -> car['carEmissionNorm']]) ){
+	$this -> carEmissionNorm = $lang['V_EMISSION_NORM'][$this -> car['carEmissionNorm']];
+}
+$tmpl -> setValue('CAR_EMISSION_NORM', $this -> carEmissionNorm);
+
+//Set CAR_ECOLOGIC_TAG
+$this -> carEcologicTag = $lang['TXT_40'];
+if (isset($this -> car['carEcologicTag']) && isset($lang['V_ECOLOGIC_TAG'][$this -> car['carEcologicTag']]) ){
+	$this -> carEcologicTag = $lang['V_ECOLOGIC_TAG'][$this -> car['carEcologicTag']];
+}
+$tmpl -> setValue('CAR_ECOLOGIC_TAG', $this -> carEcologicTag);
+
+//Set CAR_KLIMA
+$this -> carKlima = $lang['TXT_40'];
+if (isset($this -> car['carKlima']) && isset($lang['V_KLIMA'][$this -> car['carKlima']]) ){
+	$this -> carKlima = $lang['V_KLIMA'][$this -> car['carKlima']];
+}
+$tmpl -> setValue('CAR_KLIMA', $this -> carKlima);
+
+//Set CAR_DESC
+$this -> carDesc = $lang['TXT_40'];
+if (isset($this -> car['carDesc']) && ($fCheckSpace -> filter($this -> car['carDesc']) == false)){
+	$this -> carDesc = $this -> car['carDesc'];
+}
+$tmpl -> setValue('CAR_DESC', $this -> carDesc);
+
+//Set CAR_EXT
+$this -> carExt = '';
+if (isset($this -> car['carExtDB']) && is_array($this -> car['carExtDB'])){
+	foreach ($this -> car['carExtDB'] as $this -> carExtDB){
+		$this -> carExt .= $lang['V_EXTRA'][$this -> carExtDB['vextID']].', ';
+	}
+}
+if ($this -> carExt == ''){
+	$this -> carExt = $lang['TXT_40'];
+}
+$tmpl -> setValue('CAR_EXTRA', $this -> carExt);
+/*
+$this -> carExt = '';
+if (isset($this -> car['carExtDB']) && is_array($this -> car['carExtDB'])){
+	foreach ($this -> car['carExtDB'] as $this -> carExtDB){
+		$this -> carExt .= $lang['V_EXTRA'][$this -> carExtDB['vextID']].', ';
+	}
+}
+$tmpl -> setValue('CAR_EXT', $this -> carExt);
+*/
+
+//Set USER_ADS
+$userAds = '';
+if (isset($this -> car['userAds']) ){
+	if($this -> car['userAds'] == 1){
+		$userAds = $lang['TXT_33'][1];
+	}
+	else if($this -> car['userAds'] == 2){
+		$userAds = $lang['TXT_33'][2];
+	}
+	else if($this -> car['userAds'] == 3){
+		$userAds = $lang['TXT_33'][3];
+	}
+}
+$tmpl -> setValue('USER_ADS', $userAds);
+
+//Set USER_FIRM
+$userFirm = $lang['TXT_40'];
+if (isset($this -> car['userFirm']) && ($fCheckSpace -> filter($this -> car['userFirm']) == false)){
+	$userFirm = $this -> car['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM', $userFirm);
+
+//Set USER_VNAME, USER_NNAME
+$tmpl -> setValue('USER_NAME', $this->car['userNName'].' '.$this->car['userVName']);
+//$tmpl -> setValue('USER_NNAME', $this -> car['userNName']);
+//$tmpl -> setValue('USER_VNAME', $this -> car['userVName']);
+
+//Set USER_EMAIL
+$tmpl -> setValue('USER_EMAIL', $this -> car['userEMail']);
+
+//Set USER_ADRESS
+$userAddress = $lang['TXT_40'];
+if (isset($this -> car['userAdress']) || isset($this -> car['userPLZ']) || isset($this -> car['userOrt'])){
+	$userAddress = '';
+	if (isset($this -> car['userAdress']) && ($fCheckSpace -> filter($this -> car['userAdress']) == false)){
+		$userAddress .= '<li>'.$this -> car['userAdress'].'</li>';
+	}
+	if (isset($this -> car['userPLZ']) && isset($this -> car['userOrt'])
+		 && ($fCheckSpace -> filter($this -> car['userPLZ']) == false)
+		  && ($fCheckSpace -> filter($this -> car['userOrt']) == false)){
+		$userAddress .= '<li>'.$this -> car['userPLZ'].' '.$this -> car['userOrt'].'</li>';
+	}
+	else if (isset($this -> car['userPLZ']) && ($fCheckSpace -> filter($this -> car['userPLZ']) == false)){
+		$userAddress .= '<li>'.$this -> car['userPLZ'].'</li>';
+	}
+	else if (isset($this -> car['userOrt']) && ($fCheckSpace -> filter($this -> car['userOrt']) == false)){
+		$userAddress .= '<li>'.$this -> car['userOrt'].'</li>';
+	}
+}
+if ($userAddress != ''){
+	//$userAddress = '	<li><span>'.$lang['TXT_54'].'</span><ul>'.$userAddress.'</ul></li>';
+	$userAddress = '	<li><ul>'.$userAddress.'</ul></li>';
+}
+else{
+	$userAddress = $lang['TXT_40'];
+}
+$tmpl -> setValue('USER_ADDRESS', $userAddress);
+
+/*$userAdress = '';
+if (isset($this -> car['userAdress'])){
+	$userAdress .= $this -> car['userAdress'];
+}
+$tmpl -> setValue('USER_ADRESS', $userAdress);
+*/
+
+//Set USER_TEL1
+$userTel = $lang['TXT_40'];
+if (isset($this -> car['userTel1']) && ($fCheckSpace -> filter($this -> car['userTel1']) == false)){
+	//$userTel .= '<li><span>'.$lang['TXT_80'].'</span>'.$this -> car['userTel2'].'</li>';
+	$userTel = $this -> car['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1', $userTel);
+
+//Set USER_TEL2
+$userTel = $lang['TXT_40'];
+if (isset($this -> car['userTel2']) && ($fCheckSpace -> filter($this -> car['userTel2']) == false)){
+	$userTel = $this -> car['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2', $userTel);
+
+//carLoc
+$car = '';
+if (isset($this -> car['carLocPLZ']) && ($this -> car['carLocPLZ'] != null)){
+	if ($car != ''){
+		$car .= ' ';
+	}
+	$car .= $this -> car['carLocPLZ'];
+}
+if (isset($this -> car['carLocOrt']) && ($this -> car['carLocOrt'] != null)){
+	if ($car != ''){
+		$car .= ' ';
+	}
+	$car .= ' '.$this -> car['carLocOrt'];
+}
+if (isset($this -> car['carLocCountry']) && isset($lang['COUNTRY'][$this -> car['carLocCountry']])){
+	if ($car != ''){
+		$car .= ', ';
+	}
+	$car .= ' '.$lang['COUNTRY'][$this -> car['carLocCountry']];
+}
+$tmpl -> setValue('CAR_LOC', $car);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

@@ -1,0 +1,647 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of Truck insert section
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$truck = $this -> truck;
+$truckCat = $this -> truckCat;
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/truckd.css" />
+								<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/truck_insert.css" />
+								'
+				);
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["adp"] = \'/admin\';'
+				);
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+																
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/carouFredSel_4_4_1.js"></script>
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/prettyPhoto.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/ajaxupload.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/ti.js"></script>');		
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/truck/insert.html');
+
+//Set TRUCK_BRAND
+$truckBrands = '';
+if(isset($this -> truckBrand) && is_array($this -> truckBrand)){
+	$truckBrands .= '	<select name="truckBrand">';
+	foreach ($this -> truckBrand as $truckBrand){
+		$truckBrands .= '<option value="'.$truckBrand['truckBrandID'].'" ';
+		if (isset($truck['truckBrand']) && ($truck['truckBrand'] == $truckBrand['truckBrandID'])){
+			$truckBrands .= 'selected';
+		}
+		$truckBrands .= ' >'.$truckBrand['brandName'].'</option>';
+	}
+	$truckBrands .= '</select>';
+}
+$tmpl -> setValue('TRUCK_BRAND_VAL', $truckBrands);
+
+//Set TRUCK_MODEL
+$truckModels = '';
+if(isset($this -> truckModel) && is_array($this -> truckModel)){
+	$truckModels .= '	<select name="truckModel">
+					<option value="-1">'.$lang['TXT_40'].'</option>';
+	foreach ($this -> truckModel as $truckModel){
+		$truckModels .= '<option value="'.$truckModel['truckModelID'].'" ';
+		if (isset($truck['truckModel']) && ($truck['truckModel'] == $truckModel['truckModelID'])){			
+			$truckModels .= 'selected';
+		}
+		$truckModels .= '>'.$truckModel['truckModelName'].'</option>';
+	}
+	$truckModels .= '	</select>';
+}
+$tmpl -> setValue('TRUCK_MODEL_VAL', $truckModels);													
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	g_arr["TXT40"] = \''.$lang['TXT_40'].'\';'
+				);
+
+
+//Set TRUCK_MODEL_VAR_VAL
+$truckModelVar = '';
+if (isset($truck['truckModelVar']) && ($truck['truckModelVar'] != null)){
+	$truckModelVar = $truck['truckModelVar'];
+}
+$tmpl -> setValue('TRUCK_MODEL_VAR_VAL', $truckModelVar);
+
+//Set TRUCK_EZ_M and CAT_EZ_Y
+$truckEZM = '	<select name="truckEZM">
+				<option value="-1">{-TXT_38-}</option>';
+for($i = 1; $i <= 12; $i++){
+	$truckEZM .= '<option value="'.$i.'" ';
+	if ($i == $truck['truckEZM']){
+		$truckEZM .= 'selected';
+	}
+	$truckEZM .= '>'.$i.'</option>';
+  }            
+$truckEZM .= '</select>';
+$tmpl -> setValue('TRUCK_EZ_M_VAL', $truckEZM);
+
+$truckEZY = '	<select name="truckEZY">
+				<option value="-1">{-TXT_39-}</option>';
+for($i = date('Y'); $i >= 1900; $i--){
+	$truckEZY .= '<option value="'.$i.'" ';
+	if ($i == $truck['truckEZY']){
+		$truckEZY .= 'selected';
+	}
+	$truckEZY .= '>'.$i.'</option>';	
+}            
+$truckEZY .= '</select>';
+$tmpl -> setValue('TRUCK_EZ_Y_VAL', $truckEZY);
+
+//Set TRUCK_KM_VAL
+$truckKMVal = '';
+if (isset($truck['truckKM'])){
+	$truckKMVal = $truck['truckKM'];
+}
+$tmpl -> setValue('TRUCK_KM_VAL', $truckKMVal);
+
+//Set TRUCK_KM_TYPE_VAL
+$truckKMType = '<select name="truckKMType">';
+foreach ($lang['TXT_75'] as $key => $val){
+	$truckKMType .= '<option value="'.$key.'" ';
+	if ($key == $truck['truckKMType']){
+		$truckKMType .= 'selected';
+	}
+	$truckKMType .= '>'.$val.'</option>';
+}
+$truckKMType .= '</select>';
+$tmpl -> setValue('TRUCK_KM_TYPE', $truckKMType);
+
+//Set TRUCK_PRICE_VAL
+$truckPriceVal = '';
+if (isset($truck['truckPrice'])){
+	$truckPriceVal = $truck['truckPrice'];
+}
+$tmpl -> setValue('TRUCK_PRICE_VAL', $truckPriceVal);
+
+//Set TRUCK_PRICE_TYPE
+$truckPriceType = '<select name="truckPriceType">';
+foreach ($lang['TXT_70'] as $key => $val){
+	$truckPriceType .= '<option value="'.$key.'" ';
+	if ($key == $truck['truckPriceType']){
+		$truckPriceType .= 'selected';
+	}
+	$truckPriceType .= '>'.$val.'</value>';
+}
+$truckPriceType .= '</select>';
+$tmpl -> setValue('TRUCK_PRICE_TYPE_VAL', $truckPriceType);
+$tmpl -> setValue('TRUCK_PRICE_CURR', $lang['TXT_128'].' '.$lang['TXT_74'][0]);
+
+//Mwst
+$truckMwst = '<select name="mwstSatz" '.(isset($truck['mwst']) && ($truck['mwst'] == 1) ?'':'disabled').'>
+              	<option value="-1">{-TXT_40-}</option>';
+if(is_array($lang) && isset($lang['V_MWST'])){
+	foreach($lang['V_MWST'] as $key => $kVal){
+		$truckMwst .= '<option value="'.$kVal.'" ';
+		if(($kVal == $truck['mwstSatz']) && isset($truck['mwst']) && ($truck['mwst'] == 1)){
+			$truckMwst .= 'selected';
+		}
+		$truckMwst .= '>'.$lang['TXT_271'].': '.$kVal.'%</option>';
+	}
+}
+$truckMwst .= '</select>';
+$tmpl -> setValue('TRUCK_MWST', $truckMwst);
+
+//Set TRUCK_POWER_VAL
+$truckPowerVal = '';
+if (isset($truck['truckPower'])){
+	$truckPowerVal = $truck['truckPower'];
+}
+$tmpl -> setValue('TRUCK_POWER_VAL', $truckPowerVal);
+
+//Set TRUCK_POWER_TYPE
+$truckPowerType = '<select name="truckPowerType">';
+foreach ($lang['TXT_72'] as $key => $val){
+	$truckPowerType .= '<option value="'.$key.'" ';
+	if ($key == $truck['truckPowerType']){
+		$truckPowerType .= 'selected';
+	}
+	$truckPowerType .= '>'.$val.'</option>';
+}
+$truckPowerType .= '</select>';
+$tmpl -> setValue('TRUCK_POWER_TYPE_VAL', $truckPowerType);
+
+//HSN
+$truckHSN = '';
+if (isset($truck['truckHSN'])){
+	$truckHSN = $truck['truckHSN'];
+}
+$tmpl -> setValue('TRUCK_HSN_VAL', $truckHSN);
+
+//TSN
+$truckTSN = '';
+if (isset($truck['truckTSN'])){
+	$truckTSN = $truck['truckTSN'];
+}
+$tmpl -> setValue('TRUCK_TSN_VAL', $truckTSN);
+
+//FIN
+$truckFIN = '';
+if (isset($truck['truckFIN'])){
+	$truckFIN = $truck['truckFIN'];
+}
+$tmpl -> setValue('TRUCK_FIN_VAL', $truckFIN);
+
+//Set TRUCK_SHIFT
+$truckShift = '<select name="truckShift">
+              	<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_SHIFT'] as $key => $val) {
+	$truckShift .= '<option value="'.$key.'" ';
+	if(isset($truck['truckShift']) && ($key == $truck['truckShift'])){
+		$truckShift .= 'selected';
+	}
+	$truckShift .= '>'.$val.'</option>';
+}
+$truckShift .= '</select>';
+$tmpl -> setValue('TRUCK_SHIFT_VAL', $truckShift);
+
+//Set TRUCK_TUV_X
+$truckTUVM = '<select name="truckTUVM">
+				<option value="-1">{-TXT_38-}</option>';
+for($i = 1; $i <= 12; $i++){
+	$truckTUVM .= '<option value="'.$i.'" ';
+	if ($i == $truck['truckTUVM']){
+		$truckTUVM .= 'selected';
+	}
+	$truckTUVM .= '>'.$i.'</option>';
+}            
+$truckTUVM .= '</select>';
+$tmpl -> setValue('TRUCK_TUV_M_VAL', $truckTUVM);
+
+$truckTUVY = '<select name="truckTUVY">
+				<option value="-1">{-TXT_39-}</option>'; 
+for($i = date('Y'); $i <= date('Y')+4; $i++){
+	$truckTUVY .= '<option value="'.$i.'" ';
+	if($i == $truck['truckTUVY']){
+		$truckTUVY .= 'selected';
+	}	
+	$truckTUVY .= '>'.$i.'</option>';
+}                        
+$truckTUVY .= '</select>';
+$tmpl -> setValue('TRUCK_TUV_Y_VAL', $truckTUVY);
+
+//Set TRUCK_AU_X
+$truckAUM = '	<select name="truckAUM">
+				<option value="-1">{-TXT_38-}</option>';
+for($i = 1; $i <= 12; $i++){
+	$truckAUM .= '<option value="'.$i.'" ';
+	if($i == $truck['truckAUM']){
+		$truckAUM .= 'selected';
+	}
+	$truckAUM .= '>'.$i.'</option>';
+}            
+$truckAUM .= '</select>';
+$tmpl -> setValue('TRUCK_AU_M_VAL', $truckAUM);
+
+$truckAUY = '	<select name="truckAUY">
+				<option value="-1">{-TXT_39-}</option>'; 
+for($i = date('Y'); $i <= date('Y')+4; $i++){
+	$truckAUY .= '<option value="'.$i.'" ';
+	if($i == $truck['truckAUY']){
+		$truckAUY .= 'selected';
+	}
+	$truckAUY .= '>'.$i.'</option>';
+}                        
+$truckAUY .= '</select>';
+$tmpl -> setValue('TRUCK_AU_Y_VAL', $truckAUY);
+
+//Set TRUCK_CAT
+$truckCatVal = '	<select name="truckCat">
+				<option value="-1">{-TXT_40-}</option>';
+if(is_array($truckCat)){
+	$i = 0;
+	foreach ($truckCat as $key => $val){
+		if(isset($lang['V_CAT'][$val['vcatID']])){
+			if ($val['level'] == 1){
+				$i++;	
+				$i = $i%2;
+			}
+			
+			$truckCatVal .= '<option value="'.$val['truckCatID'].'"  '.($i == 1 ? 'class = "grey"':'').' style="padding-left:'.(($val['level'] > 1) ? ($val['level']*0.4).'em' : '0').';" ';
+			if(isset($truck['truckCat']) && ($val['truckCatID'] == $truck['truckCat'])){
+				$truckCatVal .= 'selected';
+			}
+			$truckCatVal .= '>'.$lang['V_CAT'][$val['vcatID']].'</option>';
+		}
+	}
+}         
+$truckCatVal .= '</select>';
+$tmpl -> setValue('TRUCK_CAT_VAL', $truckCatVal);
+
+/*
+$truckCat = '	<select name="truckCat">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['TRUCK_CAT'] as $key => $val){
+	$truckCat .= '<option value="'.$key.'" ';
+	if(isset($truck['truckCat']) && ($key == $truck['truckCat'])){
+		$truckCat .= 'selected';
+	}
+	$truckCat .= '>'.$val.'</option>';
+}         
+$truckCat .= '</select>';
+$tmpl -> setValue('TRUCK_CAT_VAL', $truckCat);
+*/
+
+//Set TRUCK_STATE
+$truckState = '<select name="truckState">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_STATE'] as $key => $val){
+	$truckState .= '<option value="'.$key.'" ';
+	if(isset($truck['truckState']) && ($key == $truck['truckState'])){
+		$truckState .= 'selected';
+	}
+	$truckState .= '>'.$val.'</option>';
+}
+$truckState .= '</select>';
+$tmpl -> setValue('TRUCK_STATE_VAL', $truckState);
+
+//Set TRUCK_FUEL
+$truckFuel = '<select name="truckFuel">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_FUEL'] as $key => $val){
+	$truckFuel .= '<option value="'.$key.'" ';
+	if (isset($truck['truckFuel']) && ($key == $truck['truckFuel'])){
+		$truckFuel .= 'selected';
+	}
+	$truckFuel .= '>'.$val.'</option>';
+}
+$truckFuel .= '</select>';
+$tmpl -> setValue('TRUCK_FUEL_VAL', $truckFuel);
+
+//Set TRUCK_EMISSION_NORM
+$truckEmissionNorm = '<select name="truckEmissionNorm">
+              <option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_EMISSION_NORM'] as $key => $val){
+	$truckEmissionNorm .= '<option value="'.$key.'" ';
+	if (isset($truck['truckEmissionNorm']) && ($key == $truck['truckEmissionNorm'])){
+		$truckEmissionNorm .= 'selected';
+	}
+	$truckEmissionNorm .= '>'.$val.'</option>';
+}
+$truckEmissionNorm .= '</select>';
+$tmpl -> setValue('TRUCK_EMISSION_NORM_VAL', $truckEmissionNorm);
+
+//Set TRUCK_CLR
+$truckClr = '	<select name="truckClr">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_CLR'] as $key => $val){
+	$truckClr .= '<option value="'.$key.'" ';
+	if (isset($truck['truckClr']) && ($key == $truck['truckClr'])){
+		$truckClr .= 'selected';
+	}
+	$truckClr .= '>'.$val.'</option>';
+}
+$truckClr .= '</select>&nbsp;{-TXT_20-}&nbsp;<input type="checkbox" name="truckClrMet" ';
+if (isset($truck['truckClrMet'])){
+	$truckClr .= 'checked';
+}
+$truckClr .= '>';
+$tmpl -> setValue('TRUCK_CLR_VAL', $truckClr);
+
+//Set TRUCK_ECOLOGIC_TAG
+$truckEcologicTag = '<select name="truckEcologicTag">
+			          <option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_ECOLOGIC_TAG'] AS $key => $val){
+	$truckEcologicTag .= '<option value="'.$key.'" ';
+	if (isset($truck['truckEcologicTag']) && ($key == $truck['truckEcologicTag'])){
+		$truckEcologicTag .= 'selected';
+	}
+	$truckEcologicTag .= '>'.$val.'</option>';
+}/*
+			          <option value="0">'.$lang['V_ECOLOGIC_TAG'][0].'</option>
+			          <option value="1">'.$lang['V_ECOLOGIC_TAG'][1].'</option>
+			          <option value="2">'.$lang['V_ECOLOGIC_TAG'][2].'</option>
+			          <option value="3">'.$lang['V_ECOLOGIC_TAG'][3].'</option>
+			          */
+$truckEcologicTag .= '</select>';
+$tmpl -> setValue('TRUCK_ECOLOGIC_TAG_VAL', $truckEcologicTag);
+
+//Set TRUCK_KLIMA
+$truckKlima = '<select name="truckKlima">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_KLIMA'] as $key => $val){
+	$truckKlima .= '<option value="'.$key.'" ';
+	if (isset($truck['truckKlima']) && ($key == $truck['truckKlima'])){
+		$truckKlima .= 'selected';
+	}
+	$truckKlima .= '>'.$val.'</option>';	
+}
+$truckKlima .= '</select>';
+$tmpl -> setValue('TRUCK_KLIMA', $truckKlima);
+
+//Set TRUCK_WEIGHT_VAL
+$truckWeightVal = '';
+if (isset($truck['truckWeight']) && ($truck['truckWeight'] != 0)){
+	$truckWeightVal = $truck['truckWeight'];
+}
+$tmpl -> setValue('TRUCK_WEIGHT_VAL', $truckWeightVal);
+
+//Set TRUCK_CYL_VAL
+$truckCylVal = '';
+if (isset($truck['truckCyl']) && ($truck['truckCyl'] != 0)){
+	$truckCylVal = $truck['truckCyl'];
+}
+$tmpl -> setValue('TRUCK_CYL_VAL', $truckCylVal);
+
+//Set TRUCK_CUB_VAL
+$truckCubVal = '';
+if (isset($truck['truckCub']) && ($truck['truckCub'] != 0)){
+	$truckCubVal = $truck['truckCub'];
+}
+$tmpl -> setValue('TRUCK_CUB_VAL', $truckCubVal);
+
+//Set TRUCK_USEIN_VAL
+$truckUseinVal = '';
+if (isset($truck['truckUseIn'])){
+	$truckUseinVal = $truck['truckUseIn'];
+}
+$tmpl -> setValue('TRUCK_USEIN_VAL', $truckUseinVal);
+
+//Set TRUCK_USEOUT_VAL
+$truckUseoutVal = '';
+if (isset($truck['truckUseOut'])){
+	$truckUseoutVal = $truck['truckUseOut'];
+}
+$tmpl -> setValue('TRUCK_USEOUT_VAL', $truckUseoutVal);
+
+//Set TRUCK_CO2_VAL
+$truckCO2Val = '';
+if (isset($truck['truckCO2'])){
+	$truckCO2Val = $truck['truckCO2'];
+}
+$tmpl -> setValue('TRUCK_CO2_VAL', $truckCO2Val);
+
+//Set TRUCK_DESC_VAL
+$truckDescVal = '';
+if (isset($truck['truckDesc'])){
+	$truckDescVal = $truck['truckDesc'];
+}
+$tmpl -> setValue('TRUCK_DESC_VAL', $truckDescVal);
+
+//Set TRUCK_EXTRA
+$truckExtra = '<ul>';
+$lastHeading = null;
+if (is_array($this -> truckExt)){
+	foreach ($this -> truckExt as $val){
+		if (isset($lang['V_EXTRA'][$val['vextID']])){
+			$truckExtra .= '<li';
+			if ($val['children'] > 0){
+				$truckExtra .= ' class="extHeading" >';
+				$lastHeading = $val;
+			}else{			
+				$truckExtra .= ' ><input type="checkbox" name="truckExt[]" value="'.$val['vextID'].'" ';
+				if (isset($truck['truckExt']) && (in_array($val['vextID'], $truck['truckExt']) == true)){
+					$truckExtra .= 'checked';
+				}
+				$truckExtra .= '/>';
+			}
+			$truckExtra .= $lang['V_EXTRA'][$val['vextID']].'</li>';
+		}
+	}
+}
+$truckExtra .= '</ul>';
+$tmpl -> setValue('TRUCK_EXTRA_VAL', $truckExtra);
+
+//Set TRUCK_LOCPLZ_VAL
+$truckLocplzVal = '';
+if (isset($truck['truckLocPLZ'])){
+	$truckLocplzVal = $truck['truckLocPLZ'];
+}
+$tmpl -> setValue('TRUCK_LOCPLZ_VAL', $truckLocplzVal);
+
+//Set TRUCK_LOCORT_VAL
+$truckLocortVal = '';
+if (isset($truck['truckLocOrt'])){
+	$truckLocortVal = $truck['truckLocOrt'];
+}
+$tmpl -> setValue('TRUCK_LOCORT_VAL', $truckLocortVal);
+
+//Set TRUCK_LOCCOUNTRY_VAL
+$truckLoccountryVal = '<select name="truckLocCountry">';
+if (isset($lang['COUNTRY']) && is_array($lang['COUNTRY'])){
+	if (!isset($truck['truckLocCountry']) && ($truck['truckLocCountry'] == null)){
+		$truckLocCountry = 'DE';
+	}else{
+		$truckLocCountry = $truck['truckLocCountry'];
+	}
+	
+	asort($lang['COUNTRY']);
+	foreach($lang['COUNTRY'] as $key => $kVal){		
+		$truckLoccountryVal .= '<option value="'.$key.'" '.($truckLocCountry == $key ? 'selected':'').'>'.$kVal.'</option>';
+	} 
+}
+$truckLoccountryVal .= '</select>';
+$tmpl -> setValue('TRUCK_LOCCOUNTRY_VAL', $truckLoccountryVal);
+
+//Set USER_ADS_VAL
+$userAdsVal = '	<select name="userAds" id="userAds">					
+				  <option value="2"'.($truck['userAds']==2 ? 'selected':'').'>'.$lang['TXT_33'][2].'</option>
+				  <option value="1"'.($truck['userAds']==1 ? 'selected':'').'>'.$lang['TXT_33'][1].'</option>
+				  <option value="3"'.($truck['userAds']==3 ? 'selected':'').'>'.$lang['TXT_33'][3].'</option>
+				</select> ';
+$tmpl -> setValue('USER_ADS_VAL', $userAdsVal);
+
+//Set USER_FIRM_VAL
+$userFirmVal = '';
+if (isset($truck['userFirm'])){
+	$userFirmVal = $truck['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirmVal);
+
+//Set USER_NNAME_VAL
+$userNNameVal = '';
+if (isset($truck['userNName'])){
+	$userNNameVal = $truck['userNName'];
+}
+$tmpl -> setValue('USER_NNAME_VAL', $userNNameVal);
+
+//Set USER_VNAME_VAL
+$userVNameVal = '';
+if (isset($truck['userVName'])){
+	$userVNameVal = $truck['userVName'];
+}
+$tmpl -> setValue('USER_VNAME_VAL', $userVNameVal);
+
+//Set USER_EMAIL_VAL
+$userEmailVal = '';
+if (isset($truck['userEMail'])){
+	$userEmailVal = $truck['userEMail'];
+}
+$tmpl -> setValue('USER_EMAIL_VAL', $userEmailVal);
+
+//Set USER_TEL1_VAL
+$userTel1Val = '';
+if (isset($truck['userTel1'])){
+	$userTel1Val = $truck['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1_VAL', $userTel1Val);
+
+//Set USER_TEL2_VAL
+$userTel2Val = '';
+if (isset($truck['userTel2'])){
+	$userTel2Val = $truck['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2_VAL', $userTel2Val);
+
+//Set USER_PLZ_VAL
+$userPLZVal = '';
+if (isset($truck['userPLZ'])){
+	$userPLZVal = $truck['userPLZ'];
+}
+$tmpl -> setValue('USER_PLZ_VAL', $userPLZVal);
+
+//Set USER_ORT_VAL
+$userOrtVal = '';
+if (isset($truck['userOrt'])){
+	$userOrtVal = $truck['userOrt'];
+}
+$tmpl -> setValue('USER_ORT_VAL', $userOrtVal);
+
+//Set USER_ADRESS_VAL
+$userAdressVal = '';
+if (isset($truck['userAdress'])){
+	$userAdressVal = $truck['userAdress'];
+}
+$tmpl -> setValue('USER_ADRESS_VAL', $userAdressVal);
+
+//Set USER_ADS_LENGTH_VAL
+$userAdsLengthVal = '';
+if (isset($lang['USER_ADS_LENGTH']) && is_array($lang['USER_ADS_LENGTH'])){
+	$userAdsLengthVal = '
+						<select name="userAdsLength">';
+	foreach ($lang['USER_ADS_LENGTH'] as $key => $kVal){
+		$userAdsLengthVal .= '<option value="'.$kVal.'"'.($truck['userAdsLength']==$kVal ? 'selected':'').'>'.$kVal.' '.$lang['TXT_45'].'</option>';
+	}
+	$userAdsLengthVal .= '</select>';
+}
+$tmpl -> setValue('USER_ADS_LENGTH_VAL', $userAdsLengthVal);
+
+/*
+// Foto Gallery
+$tmpl -> readTMPLFile('TRUCK_PHOTO_GALLERY','default/photoGalleryJSON.html');
+
+//	Set javascript file for photo upload
+$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/ajaxupload.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/ti.js"></script>');
+
+//Read gallery image pattern
+$photoUploadEntryTMPL = $tmpl -> readFile('default/photoUploadEntry.html');
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_SRC_VAL',
+										'p1',
+										$photoUploadEntryTMPL
+									);
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_ID_VAL',
+										'p2',
+										$gl_galIMGPattern
+									);		
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_HREF',
+										'',
+										$gl_galIMGPattern
+									);
+									
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	g_arr["GAL_IMG_PAT"] = \''.$gl_galIMGPattern.'\';'
+				);
+$truckPhotos = '';
+if (isset($truck['truckPhoto']) && is_array($truck['truckPhoto'])){
+	
+	foreach ($truck['truckPhoto'] as $key => $truckPhoto){
+		$showPic = true;
+		if (isset($truckPhoto['del']) && ($truckPhoto['del'] == true)){
+			$showPic = false;
+		}
+		
+		if ($showPic == true){
+			$imgSrc = System_Properties::PIC_PATH.'/'.$truckPhoto['vID'].'_'.$truckPhoto['vPicID'].'.jpeg';
+			
+			if (file_exists('.'.$imgSrc)){
+				$photoUploadEntry = $tmpl -> replace(	'IMG_SRC_VAL',
+														$imgSrc,
+														$photoUploadEntryTMPL
+													);
+				$photoUploadEntry = $tmpl -> replace(	'IMG_ID_VAL',
+														$truckPhoto['vPicID'],
+														$photoUploadEntry
+													);
+				$photoUploadEntry = $tmpl -> replace(	'IMG_HREF',
+														'',
+														$photoUploadEntry
+													);
+				$truckPhotos .= $photoUploadEntry;//'<div><a>X</a><img src="'.$truckPhoto.'" id="'.$key.'"/></div>';						
+			}
+		}
+	}
+}
+$tmpl -> setValue('PHOTO_GALLERY_ENTRIES', $truckPhotos);
+*/
+
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+
+/*
+
+<div class="box">
+	<label for="truckModel">{-TXT_42-}</label>
+	<div id="truckModel">{-TRUCK_MODEL_VAL-}</div>
+</div>*/
+?>

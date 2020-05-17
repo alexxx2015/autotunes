@@ -1,0 +1,250 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for car maintenance
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$searchParam = $this -> searchParam;
+
+$tmpl -> readTmplFile('CAR_QUICK_SEARCH_BOX', System_Properties::ADMIN_MOD_PATH.'/car/car_quick_search.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/q_search.css" />');
+								
+$jsCode = '';
+if (is_array($searchParam)){
+	$jsCode .= '$(document).ready(function(){';
+	
+	//carEZ
+	if (isset($searchParam['carEZF'])){
+		$jsCode .= '$("select[name=\'carEZF\']").val("'.$searchParam['carEZF'].'");';
+	}
+	if (isset($searchParam['carEZT'])){
+		$jsCode .= '$("select[name=\'carEZT\']").val("'.$searchParam['carEZT'].'");';
+	}
+	
+	//carPrice
+	if (isset($searchParam['carPriceF'])){
+		$jsCode .= '$("select[name=\'carPriceF\']").val("'.$searchParam['carPriceF'].'");';
+	}	
+	if (isset($searchParam['carPriceT'])){
+		$jsCode .= '$("select[name=\'carPriceT\']").val("'.$searchParam['carPriceT'].'");';
+	}
+	
+	//carPower
+	if (isset($searchParam['carPowerF'])){
+		$jsCode .= '$("select[name=\'carPowerF\']").val("'.$searchParam['carPowerF'].'");';
+	}	
+	if (isset($searchParam['carPowerT'])){
+		$jsCode .= '$("select[name=\'carPowerT\']").val("'.$searchParam['carPowerT'].'");';
+	}
+	
+	//carKM
+	if (isset($searchParam['carKMF'])){
+		$jsCode .= '$("select[name=\'carKMF\']").val("'.$searchParam['carKMF'].'");';
+	}	
+	if (isset($searchParam['carKMT'])){
+		$jsCode .= '$("select[name=\'carKMT\']").val("'.$searchParam['carKMT'].'");';
+	}
+	if (isset($searchParam['carKMType'])){
+		$jsCode .= '$("select[name=\'carKMType\']").val("'.$searchParam['carKMType'].'");';
+	}
+	
+	//userAds
+	if (isset($searchParam['userAds'])){
+		$jsCode .= '$("select[name=\'userAds\']").val("'.$searchParam['userAds'].'");';
+	}
+	
+	//userID
+	if (isset($searchParam['adNum'])){
+		$jsCode .= '$("input[name=\'adNum\']").val("'.$searchParam['adNum'].'");';
+	}
+
+	//userAge
+	if (isset($searchParam['userAge'])){
+		$jsCode .= '$("select[name=\'userAge\']").val("'.$searchParam['userAge'].'");';
+	}
+	
+	//userSort
+	if (isset($searchParam['carSort'])){
+		$jsCode .= '$("select[name=\'carSort\']").val("'.$searchParam['carSort'].'");';
+	}
+	if (isset($searchParam['carSortOpt'])){
+		$jsCode .= 'if ($("select[name=\'carSort\']").val() != -1){
+						$("select[name=\'carSortOpt\']").removeAttr("disabled");
+						$("select[name=\'carSortOpt\']").val("'.$searchParam['carSortOpt'].'");
+					}';
+	}
+	
+	//carPLZ
+	if (isset($searchParam['carPLZ'])){
+		$jsCode .= '$("input[name=\'carPLZ\']").val("'.$searchParam['carPLZ'].'");';
+	}
+	if (isset($searchParam['carCC'])){
+		$jsCode .= 'var carPLZVal = $("input[name=\'carPLZ\']").val();
+					if(carPLZVal.length > 0){
+						$("select[name=\'carCC\']").removeAttr("disabled");
+						$("select[name=\'carCC\']").val("'.$searchParam['carCC'].'");
+					}';		
+	}
+	
+	//userID
+	if (isset($searchParam['userID'])){
+		$jsCode .= '$("input[name=\'userID\']").val("'.$searchParam['userID'].'");';
+	}
+	$jsCode .= '});';
+}
+								
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE').$jsCode);
+
+//Set CAR_BRAND
+$carBrands = '';
+if(isset($this -> carBrand) && is_array($this -> carBrand)){
+	$i2 = 0;
+	$carBrands .= '	<ul>';
+	foreach ($this -> carBrand as $carBrand){
+		$carModel = '';
+		$carBrands .= '<li '.(($i2%2) == 0 ? 'class="grey"' : '').'><input type="checkbox" name="carBrand[]" value="'.$carBrand['carBrandID'].'" class="carBrand" ';
+		if (isset($searchParam['carBrand']) && in_array($carBrand['carBrandID'], $searchParam['carBrand'])){
+			$carBrands .= 'checked';
+			
+			//process car model
+			if (isset($this -> carModel) && is_array($this -> carModel)){
+				$carModel = '<div class="model">';
+				foreach ($this -> carModel as $cm){
+					if ($cm['carBrandID'] == $carBrand['carBrandID']){
+						$carModel .= '<input type="checkbox" name="carModel[]" value="'.$cm['carModelID'].'" ';
+						if (isset($searchParam['carModel']) && in_array($cm['carModelID'], $searchParam['carModel'])){
+							$carModel .= 'checked';
+						}						
+						$carModel .= '/>'.$cm['carModelName'].'<br/>';
+					}
+				}
+				$carModel .= '</div>';
+			}
+		}
+		$carBrands .= '>'.$carBrand['brandName'].$carModel.'</li>';
+		$i2++;
+	}
+	$carBrands .= '</ul>';
+}
+$tmpl -> setValue('CAR_BRAND_N_MODEL', $carBrands);
+
+//Set CAR_EZ_M and CAT_EZ_Y
+$carEZF = '	<select name="carEZF">
+				<option value="-1" selected>{-TXT_8-}</option>';
+for($i = date('Y'); $i > 1900; $i--){
+	$carEZF .= '<option value="'.$i.'">'.$i.'</option>';
+  }            
+$carEZF .= '</select>';
+$tmpl -> setValue('CAR_EZF', $carEZF);
+
+$carEZT = '<select name="carEZT">
+				<option value="-1">{-TXT_9-}</option>';
+for($i = date('Y'); $i > 1900; $i--){
+	$carEZT .= '<option value="'.$i.'">'.$i.'</option>';
+}            
+$carEZT .= '</select>';
+$tmpl -> setValue('CAR_EZT', $carEZT);
+
+$tmpl -> setValue('CAR_KW', $lang['TXT_72'][0]);
+$tmpl -> setValue('CAR_PS', $lang['TXT_72'][1]);
+
+//Set CAR_KM_TYPE
+$carKMType = '<select name="carKMType">
+				<option value="-1">'.$lang['TXT_16'].'</option>';
+foreach ($lang['TXT_75'] as $key => $val){
+	$carKMType .= '<option value="'.$key.'">'.$val.'</option>';
+}
+$carKMType .= '</select>';
+$tmpl -> setValue('CAR_KM_TYPE', $carKMType);
+
+//set TXT_75_0
+$tmpl -> setValue('TXT_75_0', $lang['TXT_75'][0]);
+//CAR_KM_F
+$carKMF = '<select name="carKMF">
+			<option value="-1">'.$lang['TXT_8'].'</option>			
+		  	<option value="0">'.$lang['TXT_11'].' '.number_format($lang['CAR_KM'][0], 0, ',', '.').'</option>';
+foreach($lang['CAR_KM'] as $carKM){
+	$carKMF .= '<option value="'.$carKM.'">'.number_format($carKM, 0, ',', '.').'</option>';
+}
+$carKMF .= '</select>';
+$tmpl -> setValue('CAR_KM_F', $carKMF);
+//CAR_KM_T
+$carKMT = '<select name="carKMT">
+			<option value="-1">'.$lang['TXT_9'].'</option>';
+foreach($lang['CAR_KM'] as $carKM){
+	$carKMT .= '<option value="'.$carKM.'">'.number_format($carKM, 0, ',', '.').'</option>';
+}
+$carKMT .= '<option value="0">'.$lang['TXT_12'].' '.number_format($carKM, 0, ',', '.').'</option>
+			</select>';
+$tmpl -> setValue('CAR_KM_T', $carKMT);
+
+
+//CAR_POWER_F
+$filterPSPower = new FilterPower(array('kind' => FilterPower::PS));
+$carPowerF = '<select name="carPowerF">
+				<option value="-1">'.$lang['TXT_8'].'</option>
+	  			<option value="0">'.$lang['TXT_11'].' '.$lang['CAR_POWER'][0].' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($lang['CAR_POWER'][0]), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>';
+foreach ($lang['CAR_POWER'] as $carPower){
+	$carPowerF .= '<option value="'.$carPower.'">'.$carPower.' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($carPower), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>';
+}
+$carPowerF .= '</select>';
+$tmpl -> setValue('CAR_POWER_F', $carPowerF);
+//CAR_POWER_T
+$carPowerT = '<select name="carPowerT">
+				<option value="-1">'.$lang['TXT_9'].'</option>';
+foreach ($lang['CAR_POWER'] as $carPower){
+	$carPowerT .= '<option value="'.$carPower.'">'.$carPower.' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($carPower), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>';
+}
+$carPowerT .= '<option value="0">'.$lang['TXT_12'].' '.$carPower.' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($carPower), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>
+				</select>';
+$tmpl -> setValue('CAR_POWER_T', $carPowerT);
+
+//CAR_PRICE_F
+$carPriceF = '<select name="carPriceF">
+				<option value="-1" '.(isset($searchParam['carPriceF']) && ($searchParam['carPriceF'] == -1)?'selected':'').'>'.$lang['TXT_8'].'</option>
+		  		<option value="0" '.(isset($searchParam['carPriceF']) && ($searchParam['carPriceF'] == 0)?'selected':'').'>'.$lang['TXT_11'].' '.number_format($lang['CAR_PRICE'][0], 0, ',', '.').'</option>';
+foreach ($lang['CAR_PRICE'] as $carPrice){
+	$carPriceF .= '<option value="'.$carPrice.'" ';
+	if (isset($searchParam['carPriceF']) && ($searchParam['carPriceF'] == $carPrice)){
+		$carPriceF .= 'selected';
+	}	
+	$carPriceF .= '>'.number_format($carPrice, 0, ',', '.').'</option>';
+}
+$carPriceF .= '</select>';
+$tmpl -> setValue('CAR_PRICE_F', $carPriceF);
+//CAR_PRICE_T
+$carPriceT = '<select name="carPriceT">
+				<option value="-1" '.(isset($searchParam['carPriceT']) && ($searchParam['carPriceT'] == -1)?'selected':'').'>'.$lang['TXT_9'].'</option>';
+foreach ($lang['CAR_PRICE'] as $carPrice){
+	$carPriceT .= '<option value="'.$carPrice.'" ';
+	if (isset($searchParam['carPriceT']) && ($searchParam['carPriceT'] == $carPrice)){
+		$carPriceT .= 'selected';
+	}	
+	$carPriceT .= '>'.number_format($carPrice, 0, ',', '.').'</option>';
+}
+$carPriceT .= '	<option value="0" '.(isset($searchParam['carPriceT']) && ($searchParam['carPriceT'] == 0)?'selected':'').'>'.$lang['TXT_12'].' '.number_format($carPrice, 0, ',', '.').'</option>
+		  		</select>';
+$tmpl -> setValue('CAR_PRICE_T', $carPriceT);
+$tmpl -> setValue('CAR_PRICE_TYPE', $lang['TXT_128'].' '.$lang['TXT_74'][0]);
+
+//Set USER_ADS_VAL
+$userAdsVal = '	<select name="userAds" id="userAds">					
+				  <option value="-1">'.$lang['TXT_40'].'</option>
+				  <option value="1">'.$lang['TXT_33'][1].'</option>
+				  <option value="2">'.$lang['TXT_33'][2].'</option>
+				</select> ';
+$tmpl -> setValue('USER_ADS_VAL', $userAdsVal);
+
+//USER_ID_VAL
+$userIDVal = '';
+if (isset($carSearch['userID'])){
+	$userIDVal .= $carSearch['userID'];
+}
+$tmpl -> setValue('USER_ID_VAL', $userIDVal);
+// {-CAR_KM_TYPE-}
+?>

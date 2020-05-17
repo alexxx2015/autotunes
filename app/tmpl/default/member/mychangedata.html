@@ -1,0 +1,54 @@
+{-INFO-}
+<h2>{-TXT_152-}</h2>
+<form action="/member/mychangedata" method="POST" class="myChangeDataForm">	
+	<label for="userFirm">{-TXT_53-}</label>
+	<div id="userFirm">
+		<input type="text" name="userFirm" maxlength="50" value="{-USER_FIRM_VAL-}" />
+	</div>
+	
+	<label for="userNName" class="nl">{-TXT_46-}*</label>
+	<div id="userNName">
+		<input type="text" name="userNName" maxlength="50" value="{-USER_NNAME_VAL-}" />
+	</div>
+	
+	<label for="userVName" class="nl">{-TXT_47-}*</label>
+	<div id="userVName">
+		<input type="text" name="userVName" maxlength="50" value="{-USER_VNAME_VAL-}" />
+	</div>
+	          
+	<label for="userEMail" class="nl">{-TXT_48-}*</label>
+	<div id="userEMail">
+		<input type="text" name="userEMail" maxlength="50" value="{-USER_EMAIL_VAL-}" readonly="readonly"/>
+	</div>
+	
+	<label for="userTel1" class="nl">{-TXT_49-}</label>
+	<div id="userTel1">
+		<input type="text" name="userTel1" maxlength="50" value="{-USER_TEL1_VAL-}" />
+	</div>
+	
+	<label for="userTel2" class="nl">{-TXT_50-}</label>
+	<div id="userTel2">
+		<input type="text" name="userTel2" maxlength="50" value="{-USER_TEL2_VAL-}" />
+	</div>
+	
+	<label for="userPLZ" class="nl">{-TXT_51-}</label>
+	<div id="userPLZ">
+		<input type="text" name="userPLZ" maxlength="20" value="{-USER_PLZ_VAL-}"/>
+	</div>
+	
+	<label for="userOrt" class="nl">{-TXT_52-}</label>
+	<div id="userOrt">
+		<input type="text" name="userOrt" maxlength="50" value="{-USER_ORT_VAL-}" />
+	</div>
+	     
+	<label for="userAdress" class="nl">{-TXT_54-}</label>
+	<div id="userAdress">
+		<span id="userAdressChars">0</span>/100 {-TXT_69-}<br/>
+		<textarea name="userAdress">{-USER_ADRESS_VAL-}</textarea>
+	</div>
+	
+	<!-- <label for="userNews" class="nl"></label>-->
+	<div id="userNews">{-USER_NEWS_VAL-} {-TXT_116-}</div>
+	<br class="nl"/>
+	<input type="submit" name="userChange" value="{-TXT_156-}"/>
+</form>

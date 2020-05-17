@@ -1,0 +1,22 @@
+<ul class="subMenu">
+	<li><a href="{-ADMIN_MOD_PATH-}/truck/insert">{-TXT_102-}</a></li>
+	<li><a href="{-ADMIN_MOD_PATH-}/system/truckbrandmodel">{-ATXT_60-} {-ATXT_64-}</a></li>
+	<li><a href="{-ADMIN_MOD_PATH-}/truck/truckextra">{-ATXT_104-}</a></li>
+	<li><a href="{-ADMIN_MOD_PATH-}/truck/truckcat">{-ATXT_105-}</a></li>
+</ul>
+
+<br class="nl"/>
+{-INFO-}
+
+<fieldset class="qs">
+	<legend><strong>{-TXT_188-}</strong></legend>
+	<form action="{-ADMIN_MOD_PATH-}/truck/search" method="POST">
+		{-TRUCK_QUICK_SEARCH_BOX-}
+		<input type="submit" name="search1" value="{-TXT_31-}"/>
+	</form>
+</fieldset>	
+
+<fieldset class="searchRes">
+	<legend><strong>{-ATXT_11-}</strong></legend>
+	{-TRUCK_SEARCH_RES_VAL-}
+</fieldset>

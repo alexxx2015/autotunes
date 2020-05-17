@@ -1,0 +1,250 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for bike maintenance
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$searchParam = $this -> searchParam;
+
+$tmpl -> readTmplFile('BIKE_QUICK_SEARCH_BOX', System_Properties::ADMIN_MOD_PATH.'/bike/bike_quick_search.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/q_search.css" />');
+
+$jsCode = '';
+if (is_array($searchParam)){
+	$jsCode .= '$(document).ready(function(){';
+	
+	//bikeEZ
+	if (isset($searchParam['bikeEZF'])){
+		$jsCode .= '$("select[name=\'bikeEZF\']").val("'.$searchParam['bikeEZF'].'");';
+	}
+	if (isset($searchParam['bikeEZT'])){
+		$jsCode .= '$("select[name=\'bikeEZT\']").val("'.$searchParam['bikeEZT'].'");';
+	}
+	
+	//bikePrice
+	if (isset($searchParam['bikePriceF'])){
+		$jsCode .= '$("select[name=\'bikePriceF\']").val("'.$searchParam['bikePriceF'].'");';
+	}	
+	if (isset($searchParam['bikePriceT'])){
+		$jsCode .= '$("select[name=\'bikePriceT\']").val("'.$searchParam['bikePriceT'].'");';
+	}
+	
+	//bikePower
+	if (isset($searchParam['bikePowerF'])){
+		$jsCode .= '$("select[name=\'bikePowerF\']").val("'.$searchParam['bikePowerF'].'");';
+	}	
+	if (isset($searchParam['bikePowerT'])){
+		$jsCode .= '$("select[name=\'bikePowerT\']").val("'.$searchParam['bikePowerT'].'");';
+	}
+	
+	//bikeKM
+	if (isset($searchParam['bikeKMF'])){
+		$jsCode .= '$("select[name=\'bikeKMF\']").val("'.$searchParam['bikeKMF'].'");';
+	}	
+	if (isset($searchParam['bikeKMT'])){
+		$jsCode .= '$("select[name=\'bikeKMT\']").val("'.$searchParam['bikeKMT'].'");';
+	}
+	if (isset($searchParam['bikeKMType'])){
+		$jsCode .= '$("select[name=\'bikeKMType\']").val("'.$searchParam['bikeKMType'].'");';
+	}
+	
+	//userAds
+	if (isset($searchParam['userAds'])){
+		$jsCode .= '$("select[name=\'userAds\']").val("'.$searchParam['userAds'].'");';
+	}
+	
+	//userID
+	if (isset($searchParam['adNum'])){
+		$jsCode .= '$("input[name=\'adNum\']").val("'.$searchParam['adNum'].'");';
+	}
+
+	//userAge
+	if (isset($searchParam['userAge'])){
+		$jsCode .= '$("select[name=\'userAge\']").val("'.$searchParam['userAge'].'");';
+	}
+	
+	//userSort
+	if (isset($searchParam['bikeSort'])){
+		$jsCode .= '$("select[name=\'bikeSort\']").val("'.$searchParam['bikeSort'].'");';
+	}
+	if (isset($searchParam['bikeSortOpt'])){
+		$jsCode .= 'if ($("select[name=\'bikeSort\']").val() != -1){
+						$("select[name=\'bikeSortOpt\']").removeAttr("disabled");
+						$("select[name=\'bikeSortOpt\']").val("'.$searchParam['bikeSortOpt'].'");
+					}';
+	}
+	
+	//bikePLZ
+	if (isset($searchParam['bikePLZ'])){
+		$jsCode .= '$("input[name=\'bikePLZ\']").val("'.$searchParam['bikePLZ'].'");';
+	}
+	if (isset($searchParam['bikeCC'])){
+		$jsCode .= 'var bikePLZVal = $("input[name=\'bikePLZ\']").val();
+					if(bikePLZVal.length > 0){
+						$("select[name=\'bikeCC\']").removeAttr("disabled");
+						$("select[name=\'bikeCC\']").val("'.$searchParam['bikeCC'].'");
+					}';		
+	}
+	
+	//userID
+	if (isset($searchParam['userID'])){
+		$jsCode .= '$("input[name=\'userID\']").val("'.$searchParam['userID'].'");';
+	}
+	$jsCode .= '});';
+}
+								
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE').$jsCode);
+
+//Set BIKE_BRAND
+$bikeBrands = '';
+if(isset($this -> bikeBrand) && is_array($this -> bikeBrand)){
+	$i2 = 0;
+	$bikeBrands .= '	<ul>';
+	foreach ($this -> bikeBrand as $bikeBrand){
+		$bikeModel = '';
+		$bikeBrands .= '<li '.(($i2%2) == 0 ? 'class="grey"' : '').'><input type="checkbox" name="bikeBrand[]" value="'.$bikeBrand['bikeBrandID'].'" class="bikeBrand" ';
+		if (isset($searchParam['bikeBrand']) && in_array($bikeBrand['bikeBrandID'], $searchParam['bikeBrand'])){
+			$bikeBrands .= 'checked';
+			
+			//process bike model
+			if (isset($this -> bikeModel) && is_array($this -> bikeModel)){
+				$bikeModel = '<div class="model">';
+				foreach ($this -> bikeModel as $cm){
+					if ($cm['bikeBrandID'] == $bikeBrand['bikeBrandID']){
+						$bikeModel .= '<input type="checkbox" name="bikeModel[]" value="'.$cm['bikeModelID'].'" ';
+						if (isset($searchParam['bikeModel']) && in_array($cm['bikeModelID'], $searchParam['bikeModel'])){
+							$bikeModel .= 'checked';
+						}						
+						$bikeModel .= '/>'.$cm['bikeModelName'].'<br/>';
+					}
+				}
+				$bikeModel .= '</div>';
+			}
+		}
+		$bikeBrands .= '>'.$bikeBrand['brandName'].$bikeModel.'</li>';
+		$i2++;
+	}
+	$bikeBrands .= '</ul>';
+}
+$tmpl -> setValue('BIKE_BRAND_N_MODEL', $bikeBrands);
+
+//Set BIKE_EZ_M and CAT_EZ_Y
+$bikeEZF = '	<select name="bikeEZF">
+				<option value="-1" selected>{-TXT_8-}</option>';
+for($i = date('Y'); $i > 1900; $i--){
+	$bikeEZF .= '<option value="'.$i.'">'.$i.'</option>';
+  }            
+$bikeEZF .= '</select>';
+$tmpl -> setValue('BIKE_EZF', $bikeEZF);
+
+$bikeEZT = '<select name="bikeEZT">
+				<option value="-1">{-TXT_9-}</option>';
+for($i = date('Y'); $i > 1900; $i--){
+	$bikeEZT .= '<option value="'.$i.'">'.$i.'</option>';
+}            
+$bikeEZT .= '</select>';
+$tmpl -> setValue('BIKE_EZT', $bikeEZT);
+
+$tmpl -> setValue('BIKE_KW', $lang['TXT_72'][0]);
+$tmpl -> setValue('BIKE_PS', $lang['TXT_72'][1]);
+
+//Set BIKE_KM_TYPE
+$bikeKMType = '<select name="bikeKMType">
+				<option value="-1">'.$lang['TXT_16'].'</option>';
+foreach ($lang['TXT_75'] as $key => $val){
+	$bikeKMType .= '<option value="'.$key.'">'.$val.'</option>';
+}
+$bikeKMType .= '</select>';
+$tmpl -> setValue('BIKE_KM_TYPE', $bikeKMType);
+
+//set TXT_75_0
+$tmpl -> setValue('TXT_75_0', $lang['TXT_75'][0]);
+//BIKE_KM_F
+$bikeKMF = '<select name="bikeKMF">
+			<option value="-1">'.$lang['TXT_8'].'</option>			
+		  	<option value="0">'.$lang['TXT_11'].' '.number_format($lang['BIKE_KM'][0], 0, ',', '.').'</option>';
+foreach($lang['BIKE_KM'] as $bikeKM){
+	$bikeKMF .= '<option value="'.$bikeKM.'">'.number_format($bikeKM, 0, ',', '.').'</option>';
+}
+$bikeKMF .= '</select>';
+$tmpl -> setValue('BIKE_KM_F', $bikeKMF);
+//BIKE_KM_T
+$bikeKMT = '<select name="bikeKMT">
+			<option value="-1">'.$lang['TXT_9'].'</option>';
+foreach($lang['BIKE_KM'] as $bikeKM){
+	$bikeKMT .= '<option value="'.$bikeKM.'">'.number_format($bikeKM, 0, ',', '.').'</option>';
+}
+$bikeKMT .= '<option value="0">'.$lang['TXT_12'].' '.number_format($bikeKM, 0, ',', '.').'</option>
+			</select>';
+$tmpl -> setValue('BIKE_KM_T', $bikeKMT);
+
+
+//BIKE_POWER_F
+$filterPSPower = new FilterPower(array('kind' => FilterPower::PS));
+$bikePowerF = '<select name="bikePowerF">
+				<option value="-1">'.$lang['TXT_8'].'</option>
+	  			<option value="0">'.$lang['TXT_11'].' '.$lang['BIKE_POWER'][0].' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($lang['BIKE_POWER'][0]), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>';
+foreach ($lang['BIKE_POWER'] as $bikePower){
+	$bikePowerF .= '<option value="'.$bikePower.'">'.$bikePower.' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($bikePower), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>';
+}
+$bikePowerF .= '</select>';
+$tmpl -> setValue('BIKE_POWER_F', $bikePowerF);
+//BIKE_POWER_T
+$bikePowerT = '<select name="bikePowerT">
+				<option value="-1">'.$lang['TXT_9'].'</option>';
+foreach ($lang['BIKE_POWER'] as $bikePower){
+	$bikePowerT .= '<option value="'.$bikePower.'">'.$bikePower.' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($bikePower), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>';
+}
+$bikePowerT .= '<option value="0">'.$lang['TXT_12'].' '.$bikePower.' '.$lang['TXT_72'][0].' ('.number_format($filterPSPower->filter($bikePower), 0, ',', '.').' '.$lang['TXT_72'][1].')</option>
+				</select>';
+$tmpl -> setValue('BIKE_POWER_T', $bikePowerT);
+
+//BIKE_PRICE_F
+$bikePriceF = '<select name="bikePriceF">
+				<option value="-1" '.(isset($searchParam['bikePriceF']) && ($searchParam['bikePriceF'] == -1)?'selected':'').'>'.$lang['TXT_8'].'</option>
+		  		<option value="0" '.(isset($searchParam['bikePriceF']) && ($searchParam['bikePriceF'] == 0)?'selected':'').'>'.$lang['TXT_11'].' '.number_format($lang['BIKE_PRICE'][0], 0, ',', '.').'</option>';
+foreach ($lang['BIKE_PRICE'] as $bikePrice){
+	$bikePriceF .= '<option value="'.$bikePrice.'" ';
+	if (isset($searchParam['bikePriceF']) && ($searchParam['bikePriceF'] == $bikePrice)){
+		$bikePriceF .= 'selected';
+	}	
+	$bikePriceF .= '>'.number_format($bikePrice, 0, ',', '.').'</option>';
+}
+$bikePriceF .= '</select>';
+$tmpl -> setValue('BIKE_PRICE_F', $bikePriceF);
+//BIKE_PRICE_T
+$bikePriceT = '<select name="bikePriceT">
+				<option value="-1" '.(isset($searchParam['bikePriceT']) && ($searchParam['bikePriceT'] == -1)?'selected':'').'>'.$lang['TXT_9'].'</option>';
+foreach ($lang['BIKE_PRICE'] as $bikePrice){
+	$bikePriceT .= '<option value="'.$bikePrice.'" ';
+	if (isset($searchParam['bikePriceT']) && ($searchParam['bikePriceT'] == $bikePrice)){
+		$bikePriceT .= 'selected';
+	}	
+	$bikePriceT .= '>'.number_format($bikePrice, 0, ',', '.').'</option>';
+}
+$bikePriceT .= '	<option value="0" '.(isset($searchParam['bikePriceT']) && ($searchParam['bikePriceT'] == 0)?'selected':'').'>'.$lang['TXT_12'].' '.number_format($bikePrice, 0, ',', '.').'</option>
+		  		</select>';
+$tmpl -> setValue('BIKE_PRICE_T', $bikePriceT);
+$tmpl -> setValue('BIKE_PRICE_TYPE', $lang['TXT_128'].' '.$lang['TXT_74'][0]);
+
+//Set USER_ADS_VAL
+$userAdsVal = '	<select name="userAds" id="userAds">					
+				  <option value="-1">'.$lang['TXT_40'].'</option>
+				  <option value="1">'.$lang['TXT_33'][1].'</option>
+				  <option value="2">'.$lang['TXT_33'][2].'</option>
+				</select> ';
+$tmpl -> setValue('USER_ADS_VAL', $userAdsVal);
+
+//USER_ID_VAL
+$userIDVal = '';
+if (isset($bikeSearch['userID'])){
+	$userIDVal .= $bikeSearch['userID'];
+}
+$tmpl -> setValue('USER_ID_VAL', $userIDVal);
+// {-BIKE_KM_TYPE-}
+?>

@@ -1,0 +1,155 @@
+@CHARSET "UTF-8";
+.box{
+	padding: 0;
+	float: left;
+	width: 31.3333%;
+	margin: 0em 1% 1.5em 0%;
+}
+
+.boxExtra label,
+.box label{
+	display: block;
+	padding: 0;
+	margin: 0;
+	color: #353535;
+	font-weight: bold;
+	height: 1.2em;
+}
+
+.box div{
+	margin: 0 0 0.5em 0;
+	height: 1.8em;
+}
+
+.box div.boxMedHeight{
+	height: 10em;
+	overflow: auto;
+}
+
+.box div.boxBigHeight{
+	height: 20em;
+	overflow: auto;
+}
+
+.box div ul,
+.box div select{
+	width: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.box .twoCol input,
+.box .twoCol select{
+	width: 49%;
+	margin: 0 0.0% 0 0.5%;
+	padding: 0;
+}
+.box .twoCol input{
+	width: 45%;
+}
+
+.box div .brand{
+	padding: 0;
+	margin: 0;
+}
+
+.box div .brand li{
+	padding: 0.2em 0.2em 0.2em 0.5em;
+	line-height: 1.5em;
+	margin: 0;
+}
+.box div .brand li input{
+	margin: 0 0.3em 0 0;	
+	padding: 0;
+}
+
+.box div .brand .model{
+	display: block;
+	margin: 0;
+	padding: 0 0 0 1em;
+}
+
+/*EXTRAS*/
+.boxExtra ul{
+	padding: 0;
+	margin: 0 0 1em 0;
+}
+
+.boxExtra ul li{
+	float: left;
+	width: 25%;
+	padding: 0;
+	margin: 0;
+}
+
+.boxExtra ul li.extHeading{
+	border-bottom: 1px solid #353535;
+	float: none;
+	width: auto;
+	padding: 0;
+	margin: 0 0 0.1em 0;
+	clear: both;
+	height: 2em;
+	line-height: 2em;
+	color: #353535;
+}
+
+.boxExtra ul li.end{
+	float: none;
+	clear: both;
+}
+
+
+/*SEARCH RESULT*/
+.search_res{
+	margin: 0.5em 0 0 0;
+}
+.search_res .search_res_entry{
+	padding: 0.5em 0 0.5em 0;
+	margin-bottom: 1em;
+	height: 7em;
+	border-bottom: 1px solid #353535;
+	border-top: 1px solid #353535;
+}
+.search_res .search_res_entry div{
+	float: left;
+	height: 100%;
+}
+.search_res .search_res_entry .search_res_detail{
+	width: 82.5%;
+	margin: 0 0 0 1%;
+	padding: 0 0 0 1%;
+	border-left: 1px solid #353535;
+}
+.search_res .search_res_entry .search_res_detail a{
+	display: block;
+}
+.search_res .search_res_img{
+	width: 15%;
+	text-align: center;
+}
+.search_res .search_res_img img{
+	max-width: 100%;
+	max-height: 100%;
+}
+
+#pageCounter a{
+	padding: 0.1em 0.3em 0.1em 0.3em;
+	text-decoration: none;
+	text-align: center;
+}
+#pageCounter a.active{
+	background: #353535;
+	color: #10cc02;
+	font-weight: bold;
+}
+
+
+.brand .model .l1{
+	padding-left: 0em;
+}
+.brand .model .l2{
+	padding-left: 0.8em;
+}
+.brand .model .l3{
+}

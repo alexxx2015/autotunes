@@ -1,0 +1,687 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$car = $this -> car;
+$carCat = $this -> carCat;
+$lang = $this -> lang;
+
+$tmpl -> readTmplFile('CONTENT', 'default/car/mycardetail.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'	<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/car_insert.css" />
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/prettyPhoto.css" />
+									'
+								);
+								/*<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/mycaradsdetaidl.css" />
+									*/
+							
+
+//Set CAR_BRAND
+$carBrands = '';
+if(isset($this -> carBrand) && is_array($this -> carBrand)){
+	$carBrands .= '	<select name="carBrand">';
+	foreach ($this -> carBrand as $carBrand){
+		$carBrands .= '<option value="'.$carBrand['carBrandID'].'" ';
+		if (isset($car['carBrandID']) && ($car['carBrandID'] == $carBrand['carBrandID'])){
+			$carBrands .= 'selected';
+		}
+		$carBrands .= ' >'.$carBrand['brandName'].'</option>';
+	}
+	$carBrands .= '</select>';
+}
+$tmpl -> setValue('CAR_BRAND_VAL', $carBrands);
+
+//Set CAR_MODEL
+$carModels = '';
+if(isset($this -> carModel) && is_array($this -> carModel)){
+	$carModels .= '	<select name="carModel">
+					<option value="-1">'.$lang['TXT_40'].'</option>';
+	foreach ($this -> carModel as $carModel){
+		$carModels .= '<option value="'.$carModel['carModelID'].'" ';
+		if (isset($car['carModelID']) && ($car['carModelID'] == $carModel['carModelID'])){			
+			$carModels .= 'selected';
+		}
+		$carModels .= '>'.$carModel['carModelName'].'</option>';
+	}
+	$carModels .= '	</select>';
+}
+$tmpl -> setValue('CAR_MODEL_VAL', $carModels);													
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	g_arr = new Array();
+								g_arr["TXT40"] = \''.$lang['TXT_40'].'\';'
+				);
+
+//Set CAR_MODEL_VAR_VAL
+$carModelVar = '';
+if (isset($car['carModelVar'])){
+	$carModelVar = $car['carModelVar'];
+}
+$tmpl -> setValue('CAR_MODEL_VAR_VAL', $carModelVar);
+
+//Set CAR_EZ_M and CAT_EZ_Y
+$carEZM = '	<select name="carEZM">
+				<option value="-1">{-TXT_38-}</option>';
+for($i = 1; $i <= 12; $i++){
+	$carEZM .= '<option value="'.$i.'" ';
+	if ($i == $car['carEZM']){
+		$carEZM .= 'selected';
+	}
+	$carEZM .= '>'.$i.'</option>';
+  }            
+$carEZM .= '</select>';
+$tmpl -> setValue('CAR_EZ_M_VAL', $carEZM);
+
+$carEZY = '	<select name="carEZY">
+				<option value="-1">{-TXT_39-}</option>';
+for($i = date('Y'); $i >= 1900; $i--){
+	$carEZY .= '<option value="'.$i.'" ';
+	if ($i == $car['carEZY']){
+		$carEZY .= 'selected';
+	}
+	$carEZY .= '>'.$i.'</option>';	
+}            
+$carEZY .= '</select>';
+$tmpl -> setValue('CAR_EZ_Y_VAL', $carEZY);
+
+//Set CAR_KM_VAL
+$carKMVal = '';
+if (isset($car['carKM'])){
+	$carKMVal = $car['carKM'];
+}
+$tmpl -> setValue('CAR_KM_VAL', $carKMVal);
+
+//Set CAR_KM_TYPE_VAL
+$carKMType = '<select name="carKMType">';
+foreach ($lang['TXT_75'] as $key => $val){
+	$carKMType .= '<option value="'.$key.'" ';
+	if ($key == $car['carKMType']){
+		$carKMType .= 'selected';
+	}
+	$carKMType .= '>'.$val.'</option>';
+}
+$carKMType .= '</select>';
+$tmpl -> setValue('CAR_KM_TYPE', $carKMType);
+
+//Set CAR_PRICE_VAL
+$carPriceVal = '';
+if (isset($car['carPrice'])){
+	$carPriceVal = $car['carPrice'];
+}
+$tmpl -> setValue('CAR_PRICE_VAL', $carPriceVal);
+
+$carPriceCurr = '';
+if (isset($lang['TXT_74'][$car['carPriceCurr']])){
+	$carPriceCurr .= $lang['TXT_128'].' '.$lang['TXT_74'][$car['carPriceCurr']];
+}
+$tmpl -> setValue('CAR_PRICE_CURR', $carPriceCurr);
+
+//Set CAR_PRICE_TYPE
+$carPriceType = '<select name="carPriceType">';
+foreach ($lang['TXT_70'] as $key => $val){
+	$carPriceType .= '<option value="'.$key.'" ';
+	if ($key == $car['carPriceType']){
+		$carPriceType .= 'selected';
+	}
+	$carPriceType .= '>'.$val.'</value>';
+}
+$carPriceType .= '</select>';
+$tmpl -> setValue('CAR_PRICE_TYPE_VAL', $carPriceType);
+
+//Mwst checkbox checked
+$mwstChecked = '';
+if(isset($car['mwst']) && ($car['mwst'] == 1)){
+	$mwstChecked = 'checked';
+}
+$tmpl -> setValue('MWST_CHECKED_VAL',$mwstChecked);
+
+//Mwst
+$carMwst = '<select name="mwstSatz" '.(isset($car['mwst']) && ($car['mwst'] == 1) ?'':'disabled').'>
+              	<option value="-1">{-TXT_40-}</option>';
+if(is_array($lang) && isset($lang['V_MWST'])){
+	foreach($lang['V_MWST'] as $key => $kVal){
+		$carMwst .= '<option value="'.$kVal.'" ';
+		if(($kVal == $car['mwstSatz']) && isset($car['mwst']) && ($car['mwst'] == 1)){
+			$carMwst .= 'selected';
+		}
+		$carMwst .= '>'.$lang['TXT_271'].': '.$kVal.'%</option>';
+	}
+}
+$carMwst .= '</select>';
+$tmpl -> setValue('CAR_MWST', $carMwst);
+
+//Set CAR_POWER_VAL
+$carPowerVal = '';
+if (isset($car['carPower'])){
+	$carPowerVal = $car['carPower'];
+}
+$tmpl -> setValue('CAR_POWER_VAL', $carPowerVal);
+
+//Set CAR_POWER_TYPE
+$carPowerType = '<select name="carPowerType">';
+foreach ($lang['TXT_72'] as $key => $val){
+	$carPowerType .= '<option value="'.$key.'" ';
+	if ($key == $car['carPowerType']){
+		$carPowerType .= 'selected';
+	}
+	$carPowerType .= '>'.$val.'</option>';
+}
+$carPowerType .= '</select>';
+$tmpl -> setValue('CAR_POWER_TYPE_VAL', $carPowerType);
+
+//HSN
+$carHSN = '';
+if (isset($car['carHSN'])){
+	$carHSN = $car['carHSN'];
+}
+$tmpl -> setValue('CAR_HSN_VAL', $carHSN);
+
+//TSN
+$carTSN = '';
+if (isset($car['carTSN'])){
+	$carTSN = $car['carTSN'];
+}
+$tmpl -> setValue('CAR_TSN_VAL', $carTSN);
+
+//FIN
+$carFIN = '';
+if (isset($car['carFIN'])){
+	$carFIN = $car['carFIN'];
+}
+$tmpl -> setValue('CAR_FIN_VAL', $carFIN);
+
+//Set CAR_SHIFT
+$carShift = '<select name="carShift">
+              	<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_SHIFT'] as $key => $val) {
+	$carShift .= '<option value="'.$key.'" ';
+	if(isset($car['carShift']) && ($key == $car['carShift'])){
+		$carShift .= 'selected';
+	}
+	$carShift .= '>'.$val.'</option>';
+}
+$carShift .= '</select>';
+$tmpl -> setValue('CAR_SHIFT_VAL', $carShift);
+//Set CAR_TUV_X
+$carTUVM = '<select name="carTUVM">
+				<option value="-1">{-TXT_38-}</option>';
+for($i = 1; $i <= 12; $i++){
+	$carTUVM .= '<option value="'.$i.'" ';
+	if ($i == $car['carTUVM']){
+		$carTUVM .= 'selected';
+	}
+	$carTUVM .= '>'.$i.'</option>';
+}            
+$carTUVM .= '</select>';
+$tmpl -> setValue('CAR_TUV_M_VAL', $carTUVM);
+
+$carTUVY = '<select name="carTUVY">
+				<option value="-1">{-TXT_39-}</option>'; 
+for($i = date('Y'); $i <= date('Y')+4; $i++){
+	$carTUVY .= '<option value="'.$i.'" ';
+	if($i == $car['carTUVY']){
+		$carTUVY .= 'selected';
+	}	
+	$carTUVY .= '>'.$i.'</option>';
+}                        
+$carTUVY .= '</select>';
+$tmpl -> setValue('CAR_TUV_Y_VAL', $carTUVY);
+
+//Set CAR_AU_X
+$carAUM = '	<select name="carAUM">
+				<option value="-1">{-TXT_38-}</option>';
+for($i = 1; $i <= 12; $i++){
+	$carAUM .= '<option value="'.$i.'" ';
+	if($i == $car['carAUM']){
+		$carAUM .= 'selected';
+	}
+	$carAUM .= '>'.$i.'</option>';
+}            
+$carAUM .= '</select>';
+$tmpl -> setValue('CAR_AU_M_VAL', $carAUM);
+
+$carAUY = '	<select name="carAUY">
+				<option value="-1">{-TXT_39-}</option>'; 
+for($i = date('Y'); $i <= date('Y')+4; $i++){
+	$carAUY .= '<option value="'.$i.'" ';
+	if($i == $car['carAUY']){
+		$carAUY .= 'selected';
+	}
+	$carAUY .= '>'.$i.'</option>';
+}                        
+$carAUY .= '</select>';
+$tmpl -> setValue('CAR_AU_Y_VAL', $carAUY);
+
+//Set CAR_CAT
+$carCatVal = '	<select name="carCat">
+				<option value="-1">{-TXT_40-}</option>';
+if(is_array($carCat)){
+	foreach ($carCat as $key => $val){
+		if(isset($lang['V_CAT'][$val['vcatID']])){
+			$carCatVal .= '<option value="'.$val['carCatID'].'" ';
+			if(isset($car['carCat']) && ($val['carCatID'] == $car['carCat'])){
+				$carCatVal .= 'selected';
+			}
+			$carCatVal .= '>'.$lang['V_CAT'][$val['vcatID']].'</option>';
+		}
+	}
+}         
+$carCatVal .= '</select>';
+$tmpl -> setValue('CAR_CAT_VAL', $carCatVal);
+
+//Set CAR_DOOR
+$carDoor = '<select name="carDoor">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['CAR_DOOR'] as $key => $val){
+	$carDoor .= '<option value="'.$key.'" ';
+	if(isset($car['carDoor']) && ($key == $car['carDoor'])){
+		$carDoor .= 'selected';
+	}
+	$carDoor .= '>'.$val.' {-TXT_24-}</option>';
+}
+$carDoor .= '</select>';
+$tmpl -> setValue('CAR_DOOR_VAL', $carDoor);
+
+//Add carEEK
+$carEEK = '<select name="carEEK">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_EEK'] as $key => $val){
+	$carEEK .= '<option value="'.$key.'" ';
+	if(isset($car['carEEK']) && ($key == $car['carEEK'])){
+		$carEEK .= 'selected';
+	}
+	$carEEK .= '>'.$val.'</option>';
+}
+$carEEK .= '</select>';
+$tmpl -> setValue('CAR_EEK_VAL', $carEEK);
+
+//Set CAR_STATE
+$carState = '<select name="carState">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_STATE'] as $key => $val){
+	$carState .= '<option value="'.$key.'" ';
+	if(isset($car['carState']) && ($key == $car['carState'])){
+		$carState .= 'selected';
+	}
+	$carState .= '>'.$val.'</option>';
+}
+$carState .= '</select>';
+$tmpl -> setValue('CAR_STATE_VAL', $carState);
+
+//Set CAR_FUEL
+$carFuel = '<select name="carFuel">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_FUEL'] as $key => $val){
+	$carFuel .= '<option value="'.$key.'" ';
+	if (isset($car['carFuel']) && ($key == $car['carFuel'])){
+		$carFuel .= 'selected';
+	}
+	$carFuel .= '>'.$val.'</option>';
+}
+$carFuel .= '</select>';
+$tmpl -> setValue('CAR_FUEL_VAL', $carFuel);
+
+//Set CAR_EMISSION_NORM
+$carEmissionNorm = '<select name="carEmissionNorm">
+              <option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_EMISSION_NORM'] as $key => $val){
+	$carEmissionNorm .= '<option value="'.$key.'" ';
+	if (isset($car['carEmissionNorm']) && ($key == $car['carEmissionNorm'])){
+		$carEmissionNorm .= 'selected';
+	}
+	$carEmissionNorm .= '>'.$val.'</option>';
+}
+$carEmissionNorm .= '</select>';
+$tmpl -> setValue('CAR_EMISSION_NORM_VAL', $carEmissionNorm);
+
+//Set CAR_CLR
+$carClr = '	<select name="carClr">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_CLR'] as $key => $val){
+	$carClr .= '<option value="'.$key.'" ';
+	if (isset($car['carClr']) && ($key == $car['carClr'])){
+		$carClr .= 'selected';
+	}
+	$carClr .= '>'.$val.'</option>';
+}
+$carClr .= '</select>&nbsp;{-TXT_20-}&nbsp;<input type="checkbox" name="carClrMet" ';
+if (isset($car['carClrMet']) && ($car['carClrMet'] == 1)){
+	$carClr .= 'checked';
+}
+$carClr .= '>';
+$tmpl -> setValue('CAR_CLR_VAL', $carClr);
+
+//Set CAR_ECOLOGIC_TAG
+$carEcologicTag = '<select name="carEcologicTag">
+			          <option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_ECOLOGIC_TAG'] AS $key => $val){
+	$carEcologicTag .= '<option value="'.$key.'" ';
+	if (isset($car['carEcologicTag']) && ($key == $car['carEcologicTag'])){
+		$carEcologicTag .= 'selected';
+	}
+	$carEcologicTag .= '>'.$val.'</option>';
+}/*
+			          <option value="0">'.$lang['V_ECOLOGIC_TAG'][0].'</option>
+			          <option value="1">'.$lang['V_ECOLOGIC_TAG'][1].'</option>
+			          <option value="2">'.$lang['V_ECOLOGIC_TAG'][2].'</option>
+			          <option value="3">'.$lang['V_ECOLOGIC_TAG'][3].'</option>
+			          */
+$carEcologicTag .= '</select>';
+$tmpl -> setValue('CAR_ECOLOGIC_TAG_VAL', $carEcologicTag);
+
+//Set CAR_KLIMA
+$carKlima = '<select name="carKlima">
+				<option value="-1">{-TXT_40-}</option>';
+foreach ($lang['V_KLIMA'] as $key => $val){
+	$carKlima .= '<option value="'.$key.'" ';
+	if (isset($car['carKlima']) && ($key == $car['carKlima'])){
+		$carKlima .= 'selected';
+	}
+	$carKlima .= '>'.$val.'</option>';	
+}
+$carKlima .= '</select>';
+$tmpl -> setValue('CAR_KLIMA', $carKlima);
+
+//Set CAR_WEIGHT_VAL
+$carWeightVal = '';
+if (isset($car['carWeight']) && ($car['carWeight'] != 0)){
+	$carWeightVal = $car['carWeight'];
+}
+$tmpl -> setValue('CAR_WEIGHT_VAL', $carWeightVal);
+
+//Set CAR_CYL_VAL
+$carCylVal = '';
+if (isset($car['carCyl']) && ($car['carCyl'] != 0)){
+	$carCylVal = $car['carCyl'];
+}
+$tmpl -> setValue('CAR_CYL_VAL', $carCylVal);
+
+//Set CAR_CUB_VAL
+$carCubVal = '';
+if (isset($car['carCub']) && ($car['carCub'] != 0)){
+	$carCubVal = $car['carCub'];
+}
+$tmpl -> setValue('CAR_CUB_VAL', $carCubVal);
+
+//Set CAR_USEIN_VAL
+$carUseinVal = '';
+if (isset($car['carUseIn'])){
+	$carUseinVal = $car['carUseIn'];
+}
+$tmpl -> setValue('CAR_USEIN_VAL', $carUseinVal);
+
+//Set CAR_USEOUT_VAL
+$carUseoutVal = '';
+if (isset($car['carUseOut'])){
+	$carUseoutVal = $car['carUseOut'];
+}
+$tmpl -> setValue('CAR_USEOUT_VAL', $carUseoutVal);
+
+//Set CAR_CO2_VAL
+$carCO2Val = '';
+if (isset($car['carCO2'])){
+	$carCO2Val = $car['carCO2'];
+}
+$tmpl -> setValue('CAR_CO2_VAL', $carCO2Val);
+
+//Set CAR_DESC_VAL
+$carDescVal = '';
+if (isset($car['carDesc'])){
+	$carDescVal = $car['carDesc'];
+}
+$tmpl -> setValue('CAR_DESC_VAL', $carDescVal);
+
+//Set CAR_EXTRA
+$carExtra = '<ul>';
+$i = 1; 
+if (is_array($this -> carExt)){
+	foreach ($this -> carExt as $val){
+		if (isset($lang['V_EXTRA'][$val['vextID']])){
+			$carExtra .= '<li';
+			if ($val['children'] > 0){
+				$carExtra .= ' class="extHeading" >';
+				$lastHeading = $val;
+			}else{			
+				$carExtra .= ' ><input type="checkbox" name="carExt[]" value="'.$val['vextID'].'" ';
+				if (isset($car['carExt']) && (in_array($val['vextID'], $car['carExt']) == true)){
+					$carExtra .= 'checked';
+				}
+				$carExtra .= '/>';
+			}
+			$carExtra .= $lang['V_EXTRA'][$val['vextID']].'</li>';
+		}
+	}
+}
+/*
+if (isset($this -> carExt) && is_array($this -> carExt)){
+	foreach ($this -> carExt as $val){
+		if (isset($lang['V_EXTRA'][$val['vextID']])){
+			$carExtra .= '<li';
+			if ($i % 4 == 0){
+				$carExtra .= ' class="nl" u="'.$i.'"';
+				$i = 1;
+			}
+			$i++;
+			
+			$carExtra .= '><input type="checkbox" name="carExt[]" value="'.$val['vextID'].'" ';
+			if (isset($car['carExt']) && (in_array($val['vextID'], $car['carExt']) == true)){
+				$carExtra .= 'checked';
+			}
+			$carExtra .= '/>'.$lang['V_EXTRA'][$val['vextID']].'</li>';
+		}
+	}
+}*/
+$carExtra .= '</ul>';
+$tmpl -> setValue('CAR_EXTRA_VAL', $carExtra);
+
+//Set CAR_LOCPLZ_VAL
+$carLocplzVal = '';
+if (isset($car['carLocPLZ'])){
+	$carLocplzVal = $car['carLocPLZ'];
+}
+$tmpl -> setValue('CAR_LOCPLZ_VAL', $carLocplzVal);
+
+//Set CAR_LOCORT_VAL
+$carLocortVal = '';
+if (isset($car['carLocOrt'])){
+	$carLocortVal = $car['carLocOrt'];
+}
+$tmpl -> setValue('CAR_LOCORT_VAL', $carLocortVal);
+
+//Set CAR_LOCCOUNTRY_VAL
+$carLoccountryVal = '<select name="carLocCountry">';
+if (isset($lang['COUNTRY']) && is_array($lang['COUNTRY'])){
+	if (!isset($car['carLocCountry']) && ($car['carLocCountry'] == null)){
+		$carLocCountry = 'DE';
+	}else{
+		$carLocCountry = $car['carLocCountry'];
+	}
+	
+	asort($lang['COUNTRY']);
+	foreach($lang['COUNTRY'] as $key => $kVal){		
+		$carLoccountryVal .= '<option value="'.$key.'" '.($carLocCountry == $key ? 'selected':'').'>'.$kVal.'</option>';
+	} 
+}
+$carLoccountryVal .= '</select>';
+$tmpl -> setValue('CAR_LOCCOUNTRY_VAL', $carLoccountryVal);
+
+//Set USER_ADS_VAL
+$userAdsVal = '	<select name="userAds" id="userAds">				
+				  <option value="2"'.($car['userAds']==2 ? 'selected':'').'>'.$lang['TXT_33'][2].'</option>
+				  <option value="1"'.($car['userAds']==1 ? 'selected':'').'>'.$lang['TXT_33'][1].'</option>
+				</select> ';
+$tmpl -> setValue('USER_ADS_VAL', $userAdsVal);
+
+//Set USER_FIRM_VAL
+$userFirmVal = '';
+if (isset($car['userFirm'])){
+	$userFirmVal = $car['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirmVal);
+
+//Set USER_NNAME_VAL
+$userNNameVal = '';
+if (isset($car['userNName'])){
+	$userNNameVal = $car['userNName'];
+}
+$tmpl -> setValue('USER_NNAME_VAL', $userNNameVal);
+
+//Set USER_VNAME_VAL
+$userVNameVal = '';
+if (isset($car['userVName'])){
+	$userVNameVal = $car['userVName'];
+}
+$tmpl -> setValue('USER_VNAME_VAL', $userVNameVal);
+
+//Set USER_EMAIL_VAL
+$userEmailVal = '';
+if (isset($car['userEMail'])){
+	$userEmailVal = $car['userEMail'];
+}
+$tmpl -> setValue('USER_EMAIL_VAL', $userEmailVal);
+
+//Set USER_TEL1_VAL
+$userTel1Val = '';
+if (isset($car['userTel1'])){
+	$userTel1Val = $car['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1_VAL', $userTel1Val);
+
+//Set USER_TEL2_VAL
+$userTel2Val = '';
+if (isset($car['userTel2'])){
+	$userTel2Val = $car['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2_VAL', $userTel2Val);
+
+//Set USER_PLZ_VAL
+$userPLZVal = '';
+if (isset($car['userPLZ'])){
+	$userPLZVal = $car['userPLZ'];
+}
+$tmpl -> setValue('USER_PLZ_VAL', $userPLZVal);
+
+//Set USER_ORT_VAL
+$userOrtVal = '';
+if (isset($car['userOrt'])){
+	$userOrtVal = $car['userOrt'];
+}
+$tmpl -> setValue('USER_ORT_VAL', $userOrtVal);
+
+//Set USER_ADRESS_VAL
+$userAdressVal = '';
+if (isset($car['userAdress'])){
+	$userAdressVal = $car['userAdress'];
+}
+$tmpl -> setValue('USER_ADRESS_VAL', $userAdressVal);
+
+//Set USER_ADS_LENGTH_VAL
+$userAdsLengthVal = '';
+if (isset($lang['USER_ADS_LENGTH']) && is_array($lang['USER_ADS_LENGTH'])){
+	$userAdsLengthVal = '
+						<select name="userAdsLength">';
+	foreach ($lang['USER_ADS_LENGTH'] as $key => $kVal){
+		$userAdsLengthVal .= '<option value="'.$kVal.'"'.($car['userAdsLength']==$kVal ? 'selected':'').'>'.$kVal.' '.$lang['TXT_45'].'</option>';
+	}
+	$userAdsLengthVal .= '</select>';
+}
+$tmpl -> setValue('USER_ADS_LENGTH_VAL', $userAdsLengthVal);
+
+//CAR_ID
+$tmpl -> setValue('CAR_ID', $car['carID']);
+
+
+
+
+
+//**** Foto Gallery
+$tmpl -> readTMPLFile('CAR_PHOTO_GALLERY','default/photoGalleryJSON.html');
+//	Set javascript file for photo upload
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/carouFredSel_4_4_1.js"></script>
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/prettyPhoto.js"></script>
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/ajaxupload.js"></script>
+								<script type="text/javascript" src="'.System_Properties::JS_PATH.'/ci.js"></script>');
+	
+//Read gallery image pattern
+$photoUploadEntryTMPL = $tmpl -> readFile('default/photoUploadEntry.html');
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_SRC',
+										'p1',
+										$photoUploadEntryTMPL
+									);
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_ID',
+										'p2',
+										$gl_galIMGPattern
+									);		
+$gl_galIMGPattern = $tmpl -> replace(	'IMG_HREF',
+										'',
+										$gl_galIMGPattern
+									);		
+	
+//Set javascript gallery image pattern											
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	g_arr["CAR_ID"] = '.$car['carID'].';
+								g_arr["GAL_IMG_PAT"] = \''.$gl_galIMGPattern.'\';'
+					);
+$carPhotos = '';
+if (isset($car['carPhoto']) && is_array($car['carPhoto'])){
+	foreach ($car['carPhoto'] as $key => $carPhoto){
+		$showPic = true;
+		if (isset($carPhoto['del']) && ($carPhoto['del'] == true)){
+			$showPic = false;
+		}
+		
+		if ($showPic == true){
+			$imgSrc = System_Properties::PIC_PATH.'/'.System_Properties::CAR_ABRV.'_'.$carPhoto['vID'].'_'.$carPhoto['vPicID'].'.jpeg';
+			
+			$photoUploadEntry = $tmpl -> replace(	'IMG_SRC',
+													$imgSrc,
+													$photoUploadEntryTMPL
+												);
+			$photoUploadEntry = $tmpl -> replace(	'IMG_ID',
+													$carPhoto['vPicID'],
+													$photoUploadEntry
+												);
+			$photoUploadEntry = $tmpl -> replace(	'IMG_HREF',
+													'',
+													$photoUploadEntry
+												);
+			$carPhotos .= $photoUploadEntry;//'<div><a>X</a><img src="'.$carPhoto.'" id="'.$key.'"/></div>';
+		}
+	}
+}
+$tmpl -> setValue('PHOTO_GALLERY_ENTRIES', $carPhotos);
+
+/*
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$infoVal .= $this -> error;
+}
+if (isset($this -> info)){
+	$infoVal .= $this -> info;
+}
+$tmpl -> setValue('INFO', $infoVal);
+*/
+
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+
+
+?>

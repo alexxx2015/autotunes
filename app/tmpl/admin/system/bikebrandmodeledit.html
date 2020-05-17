@@ -1,0 +1,26 @@
+{-INFO-}
+<h2>{-ATXT_49-}: {-BRAND_NAME_VAL-}</h2>
+<form action="{-ADMIN_MOD_PATH-}/system/bikebrandmodeledit" method="POST">
+	<input type="submit" name="bikeBrandChange" value="{-ATXT_65-}"/>
+	{-BIKE_MODEL_NAME_VAL-}
+</form>
+
+<fieldset class="brandBox">
+	<legend>{-ATXT_66-}</legend>
+	<form action="{-ADMIN_MOD_PATH-}/system/bikebrandmodeledit/mid/{-MODEL_ID_VAL-}" method="POST" id="brandForm">	
+		<table>
+		<tr>
+			<th>{-ATXT_61-}</th>
+			<th>{-ATXT_62-}</th>
+		</tr>
+		<tr>
+			<td><input type="text" name="brandModelName" value="{-BIKE_BRAND_MODEL_VAL-}"/></td>
+			<td>
+				{-BIKE_BRAND_MODEL-}
+			</td>
+		</tr>
+		</table>		
+		<input type="submit" name="modelEdit" value="{-TXT_156-}"/>
+		{-DEL_BIKE_ADS_VAL-}
+	</form>
+</fieldset>

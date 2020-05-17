@@ -1,0 +1,73 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for bike maintenance
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$bikeCat = $this -> bikeCat;
+$cntBikeCat = $this -> cntBikeCat;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/bike/bikecaterase.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="tcat/css" href="'.System_Properties::ADMIN_CSS_PATH.'/bike.css" />
+								<link rel="stylesheet" type="tcat/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+	/*							
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["ADMIN_MOD_PATH"] = "'.System_Properties::ADMIN_MOD_PATH.'";'
+				);
+				
+$tmpl -> setValue('JS_FILES', '	<script type="tcat/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="tcat/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/cs.js"></script>');	
+
+*/
+
+$tmpl -> setValue('BIKE_CAT_CONFIRM_TCAT', $lang['ATXT_103']);
+
+//BIKE_CAT_ID
+$tmpl -> setValue('BIKE_CAT_ID', $bikeCat['bikeCatID']);
+
+//NUM_SUB_CAT
+$numBikeCat = 0;
+if (is_array($bikeCat) && isset($bikeCat['children'])){
+	$numBikeCat = $bikeCat['children'];
+}
+$tmpl -> setValue('NUM_SUB_CAT', $numBikeCat);
+
+//NUM_BIKE_ADS
+$numBike2Cat = 0;
+if (is_array($cntBikeCat) && isset($cntBikeCat['count_num'])){
+	$numBike2Cat = $cntBikeCat['count_num'];
+}
+$tmpl -> setValue('NUM_BIKE_ADS', $numBike2Cat);
+
+
+//BIKE_CAT_NAME
+$bikeCatName = '';
+if (isset($bikeCat['vcatID']) && isset($lang['V_CAT'][$bikeCat['vcatID']])){
+	$bikeCatName = $lang['V_CAT'][$bikeCat['vcatID']];
+}
+$tmpl -> setValue('BIKE_CAT_NAME', $bikeCatName);
+
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

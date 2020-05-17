@@ -1,0 +1,27 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/system/brandnewform.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/brandnew.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');															
+								
+//INFO
+$info = '';
+if (isset($this -> error)){
+	$info = $this -> error;
+}
+if (isset($this -> info)){
+	$info = $this -> info;
+}
+$tmpl -> setValue('INFO', $info);
+
+echo $this -> tmpl -> render();
+?>

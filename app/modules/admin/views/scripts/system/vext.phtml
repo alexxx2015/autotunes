@@ -1,0 +1,103 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI for managing vehicle extras
+ *********************************************************************************/
+include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/system/vextformnew.phtml');
+$tmpl = $this -> tmpl;
+$posLang = $this -> posLang;
+$lang = $this -> lang;
+$sysSystem = $this -> sysSystem;
+$vext = $this -> vext;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/vext.html');
+
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/vext.js"></script>');	
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+								
+$vextVal = '<table border=1>';
+if (is_array($posLang)){
+	//Print table header
+	$vextVal .= '<tr><th></th>';
+	foreach ($posLang as $key => $value){
+		$tmpl -> setValue('V_EXTRA_'.strtoupper($value['langAbrv']), '');
+		$vextVal .= '<th>'.$value['langAbrv'].'</th>';
+	}
+	$vextVal .= '</tr>';
+	//print complete table content
+	foreach ($vext as $key => $val){
+		$vextVal .= '<tr>
+						<td><a href="/'.System_Properties::ADMIN_MOD_PATH.'/system/vextedit/vid/'.$val['vextID'].'">'.$lang['TXT_144'].'</a></td>';
+		if (isset($val['vextID'])){
+			foreach ($posLang as $lKey => $lVal){
+				$vextVal .= '<td>';
+				if (isset($lang['V_EXTRA_'.strtoupper($lVal['langAbrv'])][$val['vextID']])){
+					$vextVal .= $lang['V_EXTRA_'.strtoupper($lVal['langAbrv'])][$val['vextID']];
+				}
+				$vextVal .= '</td>';
+			}	
+		}
+		$vextVal .= '</tr>';
+	}
+}
+$vextVal .= '</table>';
+$tmpl -> setValue('VEXT_VAL', $vextVal);
+
+/*
+if (is_array($vext)){
+	$vextVal = '<table>
+				<tr>
+					<th>'.$lang['TXT_83'].'</th>
+					<th>'.$lang['ATXT_50'].'</th>
+					<th>'.$lang['ATXT_51'].'</th>
+					<th>'.$lang['ATXT_52'].'</th>
+				</tr>';
+	foreach ($vext as $v){
+		if (isset($lang['V_EXTRA'][$v['vextID']])){
+			$vextVal .= '<tr>
+							<td>'.$lang['V_EXTRA'][$v['vextID']].'</td>
+							<td><input type="checkbox" disabled ';
+			if (isset($v['carExtExist']) && ($v['carExtExist'] == 1)){
+				$vextVal .= ' checked ';
+			}
+			$vextVal .= '/></td>
+							<td><input type="checkbox" disabled ';
+			if (isset($v['bikeExtExist']) && ($v['bikeExtExist'] == 1)){
+				$vextVal .= ' checked ';
+			}
+			$vextVal .= '/></td>
+							<td><input type="checkbox" disabled ';
+			if (isset($v['truckExtExist']) && ($v['truckExtExist'] == 1)){
+				$vextVal .= ' checked ';
+			}
+			$vextVal .= '/></td>
+						</tr>';
+			/*
+						<td>
+							<a href="{-ADMIN_MOD_PATH-}/system/vextedit/vid/'.$v['vextID'].'">'.$lang['TXT_144'].'</a>
+						</td>*
+		}
+	}
+	$vextVal .= '</table>';
+}
+*/
+								
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+?>

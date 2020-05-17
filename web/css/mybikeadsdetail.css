@@ -1,0 +1,59 @@
+@CHARSET "ISO-8859-1";
+@import 'main.css';
+@import 'bike_search.css';
+
+.box{
+	float: left;
+	width: 20%;
+	padding: 0px;
+	margin: 0 1% 0 1%;
+	overflow: auto;
+}
+
+.box div{
+	margin: 0 0 10px 0;
+}
+
+.boxMedHeight{
+	height: 150px;
+	overflow: auto;
+}
+
+.box label{
+	display: block;
+	padding: 0px;
+	margin: 0px;
+}
+
+.box select{
+	width: 100%;
+}
+
+
+.box .twoCol input,
+.box .twoCol select{
+	width: 48%;
+	margin: 0 0.5% 0 0;
+}
+.box .twoCol input{
+	padding: 0px;
+	margin: 0px;
+}
+
+.box .brandB{
+	height: 180px;
+}
+
+.extHeading{
+	background: blue;
+	color: #FFFFFF;
+}
+
+#extraB ul li{
+	float: left;
+	width: 20%;
+	margin: 0 1% 0 1%;
+}
+.photoUpload{
+	border: 1px solid red;	
+}

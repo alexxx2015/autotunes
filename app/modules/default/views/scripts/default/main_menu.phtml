@@ -1,0 +1,119 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of INDEX
+ *********************************************************************************/
+
+//$tmpl = $this -> tmpl;
+
+$headerMenu = '
+		<ul class="mainMenu" id="mainMenu">
+			<li class="mainMenuItem">
+				<a href="/car/search">{-TXT_2-}</a>
+				<ul class="submenu">
+					<li><a href="/car/search">{-TXT_5-}</a></li>
+					<li><a href="/car/insert">{-TXT_37-}</a></li>
+				</ul>
+			</li>
+			<li class="mainMenuItem">
+				<a href="/bike/search">{-TXT_3-}</a>
+				<ul class="submenu">
+					<li><a href="/bike/search">{-TXT_100-}</a></li>
+					<li><a href="/bike/insert">{-TXT_99-}</a></li>
+				</ul>
+			</li>
+			<li class="mainMenuItem">
+				<a href="/truck/search">{-TXT_4-}</a>
+				<ul class="submenu">
+					<li><a href="/truck/search">{-TXT_101-}</a></li>
+					<li><a href="/truck/insert">{-TXT_102-}</a></li>
+				</ul>
+			</li>
+			<li class="mainMenuItem">
+				<a href="/member">{-TXT_162-}</a>';
+
+if (isset($userLogged) && ($userLogged != false)){
+	$headerMenu .= '	<ul class="submenu">
+					<li><a href="/member">{-TXT_170-}</a></li>
+					<li><a href="/member/logout">{-TXT_165-}</a></li>
+					</ul>';
+	
+}else{
+	$headerMenu .= '	<ul class="submenu">
+					<li><a href="/member/login">{-TXT_138-}</a></li>
+					<li><a href="/member/register">{-TXT_164-}</a></li>
+					</ul>';	
+}		
+/*
+	
+	
+					
+	<li class="mainMenuItem logo"><a href="/">LOGO</a></li>
+	
+				<ul>
+					<li><a href="">{-TXT_168-}</a></li>
+				</ul>
+*/
+$headerMenu .= '
+			</li>
+			<li class="mainMenuItem"><a href="/index/faq">{-TXT_251-}</a></li>
+			<li class="mainMenuItem"><a href="/index/rules">{-TXT_117-}</a></li>
+			<li class="mainMenuItem"><a href="/index/imp">{-TXT_107-}</a></li>			
+			<li style="float: none;"></li>
+		</ul>
+		';//<li class="mainMenuItem"><span style="color:#FF0000;"><b>!NEU!</b></span> <a href="/index/tire">Reifen-Suche</a> <span style="color:#FF0000;"><b>!NEU!</b></span></li>
+/*
+			<li class="mainMenuItem">
+				{-TXT_163-}
+			</li>*/
+$tmpl -> setValue('HEADER_MENU', $headerMenu);
+
+
+$footerMenu = '	<ul class="mainMenu">
+					<li class="mainMenuItem">
+						<a href="/index/imp">{-TXT_107-}</a><br/>
+					</li>
+				</ul>';
+
+//google analytics
+$footerMenu = "<script type=\"text/javascript\">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-28940585-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>";
+/*
+//google adsense
+$footerMenu.= '<script type="text/javascript"><!--
+google_ad_client = "ca-pub-1378459766267438";
+/* Autotunes - die online Fahrzeugbörse 
+google_ad_slot = "4788267563";
+google_ad_width = 728;
+google_ad_height = 90;
+//-->
+</script>
+<script type="text/javascript"
+src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script>';
+
+$footerMenu .= '<!-- START of the zanox affiliate HTML code -->
+<!-- ( The HTML code may not be changed in the sense of faultless functionality! ) -->
+<img src="http://ad.zanox.com/ppv/?21270596C1957284689" align="bottom" width="1" height="1" border="0" hspace="1"><script language="javascript" src="http://ad.zanox.com/ppv/images/programs/flash_load/flash_loader_ng.js"></script><script type="text/javascript"> zxFlash("http://ad.zanox.com/ppv/images/programs/10561/20120124/hrs_affiliate_Deutschland_728x90_NewXML.swf", "", 728, 90, "opaque", "http://ad.zanox.com/ppc/?21270596C1957284689&ULP=", "XXX");</script>
+<!-- ENDING of the zanox-affiliate HTML-Code -->';
+*/
+
+$footerMenu .= '<!-- BEGIN PARTNER PROGRAM - DO NOT CHANGE THE PARAMETERS OF THE HYPERLINK -->
+<script type="text/javascript" src="http://banners.webmasterplan.com/view.asp?ref=582104&js=1&site=11701&b=8&target=_blank&title=Autohaus+24" ></script><noscript><a href="http://partners.webmasterplan.com/click.asp?ref=582104&site=11701&type=b8&bnb=8" target="_blank">
+<img src="http://banners.webmasterplan.com/view.asp?ref=582104&site=11701&b=8" border="0" title="Autohaus 24" alt="Autohaus 24" width="728" height="90" /></a></noscript>
+<!-- END PARTNER PROGRAM -->
+';
+$tmpl -> setValue('FOOTER_MENU', $footerMenu);
+?>

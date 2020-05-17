@@ -1,0 +1,36 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$truckAds = $this -> truckAds;
+
+$tmpl -> readTmplFile('CONTENT', 'default/member/mytruckads.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/mytruckads.css" />');
+
+$myTruckAds = '';
+if (is_array($truckAds)){
+	foreach($truckAds AS $key => $kValue){
+		$myTruckAds .= '<a href="/truck/mytruckdetail/id/'.$kValue['truckID'].'">'.$kValue['truckBrandName'].'</a><br/>';
+	}
+}
+$tmpl -> setValue('MY_TRUCK_ADS', $myTruckAds);
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$infoVal .= $this -> error;
+}
+if (isset($this -> info)){
+	$infoVal .= $this -> info;
+}
+$tmpl -> setValue('INFO', $infoVal);
+echo $this -> tmpl -> render();
+
+
+?>

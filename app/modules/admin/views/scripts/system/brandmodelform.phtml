@@ -1,0 +1,33 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$brandModel = $this -> brandModel;
+$tmpl -> readTmplFile('BRAND_MODEL_FORM', System_Properties::ADMIN_MOD_PATH.'/system/brandmodelform.html');
+
+//BRAND_MODEL_NAME_VAL
+$brandModelNameVal = '';
+if (is_array($brandModel) && isset($brandModel['brandModelName'])){
+	$brandModelNameVal .= $brandModel['$brandModelName'];
+}
+$tmpl -> setValue('BRAND_MODEL_NAME_VAL', $brandModelNameVal);
+
+//SUBMIT_BTN
+$tmpl -> setValue('SUBMIT_BTN', '<input type="submit" name="brandModelNew" value="'.$lang['ATXT_21'].'"/>');
+
+//BRAND_ID
+$tmpl -> setValue('BRAND_ID_VAL','');
+
+//CAR_ABRV
+$tmpl -> setValue('CAR_ABRV', System_Properties::CAR_ABRV);
+
+//BIKE_ABRV
+$tmpl -> setValue('BIKE_ABRV', System_Properties::BIKE_ABRV);
+
+//TRUCK_ABRV
+$tmpl -> setValue('TRUCK_ABRV', System_Properties::TRUCK_ABRV);
+?>

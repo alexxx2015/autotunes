@@ -1,0 +1,20 @@
+@CHARSET "ISO-8859-1";
+
+.faq{
+	margin-bottom: 1em;
+}
+.faq .title{
+	background: #353535;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding: 0.3em 0.3em 0.3em 0.5em ;
+}
+
+.faq li{
+	padding: 1em 0 1em 1em ;
+	text-align: justify;
+}
+
+.faq ul{
+	margin-left: 1em;
+}

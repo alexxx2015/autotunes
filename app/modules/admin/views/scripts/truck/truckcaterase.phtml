@@ -1,0 +1,70 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for truck maintenance
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$truckCat = $this -> truckCat;
+$cntTruckCat = $this -> cntTruckCat;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/truck/truckcaterase.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="tcat/css" href="'.System_Properties::ADMIN_CSS_PATH.'/truck.css" />
+								<link rel="stylesheet" type="tcat/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />');
+	/*							
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["ADMIN_MOD_PATH"] = "'.System_Properties::ADMIN_MOD_PATH.'";'
+				);
+				
+$tmpl -> setValue('JS_FILES', '	<script type="tcat/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="tcat/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/cs.js"></script>');	
+
+*/
+
+$tmpl -> setValue('TRUCK_CAT_CONFIRM_TCAT', $lang['ATXT_109']);
+
+//TRUCK_CAT_ID
+$tmpl -> setValue('TRUCK_CAT_ID', $truckCat['truckCatID']);
+
+//NUM_SUB_CAT
+$numTruckCat = 0;
+if (is_array($truckCat) && isset($truckCat['children'])){
+	$numTruckCat = $truckCat['children'];
+}
+$tmpl -> setValue('NUM_SUB_CAT', $numTruckCat);
+
+//NUM_TRUCK_ADS
+$numTruck2Cat = 0;
+if (is_array($cntTruckCat) && isset($cntTruckCat['count_num'])){
+	$numTruck2Cat = $cntTruckCat['count_num'];
+}
+$tmpl -> setValue('NUM_TRUCK_ADS', $numTruck2Cat);
+
+
+//TRUCK_CAT_NAME
+$truckCatName = '';
+if (isset($truckCat['vcatID']) && isset($lang['V_CAT'][$truckCat['vcatID']])){
+	$truckCatName = $lang['V_CAT'][$truckCat['vcatID']];
+}
+$tmpl -> setValue('TRUCK_CAT_NAME', $truckCatName);
+
+
+//INFO
+$info = '';
+if (isset($this -> error)){
+	$info = $this -> error;
+}
+if (isset($this -> info)){
+	$info = $this -> info;
+}
+$tmpl -> setValue('INFO', $info);
+
+echo $tmpl -> render();
+?>

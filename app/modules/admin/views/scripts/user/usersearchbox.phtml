@@ -1,0 +1,76 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$searchParam = $this -> searchParam;
+
+//userNName
+$userNName = '';
+if (is_array($searchParam) && isset($searchParam['userNName'])){
+	$userNName = $searchParam['userNName'];
+}
+$tmpl -> setValue('USER_NNAME', $userNName);
+
+//userVName
+$userVName = '';
+if (is_array($searchParam) && isset($searchParam['userVName'])){
+	$userVName = $searchParam['userVName'];
+}
+$tmpl -> setValue('USER_VNAME', $userVName);
+
+//userEMail
+$userEMail = '';
+if (is_array($searchParam) && isset($searchParam['userEMail'])){
+	$userEMail = $searchParam['userEMail'];
+}
+$tmpl -> setValue('USER_EMAIL', $userEMail);
+
+//userPLZ
+$userPLZ = '';
+if (is_array($searchParam) && isset($searchParam['userPLZ'])){
+	$userPLZ = $searchParam['userPLZ'];
+}
+$tmpl -> setValue('USER_PLZ', $userPLZ);
+
+//userOrt
+$userOrt = '';
+if (is_array($searchParam) && isset($searchParam['userOrt'])){
+	$userOrt = $searchParam['userOrt'];
+}
+$tmpl -> setValue('USER_ORT', $userOrt);
+
+//userGroup
+$userGroupVal = '';
+if (isset($this -> userGroup) && is_array($this -> userGroup)){
+	$userGroupVal .= '<select name="userGroup">
+						<option value="-1">'.$lang['TXT_16'].'</option>';
+	foreach($this -> userGroup as $userGroup){
+		$userGroupVal .= '<option value="'.$userGroup['groupID'].'"'.( (is_array($searchParam) && isset($searchParam['userGroup']) && ($searchParam['userGroup'] == $userGroup['groupID']) ) ? ' selected ' : '').'>'.$userGroup['groupName'].'</option>';
+	}
+	$userGroupVal .= '</select>';
+}
+$tmpl -> setValue('USER_GROUP_VAL', $userGroupVal);
+
+//userSort
+$userSort = '
+			<select id="userSort" name="userSort">
+				<option value="0" '.( (is_array($searchParam) && isset($searchParam['userSort']) && ($searchParam['userSort'] == '0') ) ? ' selected ' : '').'>{-ATXT_26-}</option>
+				<option value="1" '.( (is_array($searchParam) && isset($searchParam['userSort']) && ($searchParam['userSort'] == '1') ) ? ' selected ' : '').'>{-TXT_46-}</option>
+				<option value="2" '.( (is_array($searchParam) && isset($searchParam['userSort']) && ($searchParam['userSort'] == '2') ) ? ' selected ' : '').'>{-TXT_47-}</option>	
+				<option value="3" '.( (is_array($searchParam) && isset($searchParam['userSort']) && ($searchParam['userSort'] == '3') ) ? ' selected ' : '').'>{-TXT_48-}</option>	
+				<option value="4" '.( (is_array($searchParam) && isset($searchParam['userSort']) && ($searchParam['userSort'] == '4') ) ? ' selected ' : '').'>{-TXT_51-}</option>	
+				<option value="5" '.( (is_array($searchParam) && isset($searchParam['userSort']) && ($searchParam['userSort'] == '5') ) ? ' selected ' : '').'>{-TXT_52-}</option>	
+			</select>
+			<select name="userSortDirect">
+				<option value="1" '.( (is_array($searchParam) && isset($searchParam['userSortDirect']) && ($searchParam['userSortDirect'] == '1') ) ? ' selected ' : '').'>{-TXT_35-}</option>
+				<option value="2" '.( (is_array($searchParam) && isset($searchParam['userSortDirect']) && ($searchParam['userSortDirect'] == '2') ) ? ' selected ' : '').'>{-TXT_36-}</option>
+			</select>';
+$tmpl -> setValue('USER_SORT', $userSort);
+
+$tmpl -> readTmplFile('USER_SEARCH_BOX', System_Properties::ADMIN_MOD_PATH.'/user/usersearch_box.html');		
+
+?>

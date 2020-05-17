@@ -1,0 +1,63 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of INDEX
+ *********************************************************************************/
+
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$system = $this -> system;
+
+$tmpl -> readTmplFile('CONTENT','default/index/faq.html');
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$infoVal .= $this -> error;
+}
+if (isset($this -> info)){
+	$infoVal .= $this -> info;
+}
+$tmpl -> setValue('INFO', $infoVal);
+//<-----Process register formular
+
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/faq.css" />'
+				);
+//faq
+$faq = '';
+if (isset($lang['FAQ']) && is_array($lang['FAQ'])){
+	$faq = '<ul class="faq">';
+	foreach($lang['FAQ'] as $key1 => $kVal1){
+		if (isset($kVal1['TITLE'])){
+			$faq .= '<li class="title">'.($key1+1).' '.$kVal1['TITLE'].'</li>';
+		}
+		if (isset($kVal1['CONTENT']) && is_array($kVal1['CONTENT'])){
+			$faq .= '<ul>';
+			foreach ($kVal1['CONTENT'] as $key2 => $kVal2){
+				$faq .= '<li>'.$kVal2.'</li>';
+			}
+			$faq .= '</ul>';
+		}
+	}
+	$faq .= '</ul>';
+}
+$tmpl -> setValue('faq', $faq);
+
+//SYS_IMP
+$sysSiteName = '';
+if (is_array($system) && isset($system['sysSiteName'])){
+	$sysSiteName = $system['sysSiteName'];
+}
+$tmpl -> setValue('SYS_SITE_NAME', $sysSiteName);
+
+				
+echo $tmpl -> render();
+
+?>
+
+
+
+

@@ -1,0 +1,234 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of INDEX
+ *********************************************************************************/
+include_once('default/views/filters/FormatStr2Num.php');
+include_once('default/views/filters/FilterIsEmptyString.php');
+
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$carAds = $this -> carAds;
+
+//<a href="/"  id="logo"><img src="/sysPic/logo.png"/></a>
+
+$formatStr2Num = new FormatSt2Num();
+$isEmptyString = new FilterIsEmptyString();
+
+$tmpl -> readTmplFile('CONTENT','default/index/index.html');
+
+//----->Process register formular
+$tmpl -> readTmplFile('REGISTER_FORM','default/member/register.html');
+
+
+$tmpl -> setValue('META_DESCRIPTION', $lang['TXT_246']);
+
+//----->QUICK SEARCH
+include_once('default/views/scripts/car/carQS.phtml');
+$tmpl -> setValue('QS_FORM_ACTION', '/car/search');
+$tmpl -> setValue('QS_HEADING', $lang['TXT_123']);
+//<-----QUICK SEARCH
+
+$tmpl -> readTmplFile('QUICK_SEARCH', 'default/index/carQS.html');
+
+//USER_NNAME_VAL
+$userNNameVal = '';
+if (isset($user['userNName'])){
+	$userNNameVal = $user['userNName'];
+}
+$tmpl -> setValue('USER_NNAME_VAL', $userNNameVal);
+
+//USER_VNAME_VAL
+$userVNameVal ='';
+if (isset($user['userVName'])){
+	$userVNameVal = $user['userVName'];
+}
+$tmpl -> setValue('USER_VNAME_VAL', $userVNameVal);
+
+//USER_EMAIL_VAL
+$userEMailVal ='';
+if (isset($user['userEMail'])){
+	$userEMailVal = $user['userEMail'];
+}
+$tmpl -> setValue('USER_EMail_VAL', $userEMailVal);
+
+//USER_AGB_VAL 
+$userAGBVal = '';
+if (isset($user['userAGB'])){
+	$userAGBVal = 'checked';
+}
+$tmpl -> setValue('USER_AGB_VAL', $userAGBVal);
+
+//USER_NEWS_VAL
+$userNewsVal = '';
+if (isset($user['userNews'])){
+	$userNewsVal = 'checked';
+}
+$tmpl -> setValue('USER_NEWS_VAL', $userNewsVal);
+
+//----->LAST ADVERTISEMENTS
+$lastAds = '';
+if (is_array($carAds)){
+	$searchResEntryTMPL = $tmpl -> readFile('default/searchResEntry.html');	
+	foreach ($carAds as $key => $carAd) {
+		if (is_array($carAd) && isset($carAd['carID'])){
+			//Determine car pic
+			$picURI = System_Properties::SYS_PIC_PATH.'/noImg.png';
+			if (isset($carAd['carPics']) && is_array($carAd['carPics'])){
+				foreach ($carAd['carPics'] AS $carPic){
+					$pic = System_Properties::PIC_PATH.'/'.System_Properties::CAR_ABRV.'_'.$carAd['carID'].'_'.$carPic['vPicID'].'.jpeg';
+					if(file_exists('.'.$pic)){
+						$picURI = $pic;
+						break;
+					}
+				}
+			}
+			//Determine car brand
+			$carBrand = $carAd['carBrandName'];
+			if (isset($carAd['carModelName'])){
+				$carBrand .= ' '.$carAd['carModelName'];
+			}
+			
+			$adDetail = '';
+			$semLink = '';
+			
+			//carPrice
+			if (isset($carAd['carPrice'])){
+				$adDetail .= $formatStr2Num -> filter($carAd['carPrice']);
+				$semLink .= $lang['TXT_13'].': '.$formatStr2Num -> filter($carAd['carPrice']);
+				//carPriceCurr
+				if (isset($carAd['carPriceCurr']) && isset($lang['TXT_74'][$carAd['carPriceCurr']])){
+					$adDetail .= ' '.$lang['TXT_74'][$carAd['carPriceCurr']];
+					$semLink .= ' '.$lang['TXT_74'][$carAd['carPriceCurr']];
+				}
+				
+				//carPriceType
+				if (isset($carAd['carPriceType']) && isset($lang['TXT_70'][$carAd['carPriceType']])){
+					$adDetail .= ' '.$lang['TXT_70'][$carAd['carPriceType']];
+					$semLink .= ' '.$lang['TXT_70'][$carAd['carPriceType']];
+				}
+				
+				$adDetail .= ', ';
+				$semLink .= ', ';
+			}
+			
+			
+			//carKM
+			if (isset($carAd['carKM'])){
+				$adDetail .= $formatStr2Num -> filter($carAd['carKM']).' ';
+				$semLink .= $lang['TXT_14'].': '.$formatStr2Num -> filter($carAd['carKM']).' ';
+				if (isset($lang['TXT_75'][$carAd['carKMType']])){
+					$adDetail .= $lang['TXT_75'][$carAd['carKMType']];
+					$semLink .= $lang['TXT_75'][$carAd['carKMType']];
+				}
+				$adDetail .= ', ';
+				$semLink .= ', ';
+			}
+			
+			//carEZ
+			if (($carAd['carEZM'] > 0) && ($carAd['carEZY'] > 0)){
+				$adDetail .= $carAd['carEZM'].'/'.$carAd['carEZY'];
+				$semLink .= $lang['TXT_7'].': '.$carAd['carEZM'].'/'.$carAd['carEZY'];
+			}else{
+				$adDetail .= $lang['V_STATE'][0];
+				$semLink .= $lang['V_STATE'][0];
+			}
+			
+			//carPower
+			if (isset($carAd['carPower'])){
+				$adDetail .= ', ';
+				$semLink .= ', ';
+				//0 = kW
+				if(isset($carAd['carPowerType']) && ($carAd['carPowerType'] == 0)){
+					$adDetail .= $formatStr2Num -> filter($carAd['carPower']).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($carAd['carPower']*90/66).' '.$lang['TXT_72'][1].')';
+					
+					$semLink .= $lang['TXT_10'].': '.$formatStr2Num -> filter($carAd['carPower']).' '.$lang['TXT_72'][0];
+					$semLink .= ' ('.$formatStr2Num -> filter($carAd['carPower']*90/66).' '.$lang['TXT_72'][1].')';
+				}
+				//1 = PS
+				elseif(isset($carAd['carPowerType']) && ($carAd['carPowerType'] == 1)){
+					$adDetail .= $formatStr2Num -> filter($carAd['carPower']*66/90).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($carAd['carPower']).' '.$lang['TXT_72'][1].')';
+					
+					$semLink .= $lang['TXT_10'].': '.$formatStr2Num -> filter($carAd['carPower']*66/90).' '.$lang['TXT_72'][0];
+					$semLink .= ' ('.$formatStr2Num -> filter($carAd['carPower']).' '.$lang['TXT_72'][1].')';
+				}			
+			}
+			/* 	
+			if ($adDetail != ''){
+				//car
+				$adDetail .= '<br/>';
+				if (isset($carAd['userNName']) && isset($carAd['userVName'])){
+					$adDetail .= $carAd['userNName'].' '.$carAd['userVName'];
+				}
+				
+				//carLocPLZ, carLocOrt
+				if (isset($carAd['carUserPLZ']) || isset($carAd['carLocOrt'])){
+					$adDetail .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($carAd['carLocPLZ']) == false){
+						$adDetail .= ' '.$carAd['carLocPLZ'];
+					}
+					if ($isEmptyString -> filter($carAd['carLocOrt']) == false){
+						$adDetail .= ' '.$carAd['carLocOrt'];
+					}
+				}elseif (isset($carAd['userPLZ']) || isset($carAd['userOrt'])){
+					$adDetail .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($carAd['userPLZ']) == false){
+						$adDetail .= ' '.$carAd['userPLZ'];
+					}
+					if ($isEmptyString -> filter($carAd['userOrt']) == false){
+						$adDetail .= ' '.$carAd['userOrt'];
+					}
+				}
+			}
+			*/
+			$searchResEntry = $tmpl -> replace(	'PIC_URI',
+												$picURI,
+												$searchResEntryTMPL
+												);
+			$searchResEntry = $tmpl -> replace(	'BRAND_URL',
+												'/car/'.$carAd['carID'].'/1/'.$carAd['carBrandName'].' '.$carAd['carModelName'].' , '.str_ireplace('/', '.', $semLink),
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'BRAND_NAME',
+												$carBrand,
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'AD_DETAIL',
+												$adDetail,
+												$searchResEntry
+												);
+			$lastAds .= $searchResEntry;	
+		}
+	}
+}
+$tmpl -> setValue('LAST_ADS', $lastAds);
+//<-----LAST ADVERTISEMENTS
+
+
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$infoVal .= $this -> error;
+}
+if (isset($this -> info)){
+	$infoVal .= $this -> info;
+}
+$tmpl -> setValue('INFO', $infoVal);
+//<-----Process register formular
+
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/index.css" />'
+				);
+
+echo $this -> tmpl -> render();
+
+?>
+
+
+
+

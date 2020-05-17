@@ -1,0 +1,40 @@
+@CHARSET "ISO-8859-1";
+
+.prodcat div{
+	margin: 1em;
+}
+.prodcat label{
+	width: 8em;
+	display: block;
+	float: left;
+}
+
+.prodcat textarea
+, .prodcat input
+, .prodcat select{
+	width: 20em;
+}
+.prodcat textarea{
+	height: 10em;
+}
+
+
+
+
+.prodprop div{
+	margin: 1em;
+}
+.prodprop label{
+	width: 8em;
+	display: block;
+	float: left;
+}
+
+.prodprop textarea
+, .prodprop input
+, .prodprop select{
+	width: 20em;
+}
+.prodprop textarea{
+	height: 10em;
+}

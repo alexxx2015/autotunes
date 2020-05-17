@@ -1,0 +1,187 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+include_once('default/views/helpers/func_pageCounter.phtml');
+include_once('default/views/filters/FormatStr2Num.php');
+include_once('default/views/filters/FilterIsEmptyString.php');
+
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$bike = $this -> bike;
+$formatStr2Num = new FormatSt2Num();
+$isEmptyString = new FilterIsEmptyString();
+
+include_once('default/views/scripts/bike/bikeQS.phtml');
+include_once('default/views/scripts/dealer/dealer_menu.phtml');
+
+$tmpl -> readTmplFile('CONTENT', 'default/dealer/bike.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/dealer.css" />
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/search.css" />');
+
+$quickSearch = $tmpl -> readTmplFile('QUICK_SEARCH', 'default/dealer/bikeQS.html');
+$tmpl -> setValue('QS_FORM_ACTION', '/dealer/'.$user['userID'].'/bike');
+$tmpl -> setValue('QS_HEADING', $lang['TXT_197']);
+
+//USER_FIRM
+$userFirmVal = '';
+if (isset($user['userFirm'])){
+	$userFirmVal = $user['userFirm'];
+}
+if (($userFirmVal == '') && isset($user['userNName']) && isset($user['userVName'])){
+	$userFirmVal .= $user['userNName'].' '.$user['userVName'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirmVal);
+
+$searchResEntryTMPL = $tmpl -> readFile('default/dealer/searchResEntry.html');
+//Preparing search results and add this to the content
+$bikeAds = '';
+if (isset($bike['bikeAds']) && is_array($bike['bikeAds'])){
+	$bikeAds = '<div class="search_res">';
+	foreach ($bike['bikeAds'] AS $bikeAd){
+		if (isset($bikeAd['bikeID'])){
+			//Determine bike pic
+			$picURI = System_Properties::SYS_PIC_PATH.'/noImg.png';
+			if (isset($bikeAd['bikePics']) && is_array($bikeAd['bikePics'])){
+				foreach ($bikeAd['bikePics'] AS $bikePic){
+					$pic = System_Properties::PIC_PATH.'/'.System_Properties::BIKE_ABRV.'_'.$bikeAd['bikeID'].'_'.$bikePic['vPicID'].'.jpeg';
+					if(file_exists('.'.$pic)){
+						$picURI = $pic;
+						break;
+					}
+				}
+			}
+			
+			//Determine bike brand
+			$bikeBrand = $bikeAd['bikeBrandName'];
+			if (isset($bikeAd['bikeModelName'])){
+				$bikeBrand .= ' '.$bikeAd['bikeModelName'];
+			}
+			
+			$adDetail = '';
+			
+			//bikePrice
+			if (isset($bikeAd['bikePrice'])){
+				$adDetail .= $formatStr2Num -> filter($bikeAd['bikePrice']);
+				//bikePriceCurr
+				if (isset($bikeAd['bikePriceCurr']) && isset($lang['TXT_74'][$bikeAd['bikePriceCurr']])){
+					$adDetail .= ' '.$lang['TXT_74'][$bikeAd['bikePriceCurr']];
+				}
+				
+				//bikePriceType
+				if (isset($bikeAd['bikePriceType']) && isset($lang['TXT_70'][$bikeAd['bikePriceType']])){
+					$adDetail .= ' '.$lang['TXT_70'][$bikeAd['bikePriceType']];
+				}
+				
+				$adDetail .= ', ';
+			}
+			
+			//bikeKM
+			if (isset($bikeAd['bikeKM'])){
+				$adDetail .= $formatStr2Num -> filter($bikeAd['bikeKM']).' ';
+				if (isset($lang['TXT_75'][$bikeAd['bikeKMType']])){
+					$adDetail .= $lang['TXT_75'][$bikeAd['bikeKMType']];
+				}
+				$adDetail .= ', ';
+			}
+			
+			//bikePower
+			if (isset($bikeAd['bikePower'])){
+				//0 = kW
+				if(isset($bikeAd['bikePowerType']) && ($bikeAd['bikePowerType'] == 0)){
+					$adDetail .= $formatStr2Num -> filter($bikeAd['bikePower']).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($bikeAd['bikePower']*90/66).' '.$lang['TXT_72'][0].')';
+				}
+				//1 = PS
+				elseif(isset($bikeAd['bikePowerType']) && ($bikeAd['bikePowerType'] == 1)){
+					$adDetail .= $formatStr2Num -> filter($bikeAd['bikePower']*66/90).' '.$lang['TXT_72'][0];
+					$adDetail .= ' ('.$formatStr2Num -> filter($bikeAd['bikePower']).' '.$lang['TXT_72'][1].')';
+				}
+				$adDetail .= ', ';				
+			}
+			
+			//Set BIKE_EZ
+			if($bikeAd['bikeEZY'] == 9999){
+				$adDetail .= $lang['V_STATE'][0];
+			}
+			elseif (($bikeAd['bikeEZM'] > 0) && ($bikeAd['bikeEZY'] > 0)){
+				$adDetail .= $bikeAd['bikeEZM'].'/'.$bikeAd['bikeEZY'];
+			}
+			
+			if ($adDetail != ''){
+				//bike
+				$adDetail .= '<br/>';
+				if (isset($bikeAd['userFirm'])){
+					$adDetail .= $bikeAd['userFirm'];
+				}
+				elseif (isset($bikeAd['userNName']) && isset($bikeAd['userVName'])){
+					$adDetail .= $bikeAd['userNName'].' '.$bikeAd['userVName'];
+				}
+				
+				//bikeLocPLZ, bikeLocOrt
+				if (isset($bikeAd['bikeUserPLZ']) || isset($bikeAd['bikeLocOrt'])){
+					$adDetail .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($bikeAd['bikeLocPLZ']) == false){
+						$adDetail .= ' '.$bikeAd['bikeLocPLZ'];
+					}
+					if ($isEmptyString -> filter($bikeAd['bikeLocOrt']) == false){
+						$adDetail .= ' '.$bikeAd['bikeLocOrt'];
+					}
+				}elseif (isset($bikeAd['userPLZ']) || isset($bikeAd['userOrt'])){
+					$adDetail .= ', '.$lang['TXT_114'].':';
+					if ($isEmptyString -> filter($bikeAd['userPLZ']) == false){
+						$adDetail .= ' '.$bikeAd['userPLZ'];
+					}
+					if ($isEmptyString -> filter($bikeAd['userOrt']) == false){
+						$adDetail .= ' '.$bikeAd['userOrt'];
+					}
+				}
+			}
+			
+			
+			$searchResEntry = $tmpl -> replace(	'PIC_URI',
+												$picURI,
+												$searchResEntryTMPL
+												);
+			$searchResEntry = $tmpl -> replace(	'BRAND_URL',
+												'/bike/'.$bikeAd['bikeID'].'/'.$this -> bikeAds['actPage'],
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'BRAND_NAME',
+												$bikeBrand,
+												$searchResEntry
+												);	
+			$searchResEntry = $tmpl -> replace(	'AD_DETAIL',
+												$adDetail,
+												$searchResEntry
+												);
+			$bikeAds .= $searchResEntry;	
+		}
+	}
+	$bikeAds .= '</div>';
+	$bikeAds .= pageCounter($bike['totalAds'], '/dealer/'.$user['userID'].'/bike/', $bike['actPage'], $bike['numAds']);
+}
+
+$tmpl -> setValue('BIKE_ADS', $bikeAds);
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+echo $this -> tmpl -> render();
+
+
+?>

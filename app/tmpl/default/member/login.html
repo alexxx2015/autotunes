@@ -1,0 +1,41 @@
+{-INFO-}
+<form action="/member/login" method="post" class="loginForm">
+	<h1>{-TXT_138-}</h1>
+	
+	<label>{-TXT_48-}</label>
+	<div>
+		<input type="text" name="userEMail" value="{-USER_EMAIL_VAL-}"/>
+	</div>
+
+	<label class="nl">{-TXT_130-}</label>
+	<div>
+		<input type="password" name="userPW" />
+	</div>	
+	
+	<div class="nl">
+		<input type="submit" name="memLog" value="{-TXT_138-}"/>
+	</div>
+	<br class="nl"/>
+</form>
+
+<form action="/member/login" method="post" class="loginForm">
+	<h2>{-TXT_133-}</h2>
+
+	<label>{-TXT_48-}</label>
+	<div>
+		<input type="text" name="userEMail2" value="{-USER_EMAIL2_VAL-}"/>
+	</div>
+	
+	<label class="nl">{-TXT_220-}</label>
+	<div>
+		<input type="text" name="captcha_code"/>
+	</div>
+	<div class="captcha">
+		<img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" /><a href="#" onclick="document.getElementById('captcha').src = '/securimage/securimage_show.php?' + Math.random(); return false"><img src="/securimage/images/refresh.gif"/></a>
+	</div>
+	
+	<div class="nl">
+		<input type="submit" name="remPW" value="{-TXT_232-}"/>
+	</div> 	
+	<br class="nl"/>
+</form>

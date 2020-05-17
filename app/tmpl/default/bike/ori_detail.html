@@ -1,0 +1,57 @@
+<ul class="boxLeft">
+<li><h1>{-BIKE_BRAND_VAL-} {-BIKE_MODEL_VAL-}</h1></li>
+<li><span>{-TXT_124-}</span>{-BIKE_ID-}</li>
+<li>
+<span>{-TXT_13-}</span>
+{-BIKE_PRICE_VAL-} {-BIKE_PRICE_TYPE_VAL-}
+</li>
+<li>
+<span>{-TXT_14-}</span>
+{-BIKE_KM_VAL-}
+</li>
+<li>
+<span>{-TXT_10-}</span>
+{-BIKE_POWER_VAL-}
+</li>
+<li>
+<span>{-TXT_7-}</span>
+{-BIKE_EZ-}
+</li>
+
+{-BIKE_OPTIONAL_SPEC-}
+
+<li><strong class="heading">{-TXT_86-}{-USER_ADS-}</strong></li>
+{-USER_FIRM-}
+<li><span>{-TXT_88-}</span>{-USER_NAME-}</li>
+{-USER_ADDRESS-}
+{-USER_TEL-}
+{-USER_LINK_ADS_VAL-}
+<form action="/bike{-FORM_ACTION_PARAM-}" method="POST">
+<li><strong class="heading">{-TXT_87-}</strong></li>
+<li><span>{-TXT_88-}</span><input type="text" name="emailName"/></li>
+<li><span>{-TXT_48-}</span><input type="text" name="emailAddress"/></li>
+<li><span>{-TXT_90-}</span><textarea name="emailText"></textarea></li>
+<li><input type="submit" name="sendEMail" value="{-TXT_91-}"/></li>
+</form>
+</ul>
+
+
+<ul class="boxRight">
+<li>	
+	<a href="/bike/search/{-SEARCH_RES_PAGE-}">{-TXT_129-}</a> | 
+	<a href="/bike/search">{-TXT_71-}</a> | 
+	<a href="/bike/search/cp/1">{-TXT_97-}</a> | 
+	<a href="/bike/viewprint/id/{-BIKE_ID-}" target="_blank">{-TXT_118-}</a> | 
+	<a href="/bike/bookmark/id/{-BIKE_ID-}/p/{-SEARCH_RES_PAGE-}">{-TXT_120-}</a> </li>
+<li><strong class="heading">{-TXT_98-}</strong></li>
+<li>{-PHOTO_GALLERY-}</li>
+
+{-BIKE_EXTRA-}
+
+{-BIKE_DESC-}
+
+{-BIKE_LOC-}
+</ul>
+
+<br class="nl"/>
+{-INFO-}

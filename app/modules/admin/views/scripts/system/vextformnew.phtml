@@ -1,0 +1,122 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$posLang = $this -> posLang;
+
+$vextParam = $this -> vextParam;
+
+$tmpl -> readTmplFile('VEXT_FORM', System_Properties::ADMIN_MOD_PATH.'/system/vextform.html');
+$tmpl -> setValue('SUBMIT_BTN', '<input type="submit" name="vextNew" value="'.$lang['TXT_156'].'"/>');
+$tmpl -> setValue('FORM_URL', '/'.System_Properties::ADMIN_MOD_PATH.'/system/vext');
+
+$tmpl -> setValue('VEXT_ID', '');
+
+//Lang Header
+$langHeader = '';
+$langTxtField = '';
+if (is_array($posLang)){
+	foreach ($posLang as $key => $value){
+		$langHeader .= '<td>'.$value['langAbrv'].'</td>';
+		$langTxtField .= '<td><input type="text" name="lang_'.strtolower($value['langAbrv']).'" value="{-V_EXTRA_'.strtoupper($value['langAbrv']).'-}"/></td>';
+	}
+}
+$tmpl -> setValue('LANG_HEADER', $langHeader);
+$tmpl -> setValue('LANG_TXT_FIELD', $langTxtField);
+
+/*
+//CAR_BRAND_ACTIVE_CHECKED
+$carBrandActiveChecked = '';
+if (is_array($vextParam) && isset($vextParam['carActive']) && ($vextParam['carActive'] == 1)){
+	$carBrandActiveChecked .= 'checked';
+}
+$tmpl -> setValue('CAR_ACTIVE_CHECKED', $carBrandActiveChecked);
+
+//BIKE_BRAND_ACTIVE_CHECKED
+$bikeBrandActiveChecked = '';
+if (is_array($vextParam) && isset($vextParam['bikeActive']) && ($vextParam['bikeActive'] == 1)){
+	$bikeBrandActiveChecked .= 'checked';
+}
+$tmpl -> setValue('BIKE_ACTIVE_CHECKED', $bikeBrandActiveChecked);
+
+//TRUCK_BRAND_ACTIVE_CHECKED
+$truckBrandActiveChecked = '';
+if (is_array($vextParam) && isset($vextParam['truckActive']) && ($vextParam['truckActive'] == 1)){
+	$truckBrandActiveChecked .= 'checked';
+}
+$tmpl -> setValue('TRUCK_ACTIVE_CHECKED', $truckBrandActiveChecked);
+
+
+//VEXT_NAME_VAL
+$vextNameVal = '';
+if (is_array($vextParam) && isset($vextParam['vextName'])){
+	$vextNameVal .= $vextParam['vextName'];
+}
+$tmpl -> setValue('VEXT_NAME_VAL', $vextNameVal);
+
+$tmpl -> setValue('VEXT_ID','');
+
+
+
+//CAR_EXT_PARENT
+$carExtParentVal = '<select name="carExtParent" disabled>
+					<option value="-1">'.$lang['ATXT_63'].'</option>';
+if (is_array($carExt)){
+	foreach($carExt as $ce){
+		if (isset($lang['V_EXTRA'][$ce['vextID']])){
+			$carExtParentVal .= '<option value="'.$ce['carExtID'].'">'.$lang['V_EXTRA'][$ce['vextID']].'</option>';
+		}else{
+			$carExtParentVal .= '<option value="'.$ce['carExtID'].'">'.$ce['carExtID'].'</option>';
+		}
+	}
+}
+$carExtParentVal .= '</select>';
+$tmpl -> setValue('CAR_EXT_PARENT', $carExtParentVal);
+
+//BIKE_EXT_PARENT
+$bikeExtParentVal = '<select name="bikeExtParent" disabled>
+						<option value="-1">'.$lang['ATXT_63'].'</option>';
+if (is_array($bikeExt)){
+	foreach($bikeExt as $be){
+		if (isset($lang['V_EXTRA'][$be['vextID']])){
+			$bikeExtParentVal .= '<option value="'.$be['bikeExtID'].'">'.$lang['V_EXTRA'][$be['vextID']].'</option>';
+		}else{
+			$bikeExtParentVal .= '<option value="'.$be['bikeExtID'].'">'.$be['bikeExtID'].'</option>';
+		}
+	}
+}
+$bikeExtParentVal .= '</select>';
+$tmpl -> setValue('BIKE_EXT_PARENT', $bikeExtParentVal);
+
+//TRUCK_EXT_PARENT
+$truckExtParentVal = '<select name="truckExtParent" disabled>
+					<option value="-1">'.$lang['ATXT_63'].'</option>';
+if (is_array($truckExt)){
+	foreach($truckExt as $te){
+		if (isset($lang['V_EXTRA'][$te['vextID']])){
+			$truckExtParentVal .= '<option value="'.$te['truckExtID'].'">'.$lang['V_EXTRA'][$te['vextID']].'</option>';
+		}else{
+			$truckExtParentVal .= '<option value="'.$te['truckExtID'].'">'.$te['truckExtID'].'</option>';
+		}
+	}
+}
+$truckExtParentVal .= '</select>';
+$tmpl -> setValue('TRUCK_EXT_PARENT', $truckExtParentVal);
+
+//POS_LANG_VAL
+$posLangVal = '<select name="lang">';
+if (is_array($posLang)){	
+	foreach ($posLang as $pl){
+		$posLangVal .= '<option value="'.$pl['langID'].'">'.$pl['langAbrv'].'</option>';
+	}
+}
+$posLangVal .= '</select>';
+$tmpl -> setValue('POS_LANG_VAL', $posLangVal);
+*/
+
+?>

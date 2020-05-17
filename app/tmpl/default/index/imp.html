@@ -1,0 +1,23 @@
+{-INFO-}
+<div class="imp">
+<h2>{-TXT_107-}</h2>
+{-SYS_IMP-}
+</div>
+<div class="disc">
+<h2>{-TXT_256-}</h2>
+{-SYS_DISC-}
+</div>
+<div class="box impContact">
+	<h2>{-TXT_230-}</h2>
+	<form action="/index/imp" method="POST">
+		<ul class="contact">
+			<li><span>{-TXT_88-}</span><input type="text" name="emailName" value="{-EMAIL_NAME-}"/></li>
+			<li><span>{-TXT_48-}</span><input type="text" name="emailAddress" value="{-EMAIL_ADDRESS-}"/></li>
+			<li><span>{-TXT_90-}</span><textarea name="emailText">{-EMAIL_TEXT-}</textarea></li>			
+			<li><span title="{-INFO_14-}">{-TXT_220-}</span><input type="text" name="captcha_code" value="{-CAPTCHA_CODE-}"/>
+			<li class="captcha"><span>&nbsp;</span><img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" />&nbsp;<a href="#" onclick="document.getElementById('captcha').src = '/securimage/securimage_show.php?' + Math.random(); return false"><img src="/securimage/images/refresh.gif"/></a>					
+			</li>
+			<li><span>&nbsp;</span><input type="submit" name="sendEMail" value="{-TXT_91-}"/></li>
+		</ul>
+	</form>
+</div>

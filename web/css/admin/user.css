@@ -1,0 +1,75 @@
+@CHARSET "ISO-8859-1";
+
+.userSearchBox fieldset{
+	width: 75%;
+	padding: 0.5em 0 0 0;
+	border: 0;
+	border-top: 1px solid black;
+	margin-left :50%;
+	left: -37.5%;
+	position: relative;
+}
+
+.userSearchBox label,
+.userNewBox label,
+.userEditBox label{
+	width: 40%;
+	display: block;
+	float: left;
+	margin: 0;
+	padding: 0;
+}
+
+.userSearchBox div input,
+.userSearchBox div select,	
+.userEditBox div input,
+.userEditBox div select{
+	width: 59%;
+	margin: 0;
+	padding: 0;
+}
+.userSearchBox div.twoCol select{
+	width: 29%;
+}
+
+.userSearchBox div,
+.userEditBox div{
+	margin: 0.5em 0 0.5em 0;
+}
+
+input[type = "submit"]{
+	text-align: center;
+}
+
+
+/*userSearchRes*/
+.userSearchRes{
+	width: 50%;
+	margin: 1em 0 0 0;
+	border: 0;
+	border-top: 1px solid black;
+}
+
+.userSearchRes table{
+	 border: 1px solid red;
+}
+
+/*userEdit*/
+.userEditBox{
+	width: 75%;
+	padding: 0.5em 0 0 0;
+	border: 0;
+	border-top: 1px solid black;
+	margin-left :50%;
+	left: -37.5%;
+	position: relative;
+}
+
+.userEditBox textarea[ name = "userAdress" ]{
+	max-width: 57%;
+	min-width: 57%;
+	max-height: 5em;
+	min-height: 5em;
+	padding: 1%;
+	margin: 0;
+}

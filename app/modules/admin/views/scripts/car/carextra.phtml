@@ -1,0 +1,78 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view handles the UI for car maintenance
+ *********************************************************************************/
+include_once('default/views/filters/FilterPower.php');
+//include_once(System_Properties::ADMIN_MOD_PATH.'/views/scripts/car/carQuickSearch.phtml');
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$vextra = $this -> vextra;
+$carExt = $this -> carExt;
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/car/carextra.html');	
+	
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />
+								');
+	/*							
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE')
+							.'	var g_arr = new Array();
+								g_arr["ADMIN_MOD_PATH"] = "'.System_Properties::ADMIN_MOD_PATH.'";'
+				);
+				
+$tmpl -> setValue('JS_FILES', '	<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/jq_141_min.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/cs.js"></script>');	
+
+*/
+								
+//process vextra new
+$vextraNew = '<select name="vextraNew">';
+if (is_array($vextra)){
+	foreach($vextra as $key => $vValue){
+		if (isset($lang['V_EXTRA'][$vValue['vextID']])){
+			$vextraNew .= '<option value="'.$vValue['vextID'].'">'.$lang['V_EXTRA'][$vValue['vextID']].'</option>';
+		}
+	}
+}
+$vextraNew .= '</select>';
+$tmpl -> setValue('V_EXTRA_NEW', $vextraNew);
+
+//process vextra parent list and car extra list
+$vextraParent = '<select name="vextraParent">
+					<option value="-1">'.$lang['ATXT_63'].'</option>';
+$carExtraVal = '<table>';
+if (is_array($carExt)){
+	foreach($carExt as $key => $vpValue){
+		if (isset($lang['V_EXTRA'][$vpValue['vextID']])){
+			$vextraParent .= '<option value="'.$vpValue['vextID'].'" class="level'.$vpValue['level'].'">'.$lang['V_EXTRA'][$vpValue['vextID']].'</option>';
+			$carExtraVal .= '<tr>
+								<td><a href="/'.System_Properties::ADMIN_MOD_PATH.'/car/carextraedit/ceid/'.$vpValue['carExtID'].'">'.$lang['TXT_144'].'</a></td>
+								<td class="level'.$vpValue['level'].'">'.$lang['V_EXTRA'][$vpValue['vextID']].'</td>
+							</tr>';
+		}
+	}
+}
+$vextraParent .= '</select>';
+$carExtraVal .= '</table>';
+$tmpl -> setValue('V_EXTRA_PARENT', $vextraParent);
+$tmpl -> setValue('CAR_EXTRA_VAL', $carExtraVal);
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

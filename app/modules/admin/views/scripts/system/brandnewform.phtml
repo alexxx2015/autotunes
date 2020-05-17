@@ -1,0 +1,29 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20101212
+ * Desc:		This view describe the UI if a user is not logged in
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$tmpl -> readTmplFile('BRAND_NEW_FORM', System_Properties::ADMIN_MOD_PATH.'/system/brandform.html');
+
+//BRAND_NAME_VAL
+$tmpl -> setValue('BRAND_NAME_VAL', '');
+
+//CAR_BRAND_ACTIVE_CHECKED
+$tmpl -> setValue('CAR_BRAND_ACTIVE_CHECKED', '');
+
+//BIKE_BRAND_ACTIVE_CHECKED
+$tmpl -> setValue('BIKE_BRAND_ACTIVE_CHECKED', '');
+
+//TRUCK_BRAND_ACTIVE_CHECKED
+$tmpl -> setValue('TRUCK_BRAND_ACTIVE_CHECKED', '');
+
+//SUBMIT_BTN
+$tmpl -> setValue('SUBMIT_BTN', '<input type="submit" name="brandSafe" value="'.$lang['TXT_156'].'"/>');
+
+//BRAND_FORM_PARAM
+$tmpl -> setValue('BRAND_FORM_PARAM','');
+?>

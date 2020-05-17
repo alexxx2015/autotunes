@@ -1,0 +1,47 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$p = $this -> p;
+
+$tmpl -> readTmplFile('CONTENT', 'default/member/login.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/login.css" />');
+
+
+//USER_EMAIL_VAL
+$userEMailVal ='';
+if (isset($user['userEMail'])){
+	$userEMailVal = $user['userEMail'];
+}
+$tmpl -> setValue('USER_EMail_VAL', $userEMailVal);
+
+//USER_EMAIL2_VAL
+$userEMail2Val ='';
+if (isset($p['userEMail2'])){
+	$userEMail2Val = $p['userEMail2'];
+}
+$tmpl -> setValue('USER_EMail2_VAL', $userEMail2Val);
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+
+?>

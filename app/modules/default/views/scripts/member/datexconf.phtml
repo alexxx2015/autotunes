@@ -1,0 +1,87 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$lang = $this -> lang;
+
+$user = $this -> user;
+
+$tmpl -> readTmplFile('CONTENT', 'default/member/datexconf.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/member_dataimpexp.css" />');
+
+									
+//DATEX_IMP_CONF_CHECKED
+$datexImpConfChecked = '';
+if (isset($user['datexImp']) && ($user['datexImp'] == 1)){
+	$datexImpConfChecked = 'checked';
+}
+$tmpl -> setValue('DATEX_IMP_CONF_CHECKED', $datexImpConfChecked);
+
+//DATEX_FTP_IMP_CONF_CKECKED
+$datexFTPImpConfChecked = '';
+if (isset($user['datexFTPImp']) && ($user['datexFTPImp'] == 1)){
+	$datexFTPImpConfChecked = 'checked';
+}
+$tmpl -> setValue('DATEX_FTP_IMP_CONF_CKECKED', $datexFTPImpConfChecked);
+
+//V_TYPE
+$vType = '<select name="vType">
+			<option value="-1" '.($user['datexFTPVType'] == '-1'?'selected':'').'>'.$lang['TXT_216'].'</option>
+			<option value="c" '.($user['datexFTPVType'] == 'c'?'selected':'').'>'.$lang['TXT_2'].'</option>
+			<option value="b" '.($user['datexFTPVType'] == 'b'?'selected':'').'>'.$lang['TXT_3'].'</option>
+			<option value="t" '.($user['datexFTPVType'] == 't'?'selected':'').'>'.$lang['TXT_4'].'</option>
+		</select>';
+$tmpl -> setValue('V_TYPE', $vType);
+
+//DATEX_AUTO_IMP_CONF_CHECKED
+//<li><input type="checkbox" name="datexAutoImp" {-DATEX_AUTO_IMP_CONF_CHECKED-}/>{-TXT_187-}</li>
+$datexAutoImpConfChecked = '';
+if (isset($user['datexAutoImp']) && ($user['datexAutoImp'] == 1)){
+	$datexAutoImpConfChecked = 'checked';
+}
+$tmpl -> setValue('DATEX_AUTO_IMP_CONF_CHECKED', $datexAutoImpConfChecked);
+
+//DATEX_EXP_CONF_CHECKED
+$datexExpConfChecked = '';
+if (isset($user['datexExp']) && ($user['datexExp'] == 1)){
+	$datexExpConfChecked = 'checked';
+}
+$tmpl -> setValue('DATEX_EXP_CONF_CHECKED', $datexExpConfChecked);
+
+
+//FORMAT_VAL
+$formatVal = '<select name="datexFormat" id="fileImpFormat">';
+if (isset($lang['TXT_181']) && is_array($lang['TXT_181'])){
+	$formatVal .= '<option value="-1">'.$lang['TXT_216'].'</option>';
+	foreach ($lang['TXT_181'] as $key => $kVal){
+		$formatVal .= '<option value="'.$key.'" '.($user['datexFormat']==$key?'selected':'').'>'.$kVal.'</option>';
+	}
+}
+$formatVal .= '</select>';
+$tmpl -> setValue('FORMAT', $formatVal);
+
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $this -> tmpl -> render();
+
+
+?>

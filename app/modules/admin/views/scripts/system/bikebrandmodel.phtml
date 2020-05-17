@@ -1,0 +1,92 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of Car insert section
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+
+$brand = $this -> brand;
+$brandModelParent = $this -> brandModelParent;
+$bikeBrand = $this -> bikeBrand;
+$bikeModel = $this -> bikeModel;
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/system.css" />'
+				);
+//Set javascript gallery image pattern																
+$tmpl -> setValue('JS_CODE', $tmpl -> getValue('JS_CODE'));
+$tmpl -> setValue('JS_FILES', $tmpl -> getValue('JS_FILES').'
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/js_active.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/ajaxupload.js"></script>
+								<script type="text/javascript" src="'.System_Properties::ADMIN_JS_PATH.'/ci.js"></script>');	
+	
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/system/bikebrandmodel.html');
+
+
+//SUBMIT_BTN
+$tmpl -> setValue('SUBMIT_BTN', '');
+
+//BRAND_NAME_VAL, BRAND_ID_VAL
+$brandNameVal = '';
+$brandIDVal = '';
+if (isset($brand) && is_array($brand)){
+	$brandNameVal .= $brand['brandName'];
+	$brandIDVal = $brand['brandID'];
+}
+$tmpl -> setValue('BRAND_NAME_VAL', $brandNameVal);
+$tmpl -> setValue('BRAND_ID_VAL', $brandIDVal);
+
+$bikeBrandNameVal = '<select name="bid">';
+if (isset($bikeBrand) && is_array($bikeBrand)){
+	foreach ($bikeBrand as $bb){
+		$bikeBrandNameVal .= '<option value="'.$bb['brandID'].'"';
+		if ($bb['brandID'] == $brand['brandID']){
+			$bikeBrandNameVal .= ' selected ';
+		}
+		$bikeBrandNameVal .= '>'.$bb['brandName'].'</option>';
+	}
+}
+$bikeBrandNameVal .= '</select>';
+$tmpl -> setValue('BIKE_BRAND_NAME_VAL', $bikeBrandNameVal);
+
+
+//BIKE_BRAND_MODEL_VAL
+$bikeBrandModel = '<select name="brandModelParent">
+					<option value="-1">'.$lang['ATXT_63'].'</option>';
+$bikeBrandModelVal = '';
+if (isset($bikeModel) && is_array($bikeModel)){
+	foreach ($bikeModel as $bm){
+		$bikeBrandModel .= '<option value="'.$bm['bikeModelID'].'" class="level'.$bm['level'].'"';
+		if (isset($brandModelParent) && ($brandModelParent == $bm['bikeModelID'])){
+			$bikeBrandModel .= ' selected ';
+		}
+		$bikeBrandModel .= '>'.$bm['bikeModelName'].'</option>';
+		$bikeBrandModelVal .= '<tr>
+								<td><a href="{-ADMIN_MOD_PATH-}/system/bikebrandmodeledit/mid/'.$bm['bikeModelID'].'">'.$lang['TXT_144'].'</a></td>
+								<td class="level'.$bm['level'].'">'.$bm['bikeModelName'].'</td>
+								</tr>';
+	}
+}
+$bikeBrandModel .= '</select>';
+$tmpl -> setValue('BIKE_BRAND_MODEL', $bikeBrandModel);
+//$bikeBrandModelVal .= '</ul>';
+$tmpl -> setValue('BIKE_BRAND_MODEL_VAL', $bikeBrandModelVal);
+	
+
+//Info
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+?>

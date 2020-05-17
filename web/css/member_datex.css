@@ -1,0 +1,60 @@
+@CHARSET "UTF-8";
+@import "member.css";
+
+/*IMPORT*/
+.datexForm{
+	padding: 0;
+	margin: 0 0 1em 0;
+}
+
+.datexForm label, 
+.datexForm div{
+	display: block;
+	float: left;
+	min-width: 5em;
+	margin: 0.5em 0 0.5em 0;
+}
+
+/*CONFIG*/
+.configForm{
+	padding: 0;
+	margin: 0;
+}
+
+.configForm ul{
+	margin-bottom: 1em;
+}
+.configForm ul li{
+	margin: 0.3em 0 0.3em 0;
+}
+
+.configForm input[name = "datexFTPImp"],
+.configForm input[name = "datexAutoImp"]{
+	margin-left: 1em;
+	border: 1px solid red;
+}
+
+
+
+
+.impProt{
+	padding: 0;
+	margin: 0;
+	border-top: 0.2em solid #515151;
+	width: 30em;
+}
+
+.impProt li{
+	margin: 0.5em 0 0.5em 0 ;
+}
+
+.impProt .prot_err{
+	color: #ff1200;
+}
+.impProt .prot_info{
+	color: #00c700;
+}
+
+label[for = "prot"]{
+	font-weight: bold;
+}

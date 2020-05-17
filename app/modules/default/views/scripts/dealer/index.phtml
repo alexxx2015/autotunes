@@ -1,0 +1,152 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This file specify the view for registration
+ *********************************************************************************/
+include_once('default/views/filters/FormatStr2Num.php');
+include_once('default/views/filters/FilterIsEmptyString.php');
+
+$tmpl = $this -> tmpl;
+$user = $this -> user;
+$p = $this -> p;
+
+$str2NumFilter = new FormatSt2Num();
+$fCheckSpace = new FilterIsEmptyString();
+
+include_once('default/views/scripts/dealer/dealer_menu.phtml');
+
+$tmpl -> readTmplFile('CONTENT', 'default/dealer/index.html');
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'	<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/insert.css" />
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/detail.css" />
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/dealer.css" />
+									');
+
+//USER_FIRM
+$userFirmVal = '';
+if (isset($user['userFirm'])){
+	$userFirmVal = $user['userFirm'];
+}
+if (($userFirmVal == '') && isset($user['userNName']) && isset($user['userVName'])){
+	$userFirmVal .= $user['userNName'].' '.$user['userVName'];
+}
+$tmpl -> setValue('USER_FIRM_VAL', $userFirmVal);
+
+
+//Set USER_ADS
+$userAds = '';
+if (isset($user['userAds']) ){
+	if($user['userAds'] == 1){
+		$userAds = $lang['TXT_33'][1];
+	}
+	else if($user['userAds'] == 2){
+		$userAds = $lang['TXT_33'][2];
+	}
+}
+$tmpl -> setValue('USER_ADS', $userAds);
+
+//Set USER_FIRM
+$userFirm = $lang['TXT_40'];
+if (isset($user['userFirm']) && ($fCheckSpace -> filter($user['userFirm']) == false)){
+	$userFirm = $user['userFirm'];
+}
+$tmpl -> setValue('USER_FIRM', $userFirm);
+
+//Set USER_VNAME, USER_NNAME
+$tmpl -> setValue('USER_NAME', $user['userNName'].' '.$user['userVName']);
+
+//Set USER_EMAIL
+$tmpl -> setValue('USER_EMAIL', $user['userEMail']);
+
+//Set USER_ADRESS
+$userAddress = $lang['TXT_40'];
+if (isset($user['userAdress']) || isset($user['userPLZ']) || isset($user['userOrt'])){
+	$userAddress = '';
+	if (isset($user['userAdress']) && ($fCheckSpace -> filter($user['userAdress']) == false)){
+		$userAddress .= '<li>'.$user['userAdress'].'</li>';
+	}
+	if (isset($user['userPLZ']) && isset($user['userOrt'])
+		 && ($fCheckSpace -> filter($user['userPLZ']) == false)
+		  && ($fCheckSpace -> filter($user['userOrt']) == false)){
+		$userAddress .= '<li>'.$user['userPLZ'].' '.$user['userOrt'].'</li>';
+	}
+	else if (isset($user['userPLZ']) && ($fCheckSpace -> filter($user['userPLZ']) == false)){
+		$userAddress .= '<li>'.$user['userPLZ'].'</li>';
+	}
+	else if (isset($user['userOrt']) && ($fCheckSpace -> filter($user['userOrt']) == false)){
+		$userAddress .= '<li>'.$user['userOrt'].'</li>';
+	}
+}
+if ($userAddress != ''){
+	//$userAddress = '	<li><span>'.$lang['TXT_54'].'</span><ul>'.$userAddress.'</ul></li>';
+	$userAddress = '	<li><ul>'.$userAddress.'</ul></li>';
+}
+else{
+	$userAddress = '';
+}
+$tmpl -> setValue('USER_ADDRESS', $userAddress);
+
+//Set USER_TEL1
+$userTel = $lang['TXT_40'];
+if (isset($user['userTel1']) && ($fCheckSpace -> filter($user['userTel1']) == false)){
+	//$userTel .= '<li><span>'.$lang['TXT_80'].'</span>'.$user['userTel2'].'</li>';
+	$userTel = $user['userTel1'];
+}
+$tmpl -> setValue('USER_TEL1', $userTel);
+
+//Set USER_TEL2
+$userTel = $lang['TXT_40'];
+if (isset($user['userTel2']) && ($fCheckSpace -> filter($user['userTel2']) == false)){
+	$userTel = $user['userTel2'];
+}
+$tmpl -> setValue('USER_TEL2', $userTel);
+
+
+//EMAIL_NAME
+$emailName = '';
+if (is_array($p) && isset($p['emailName'])){
+	$emailName = $p['emailName'];
+}
+$tmpl -> setValue('EMAIL_NAME', $emailName);
+
+//EMAIL_ADDRESS
+$emailAddress = '';
+if (is_array($p) && isset($p['emailAddress'])){
+	$emailAddress = $p['emailAddress'];
+}
+$tmpl -> setValue('EMAIL_ADDRESS', $emailAddress);
+
+
+//EMAIL_TEXT
+$emailText = '';
+if (is_array($p) && isset($p['emailText'])){
+	$emailText = $p['emailText'];
+}
+$tmpl -> setValue('EMAIL_TEXT', $emailText);
+
+
+//CAPTCHA_CODE
+if (is_array($p) && isset($p['captcha_code'])){
+	$captchaCode = $p['captcha_code'];
+}
+$captchaCode = '';
+$tmpl -> setValue('CAPTCHA_CODE', $captchaCode);
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+echo $this -> tmpl -> render();
+
+
+?>

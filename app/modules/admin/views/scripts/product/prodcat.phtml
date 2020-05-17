@@ -1,0 +1,97 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of admin INDEX
+ *********************************************************************************/
+$tmpl = $this -> tmpl;
+
+$lang = $this -> lang;
+$prodCats = $this -> prodCats;
+$prodCat = $this -> prodCat;
+
+$posLang = $this -> posLang;
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'<link rel="stylesheet" type="text/css" href="'.System_Properties::ADMIN_CSS_PATH.'/product.css" />
+								');
+
+//Product name value
+$prodCatName = '';
+if (is_array($posLang)){
+	foreach($posLang as $key => $val){
+		if (is_array($val) && isset($val['langAbrv'])){
+			$prodCatName .= '<input type="text" name="prodCatName_'.strtolower($val['langAbrv']).'" value="';
+			
+			if (is_array($prodCat) && isset($prodCat['prodCatName_'.strtolower($val['langAbrv'])])){
+				$prodCatName .= $prodCat['prodCatName_'.strtolower($val['langAbrv'])];
+			}
+			$prodCatName .= '"/>';
+		}
+	}
+}
+$tmpl -> setValue('PROD_CAT_NAME', $prodCatName);
+
+//Product parent
+$prodCatParent = '<select name="prodCatParent">
+					<option value="-1">'.$lang['ATXT_63'].'</option>';
+if (is_array($prodCats)){
+	foreach($prodCats as $key => $val){
+		if (isset($val['prodCatID']) && isset($lang['PROD_CAT'][$val['prodCatID']]['NAME'])){
+			$prodCatParent .= '<option value="'.$val['prodCatID'].'" ';
+			if (is_array($prodCat) && isset($prodCat['prodCatParent']) 
+				&& ($prodCat['prodCatParent'] == $val['prodCatID'])){
+				$prodCatParent .= ' selected ';
+			}
+			$prodCatParent .= '>'.$lang['PROD_CAT'][$val['prodCatID']]['NAME'].'</option>';
+		}
+	}
+}
+$prodCatParent .= '</select>';
+$tmpl -> setValue('PROD_CAT_PARENT', $prodCatParent);
+
+//Product key words
+$prodCatKeyWord = '';
+if (is_array($posLang)){
+	foreach($posLang as $key => $val){
+		if (is_array($val) && isset($val['langAbrv'])){
+				$prodCatKeyWord .= '<textarea name="prodCatKeyWord_'.strtolower($val['langAbrv']).'">';
+				if (is_array($prodCat) && isset($prodCat['prodCatKeyWord_'.strtolower($val['langAbrv'])])){
+					$prodCatKeyWord .= $prodCat['prodCatKeyWord_'.strtolower($val['langAbrv'])];
+				}
+				$prodCatKeyWord .= '</textarea>'; 
+		}
+	}
+}
+$tmpl -> setValue('PROD_KEY_WORD', $prodCatKeyWord);
+
+//PROD_CAT
+$prodCatVal = '<table>';
+if (is_array($prodCats)){
+	foreach($prodCats as $key => $val){
+		if (is_array($val) && isset($val['prodCatID']) 
+			&& isset($lang['PROD_CAT'][$val['prodCatID']]) && is_array($lang['PROD_CAT'][$val['prodCatID']])
+			&& isset($lang['PROD_CAT'][$val['prodCatID']]['NAME'])){
+			$prodCatVal .= '<tr><td style="padding-left:'.($val['level']*.5).'em;"><a href="{-ADMIN_MOD_PATH-}/product/prodcatedit/pid/'.$val['prodCatID'].'">'.$lang['PROD_CAT'][$val['prodCatID']]['NAME'].'</a></td></tr>';
+		}
+	}
+}
+$prodCatVal .= '</table>';
+$tmpl -> setValue('PROD_CAT', $prodCatVal);
+
+//Info
+$infoVal = '';
+if (isset($this -> error) && ($this -> error != null)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info) && ($this -> info != null)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+$tmpl -> readTmplFile('CONTENT', System_Properties::ADMIN_MOD_PATH.'/product/prodcat.html');
+echo $this -> tmpl -> render();
+?>

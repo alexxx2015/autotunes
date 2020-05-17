@@ -1,0 +1,118 @@
+<?php
+/**********************************************************************************
+ * Author: 		Fromm Alexander
+ * Date: 		20100804
+ * Desc:		This is the view of INDEX
+ *********************************************************************************/
+
+$tmpl = $this -> tmpl;
+$lang = $this -> lang;
+$system = $this -> system;
+$p = $this -> p;
+
+$tmpl -> readTmplFile('CONTENT','default/index/imp.html');
+
+
+$tmpl -> setValue('CSS_FILES', $tmpl -> getValue('CSS_FILES')
+								.'	<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/detail.css" />
+									<link rel="stylesheet" type="text/css" href="'.System_Properties::CSS_PATH.'/imp.css" />
+									
+								'
+				);
+
+//EMAIL_NAME
+$emailName = '';
+if (is_array($p) && isset($p['emailName'])){
+	$emailName = $p['emailName'];
+}
+$tmpl -> setValue('EMAIL_NAME', $emailName);
+
+//EMAIL_ADDRESS
+$emailAddress = '';
+if (is_array($p) && isset($p['emailAddress'])){
+	$emailAddress = $p['emailAddress'];
+}
+$tmpl -> setValue('EMAIL_ADDRESS', $emailAddress);
+
+
+//EMAIL_TEXT
+$emailText = '';
+if (is_array($p) && isset($p['emailText'])){
+	$emailText = $p['emailText'];
+}
+$tmpl -> setValue('EMAIL_TEXT', $emailText);
+
+
+//CAPTCHA_CODE
+if (is_array($p) && isset($p['captcha_code'])){
+	$captchaCode = $p['captcha_code'];
+}
+$captchaCode = '';
+$tmpl -> setValue('CAPTCHA_CODE', $captchaCode);
+
+//SYS_IMP
+$sysImp = $lang['TXT_254'].': <br/><br>';
+if (is_array($system) && isset($system['sysImp'])){
+	$sysImp .= nl2br($system['sysImp']);
+}
+
+//System telephone number
+if (is_array($system) && isset($system['sysTelNr'])){
+	$sysImp .= '<br/>'.$lang['TXT_255'].': '.$system['sysTelNr'];
+}
+//System email
+if (is_array($system) && isset($system['sysEMail'])){
+	$sysImp .= '<br/>'.$lang['TXT_48'].': <a href="mailto:'.$system['sysEMail'].'">'.$system['sysEMail'].'</a>';
+}
+$tmpl -> setValue('SYS_IMP', $sysImp);
+
+//System site name
+$sysSiteName = '';
+if (is_array($system) && isset($system['sysSiteName'])){
+	$sysSiteName = $system['sysSiteName'];
+}
+$tmpl -> setValue('SYS_SITE_NAME', $sysSiteName);
+
+//SYS_DISC
+$sysSiteDisc = '';
+if (is_array($system) && isset($system['sysDisc']) && ($system['sysDisc'] == 1) 
+	&& isset($lang['SYS_DISC']) && is_array($lang['SYS_DISC'])){
+	$sysSiteDisc = '<ul class="sysDisc">';
+	foreach($lang['SYS_DISC'] as $key1 => $kVal1){
+		if (isset($kVal1['TITLE'])){
+			$sysSiteDisc .= '<li class="title">'.($key1+1).' '.$kVal1['TITLE'].'</li>';
+		}
+		if (isset($kVal1['CONTENT']) && is_array($kVal1['CONTENT'])){
+			$sysSiteDisc .= '<ul>';
+			foreach ($kVal1['CONTENT'] as $key2 => $kVal2){
+				$sysSiteDisc .= '<li>'.$kVal2.'</li>';
+			}
+			$sysSiteDisc .= '</ul>';
+		}
+	}
+	$sysSiteDisc .= '</ul>';
+}
+$tmpl -> setValue('SYS_DISC', $sysSiteDisc);
+
+
+//INFO
+$infoVal = '';
+if (isset($this -> error)){
+	$error = $tmpl -> tagMsg(array('ERROR_MSG' => $this -> error));
+	isset($error['RETURN']) ? $infoVal .= $error['RETURN'] : $error = '';
+}
+
+if (isset($this -> info)){
+	$info = $tmpl -> tagMsg(array('INFO_MSG' => $this -> info));
+	isset($info['RETURN']) ? $infoVal .= $info['RETURN'] : $error = '';
+}
+
+$tmpl -> setValue('INFO', $tmpl -> getValue('INFO').$infoVal);
+
+echo $tmpl -> render();
+
+?>
+
+
+
+

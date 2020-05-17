@@ -1,0 +1,64 @@
+{-INFO-}
+<form action="/truck/insert" method="POST">
+	<div id="vdetail">
+		<h1>{-TRUCK_BRAND-} {-TRUCK_MODEL-}</h1>	
+		<br/><br/>
+		<div class="box box2">
+			<label for="b1"><strong>{-TXT_84-}</strong></label>
+			<ul id="b1">
+				<li><span>{-TXT_244-}</span>{-TRUCK_MODEL_VAR-}</li>
+				<li><span>{-TXT_13-}{-TRUCK_PRICE_TYPE-}</span>{-TRUCK_PRICE-}</li>
+				<li><span>{-TXT_14-}</span>{-TRUCK_KM-} {-TRUCK_KM_TYPE-}</li>
+				<li><span>{-TXT_10-}</span>{-TRUCK_POWER-}</li>
+				<li><span>{-TXT_7-}</span>{-TRUCK_EZ-}</li>
+				<li><span>{-TXT_114-}</span>{-TRUCK_LOC-}</li>
+				<li><span>{-TXT_234-}</span>{-TRUCK_HSN-}</li>
+				<li><span>{-TXT_235-}</span>{-TRUCK_TSN-}</li>
+				<li><span>{-TXT_236-}</span>{-TRUCK_FIN-}</li>
+				<li><span>{-TXT_76-}</span>{-TRUCK_TUV-}</li>
+				<li><span>{-TXT_77-}</span>{-TRUCK_AU-}</li>
+				<li><span>{-TXT_21-}</span> {-TRUCK_SHIFT-}</li>
+				<li><span>{-TXT_57-}</span> {-TRUCK_WEIGHT-}</li>
+				<li><span>{-TXT_58-}</span> {-TRUCK_CYL-}</li>
+				<li><span>{-TXT_59-}</span> {-TRUCK_CUB-}</li>
+				<li><span>{-TXT_62-}</span> {-TRUCK_USE_IN-}</li>
+				<li><span>{-TXT_63-}</span> {-TRUCK_USE_OUT-}</li>
+				<li><span>{-TXT_65-}</span> {-TRUCK_CO2-}</li>
+				<li><span>{-TXT_17-}</span> {-TRUCK_STATE-}</li>
+				<li><span>{-TXT_18-}</span> {-TRUCK_CAT-}</li>
+				<li><span>{-TXT_15-}</span> {-TRUCK_FUEL-}</li>
+				<li><span>{-TXT_19-}</span> {-TRUCK_CLR-}</li>
+				<li><span>{-TXT_22-}</span> {-TRUCK_EMISSION_NORM-}</li>
+				<li><span>{-TXT_85-}</span> {-TRUCK_ECOLOGIC_TAG-}</li>
+				<li><span>{-TXT_109-}</span> {-TRUCK_KLIMA-}</li>
+			</ul>		
+		</div>
+		
+		<div class="box box2">
+			<label for="b2"><strong>{-TXT_86-} {-USER_ADS-}</strong></label>
+			<ul id="b2">
+				<li><span>{-TXT_53-}</span> {-USER_FIRM-}</li>
+				<li><span>{-TXT_88-}</span> {-USER_NAME-}</li>
+				<li><span>{-TXT_54-}</span> {-USER_ADDRESS-}</li>
+				<li><span>{-TXT_48-}</span> {-USER_EMAIL-}</li>
+				<li><span>{-TXT_49-}</span> {-USER_TEL1-}</li>
+				<li><span>{-TXT_50-}</span> {-USER_TEL2-}</li>
+			</ul>
+		</div>
+		
+		<div class="box box2">
+			<label for="truckExtra"><strong class="heading">{-TXT_83-}</strong></label>
+			<div id="truckExtra" class="justify">
+				{-TRUCK_EXTRA-}
+			</div>
+		</div>
+		
+		<div class="box box2">
+			<label for="truckDesc"><strong class="heading">{-TXT_68-}</strong></label>
+			<div id="truckDesc" class="justify">
+				{-TRUCK_DESC-}
+			</div>
+		</div>
+	</div>
+	<input type="submit" value="{-TXT_44-}" name="ins3" class="nl"/>
+</form>

@@ -1,0 +1,45 @@
+@CHARSET "UTF-8";
+@import "member.css";
+
+.myChangeDataForm,
+.myChangePWForm{
+	margin: 0;
+	padding: 0;
+	width: 25em;
+}
+
+.myChangeDataForm label,
+.myChangePWForm label{
+	display: block;
+	float: left;
+	min-width:9em;
+	margin: 0.5em 0 0.5em 0;
+}
+
+.myChangePWForm label{
+	min-width: 12em;
+}
+
+.myChangeDataForm div,
+.myChangePWForm div{
+	float: left;
+}
+
+.myChangeDataForm textarea[name = "userAdress"]{
+	padding: 0;
+	margin: 0;
+	min-width: 16em;
+	max-width: 16em;
+	min-height: 5em;
+	max-height: 5em;
+}
+
+.myChangeDataForm input[type = "submit"]{
+	margin: 0.5em 0 0 0;
+}
+
+.myChangeDataForm input[name = "userEMail"]{
+	color: #A3A3A3;
+	border: 0;
+	background: transparent;
+}
