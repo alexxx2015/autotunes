@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_hitlist"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center|center_vertical|top"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/hitlistView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HitList" />
+    
+    <Button
+        android:id="@+id/btn_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Zurück" />
+
+</LinearLayout>

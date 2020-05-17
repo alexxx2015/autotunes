@@ -1,0 +1,46 @@
+9
+
+dir
+8
+svn://46.38.235.28/autotunes/res
+svn://46.38.235.28/autotunes
+
+
+
+2012-10-17T21:17:01.228210Z
+6
+alex
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+c1fc22e1-ca7f-4cde-afa1-6cc971ad5876
+
+drawable-hdpi
+dir
+
+drawable-ldpi
+dir
+
+drawable-mdpi
+dir
+
+drawable-xhdpi
+dir
+
+layout
+dir
+
+values
+dir
+

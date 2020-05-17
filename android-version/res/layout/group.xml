@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout01"
+    android:layout_width="fill_parent"
+    android:layout_height="45dip"
+    android:background="@drawable/title" >
+
+    <TextView
+        android:id="@+id/tvGroup"
+        android:layout_width="362dp"
+        android:layout_height="45dip"
+        android:layout_marginLeft="40dp"
+        android:gravity="center_vertical|left|right"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"
+        android:text="Groups"
+        android:textColor="#ffffffff"
+        android:textSize="17dip"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/ImageView01"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
+        android:src="@drawable/icon" />
+
+</LinearLayout>

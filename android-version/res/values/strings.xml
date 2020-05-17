@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, autotunesActivity!</string>
+    <string name="app_name">Autotunes.de - der Fahrzeugmarkt für Autos, Motorräder und LKWs</string>
+    <string name="Test"></string>
+    <string name="progressText">Progress</string>
+    <string name="trackingText">Tracking</string>
+    <string name="trackingOn">Tracking On</string>
+    <string name="trackingOff">Tracking Off</string>
+    <string name="txt_from">Von</string>
+    <string name="txt_to">Bis</string>
+    <string name="kw">kW</string>
+    <string name="ps">PS</string>
+    <string name="km">km</string>
+    <string name="priceMin">unter 1.000 €</string>
+    <string name="priceMax">über 100.000 €</string>
+    <string name="currency">€</string>
+
+</resources>
